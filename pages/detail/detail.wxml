@@ -1,0 +1,121 @@
+<!-- 活动详情 & 签到页 -->
+<view class="container">
+
+  <!-- 活动信息卡片 -->
+  <view class="info-card">
+    <view class="activity-title-row">
+      <text class="activity-title">{{activity.name}}</text>
+      <view class="tag {{statusTagClass}}">{{statusText}}</view>
+    </view>
+    <view class="info-list">
+      <view class="info-row">
+        <text class="info-icon">📍</text>
+        <text class="info-value">{{activity.location}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">📅</text>
+        <text class="info-value">{{activity.date}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">🕐</text>
+        <text class="info-value">{{activity.startTime}} – {{activity.endTime}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-icon">👤</text>
+        <text class="info-value">主办：{{activity.organizer}}</text>
+      </view>
+    </view>
+
+    <!-- 位置状态栏 -->
+    <view class="location-bar" wx:if="{{activity.latitude && activity.status !== 'ended'}}">
+      <view class="location-bar-inner {{locationValid === false ? 'location-invalid' : locationValid === true ? 'location-valid' : ''}}">
+        <text class="location-text">{{checkingLocation ? '📍 定位中…' : locationInfo}}</text>
+        <view class="location-refresh" bindtap="refreshLocation">
+          <text>刷新</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 签到统计 -->
+    <view class="checkin-stats">
+      <view class="stat-circle">
+        <text class="stat-big">{{activity.checkedCount}}</text>
+        <text class="stat-small">已签到</text>
+      </view>
+      <view class="stat-middle">
+        <view class="progress-bar-bg">
+          <view class="progress-bar-fill" style="width: {{progressPct}}%"></view>
+        </view>
+        <text class="progress-text">{{progressPct}}% 签到率</text>
+      </view>
+      <view class="stat-circle">
+        <text class="stat-big">{{activity.totalCount}}</text>
+        <text class="stat-small">应到人数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-wrap">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索姓名或部门"
+        value="{{keyword}}"
+        bindinput="onSearch"
+        confirm-type="search"
+      />
+      <text class="clear-icon" wx:if="{{keyword}}" bindtap="clearSearch">✕</text>
+    </view>
+    <view class="filter-tabs">
+      <view class="filter-tab {{activeFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部({{activity.totalCount}})</view>
+      <view class="filter-tab {{activeFilter === 'unchecked' ? 'active' : ''}}" bindtap="setFilter" data-filter="unchecked">未签到({{uncheckedCount}})</view>
+      <view class="filter-tab {{activeFilter === 'checked' ? 'active' : ''}}" bindtap="setFilter" data-filter="checked">已签到({{activity.checkedCount}})</view>
+    </view>
+  </view>
+
+  <!-- 人员列表 -->
+  <view class="list-wrap">
+    <view wx:if="{{filteredList.length === 0}}" class="empty-tip">
+      <text>暂无匹配人员</text>
+    </view>
+
+    <view
+      class="person-item {{item.checked ? 'checked-item' : ''}}"
+      wx:for="{{filteredList}}"
+      wx:key="id"
+    >
+      <view class="person-avatar {{item.checked ? 'avatar-checked' : 'avatar-default'}}">
+        <text class="avatar-text">{{item.name[0]}}</text>
+      </view>
+      <view class="person-info">
+        <view class="person-name-row">
+          <text class="person-name">{{item.name}}</text>
+          <text class="person-dept">{{item.dept}}</text>
+        </view>
+        <text class="person-phone">{{item.phone}}</text>
+        <text wx:if="{{item.checked}}" class="checked-time">✓ 已签到 {{item.checkedAt}}</text>
+      </view>
+      <view class="checkin-btn-wrap">
+        <button
+          wx:if="{{!item.checked && activity.status !== 'ended'}}"
+          class="checkin-btn"
+          bindtap="doCheckin"
+          data-id="{{item.id}}"
+        >签到</button>
+        <view wx:if="{{item.checked}}" class="checked-badge">
+          <text>✓</text>
+        </view>
+        <button
+          wx:if="{{item.checked && activity.status !== 'ended'}}"
+          class="undo-btn"
+          bindtap="undoCheckin"
+          data-id="{{item.id}}"
+        >撤销</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

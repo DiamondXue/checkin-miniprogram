@@ -1,0 +1,57 @@
+/* 全局样式 */
+page {
+  background-color: #F3F4F6;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  color: #1F2937;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin: 24rpx 24rpx 0;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.btn-primary {
+  background: #4F46E5;
+  color: #FFFFFF;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  padding: 20rpx 40rpx;
+}
+
+.btn-success {
+  background: #10B981;
+  color: #FFFFFF;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  padding: 20rpx 40rpx;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.tag-ongoing {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.tag-upcoming {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.tag-ended {
+  background: #F3F4F6;
+  color: #6B7280;
+}
