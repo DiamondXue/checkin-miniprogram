@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/login/login",
     "pages/index/index",
     "pages/detail/detail"
   ],
@@ -16,6 +17,7 @@
     }
   },
   "requiredPrivateInfos": ["getLocation"],
+  "cloud": true,
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

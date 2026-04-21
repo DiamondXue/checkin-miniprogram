@@ -8,11 +8,29 @@ Page({
     ongoingCount: 0,
     upcomingCount: 0,
     totalActivities: 0,
+    currentUser: null,
   },
 
   onShow() {
+    // 未登录跳转到登录页
+    if (!app.globalData.currentUser) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
+    this.setData({ currentUser: app.globalData.currentUser });
     // 每次显示页面时刷新数据（签到后返回列表需要更新进度）
     this.loadActivities();
+  },
+
+  // 退出登录
+  doLogout() {
+    wx.showModal({
+      title: '退出登录',
+      content: '确认退出当前账号？',
+      success: (res) => {
+        if (res.confirm) app.logout();
+      }
+    });
   },
 
   loadActivities() {

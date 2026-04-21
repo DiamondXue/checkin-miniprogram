@@ -1,0 +1,55 @@
+<!-- 登录页 -->
+<view class="container">
+
+  <!-- Logo 区域 -->
+  <view class="logo-area">
+    <view class="logo-icon">🎯</view>
+    <text class="app-name">团建签到</text>
+    <text class="app-desc">活动现场签到管理工具</text>
+  </view>
+
+  <!-- 登录卡片 -->
+  <view class="login-card">
+    <text class="card-title">管理员登录</text>
+    <text class="card-subtitle">请输入您的员工工号</text>
+
+    <view class="input-wrap {{inputFocus ? 'input-focus' : ''}} {{inputError ? 'input-error' : ''}}">
+      <text class="input-icon">👤</text>
+      <input
+        class="staff-input"
+        type="number"
+        maxlength="8"
+        placeholder="请输入 8 位员工工号"
+        placeholder-class="input-placeholder"
+        value="{{staffId}}"
+        bindinput="onInput"
+        bindfocus="onFocus"
+        bindblur="onBlur"
+        adjust-position="{{true}}"
+      />
+      <text class="input-clear" wx:if="{{staffId}}" bindtap="clearInput">✕</text>
+    </view>
+
+    <!-- 错误提示 -->
+    <view class="error-tip" wx:if="{{errorMsg}}">
+      <text>⚠️ {{errorMsg}}</text>
+    </view>
+
+    <!-- 工号格式提示 -->
+    <text class="format-tip" wx:if="{{!errorMsg}}">工号为 8 位数字，如：43334382</text>
+
+    <!-- 登录按钮 -->
+    <button
+      class="login-btn {{canLogin ? 'login-btn-active' : 'login-btn-disabled'}}"
+      bindtap="doLogin"
+      disabled="{{!canLogin || loading}}"
+    >
+      <text wx:if="{{!loading}}">登 录</text>
+      <text wx:if="{{loading}}">验证中…</text>
+    </button>
+  </view>
+
+  <!-- 底部说明 -->
+  <text class="footer-tip">仅限活动管理员使用</text>
+
+</view>

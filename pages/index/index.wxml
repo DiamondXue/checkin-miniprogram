@@ -3,6 +3,14 @@
 
   <!-- 顶部统计栏 -->
   <view class="header-stats">
+    <!-- 用户信息 -->
+    <view class="user-bar">
+      <text class="user-greeting">👋 {{currentUser.name || currentUser.staffId}}</text>
+      <view class="logout-btn" bindtap="doLogout">
+        <text>退出</text>
+      </view>
+    </view>
+    <view class="stats-row">
     <view class="stat-item">
       <text class="stat-num">{{ongoingCount}}</text>
       <text class="stat-label">进行中</text>
@@ -17,6 +25,7 @@
       <text class="stat-num">{{totalActivities}}</text>
       <text class="stat-label">全部活动</text>
     </view>
+  </view>
   </view>
 
   <!-- 进行中的活动 -->
