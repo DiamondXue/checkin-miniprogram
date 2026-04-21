@@ -18,6 +18,7 @@
   },
   "requiredPrivateInfos": ["getLocation"],
   "cloud": true,
+  "cloudfunctionRoot": "cloudfunctions/",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

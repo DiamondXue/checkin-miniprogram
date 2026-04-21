@@ -1,0 +1,9 @@
+{
+  "name": "initAdmins",
+  "version": "1.0.0",
+  "description": "初始化 administrators 集合（一次性脚本）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

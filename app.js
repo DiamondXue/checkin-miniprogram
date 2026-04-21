@@ -2,7 +2,7 @@ App({
   globalData: {
     activities: [],
     currentUser: null,  // { staffId, name, dept }
-    cloudEnvId: 'your-env-id', // 替换为你的云开发环境 ID
+    cloudEnvId: 'cloud1-d9gq1b47d1a6184ac', // 替换为你的云开发环境 ID
   },
 
   onLaunch() {
