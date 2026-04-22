@@ -35,8 +35,24 @@
     "useCompilerModule": true,
     "userConfirmedUseCompilerModule": false,
     "packNpmManually": false,
-    "packNpmRelationList": []
+    "packNpmRelationList": [],
+    "compileWorklet": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
+  "cloudfunctionRoot": "cloudfunctions/",
   "miniprogramRoot": "./",
-  "srcMiniprogramRoot": "./"
+  "srcMiniprogramRoot": "./",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }
