@@ -1,0 +1,9 @@
+{
+  "name": "initActivities",
+  "version": "1.0.0",
+  "description": "初始化 activities 集合及 participants 子集合",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

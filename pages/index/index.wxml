@@ -5,76 +5,108 @@
   <view class="header-stats">
     <!-- 用户信息 -->
     <view class="user-bar">
-      <text class="user-greeting">👋 {{currentUser.name || currentUser.staffId}}</text>
+      <view class="user-info-left">
+        <text class="user-greeting">{{currentUser.name || currentUser.staffId}}</text>
+        <text class="user-role">{{isAdmin ? '🔧 管理员' : '👤 参与者'}}</text>
+      </view>
       <view class="logout-btn" bindtap="doLogout">
         <text>退出</text>
       </view>
     </view>
     <view class="stats-row">
-    <view class="stat-item">
-      <text class="stat-num">{{ongoingCount}}</text>
-      <text class="stat-label">进行中</text>
-    </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item">
-      <text class="stat-num">{{upcomingCount}}</text>
-      <text class="stat-label">即将开始</text>
-    </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item">
-      <text class="stat-num">{{totalActivities}}</text>
-      <text class="stat-label">全部活动</text>
+      <view class="stat-item">
+        <text class="stat-num">{{ongoingCount}}</text>
+        <text class="stat-label">进行中</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{upcomingCount}}</text>
+        <text class="stat-label">即将开始</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{totalActivities}}</text>
+        <text class="stat-label">全部活动</text>
+      </view>
     </view>
   </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中…</text>
   </view>
 
   <!-- 进行中的活动 -->
-  <view wx:if="{{ongoingList.length > 0}}">
+  <view wx:if="{{!loading && ongoingList.length > 0}}">
     <view class="section-title">
       <view class="section-dot ongoing-dot"></view>
       <text>进行中</text>
     </view>
-    <view class="card activity-card" wx:for="{{ongoingList}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
-      <view class="activity-header">
-        <text class="activity-name">{{item.name}}</text>
-        <view class="tag tag-ongoing">进行中</view>
+    <block wx:for="{{ongoingList}}" wx:key="_id">
+      <!-- 管理员卡片 -->
+      <view wx:if="{{isAdmin}}" class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}">
+        <view class="activity-header">
+          <text class="activity-name">{{item.name}}</text>
+          <view class="tag tag-ongoing">进行中</view>
+        </view>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">👤</text>
+            <text class="info-text">主办：{{item.organizer}}</text>
+          </view>
+        </view>
+        <view class="progress-area">
+          <view class="progress-label">
+            <text>签到进度</text>
+            <text class="progress-num">{{item.checkedCount}}/{{item.totalCount}}</text>
+          </view>
+          <view class="progress-bar-bg">
+            <view class="progress-bar-fill ongoing-fill" style="width: {{item.totalCount > 0 ? (item.checkedCount / item.totalCount * 100) : 0}}%"></view>
+          </view>
+        </view>
+        <view class="card-footer">
+          <text class="go-text">开始签到 →</text>
+        </view>
       </view>
-      <view class="activity-info">
-        <view class="info-row">
-          <text class="info-icon">📍</text>
-          <text class="info-text">{{item.location}}</text>
+      <!-- 普通用户卡片 -->
+      <view wx:else class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}">
+        <view class="activity-header">
+          <text class="activity-name">{{item.name}}</text>
+          <view wx:if="{{item.myChecked}}" class="tag tag-checked">已签到 ✓</view>
+          <view wx:else class="tag tag-ongoing">进行中</view>
         </view>
-        <view class="info-row">
-          <text class="info-icon">🕐</text>
-          <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
         </view>
-        <view class="info-row">
-          <text class="info-icon">👤</text>
-          <text class="info-text">{{item.organizer}}</text>
-        </view>
-      </view>
-      <view class="progress-area">
-        <view class="progress-label">
-          <text>签到进度</text>
-          <text class="progress-num">{{item.checkedCount}}/{{item.totalCount}}</text>
-        </view>
-        <view class="progress-bar-bg">
-          <view class="progress-bar-fill ongoing-fill" style="width: {{item.totalCount > 0 ? (item.checkedCount / item.totalCount * 100) : 0}}%"></view>
+        <view class="card-footer">
+          <text class="go-text">{{item.myChecked ? '查看详情' : '去签到'}} →</text>
         </view>
       </view>
-      <view class="card-footer">
-        <text class="go-text">开始签到 →</text>
-      </view>
-    </view>
+    </block>
   </view>
 
   <!-- 即将开始 -->
-  <view wx:if="{{upcomingList.length > 0}}">
+  <view wx:if="{{!loading && upcomingList.length > 0}}">
     <view class="section-title">
       <view class="section-dot upcoming-dot"></view>
       <text>即将开始</text>
     </view>
-    <view class="card activity-card" wx:for="{{upcomingList}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+    <view class="card activity-card" wx:for="{{upcomingList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
       <view class="activity-header">
         <text class="activity-name">{{item.name}}</text>
         <view class="tag tag-upcoming">即将开始</view>
@@ -88,30 +120,24 @@
           <text class="info-icon">🕐</text>
           <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
         </view>
-        <view class="info-row">
+        <view wx:if="{{isAdmin}}" class="info-row">
           <text class="info-icon">👤</text>
-          <text class="info-text">{{item.organizer}}</text>
-        </view>
-      </view>
-      <view class="progress-area">
-        <view class="progress-label">
-          <text>报名人数</text>
-          <text class="progress-num">{{item.totalCount}} 人</text>
+          <text class="info-text">主办：{{item.organizer}}</text>
         </view>
       </view>
       <view class="card-footer">
-        <text class="go-text">预备签到 →</text>
+        <text class="go-text">查看详情 →</text>
       </view>
     </view>
   </view>
 
   <!-- 已结束 -->
-  <view wx:if="{{endedList.length > 0}}">
+  <view wx:if="{{!loading && endedList.length > 0}}">
     <view class="section-title">
       <view class="section-dot ended-dot"></view>
       <text>已结束</text>
     </view>
-    <view class="card activity-card ended-card" wx:for="{{endedList}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+    <view class="card activity-card ended-card" wx:for="{{endedList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
       <view class="activity-header">
         <text class="activity-name ended-name">{{item.name}}</text>
         <view class="tag tag-ended">已结束</view>
@@ -126,7 +152,7 @@
           <text class="info-text ended-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
         </view>
       </view>
-      <view class="progress-area">
+      <view wx:if="{{isAdmin}}" class="progress-area">
         <view class="progress-label">
           <text class="ended-text">签到完成率</text>
           <text class="progress-num ended-text">{{item.checkedCount}}/{{item.totalCount}}</text>
@@ -136,6 +162,12 @@
         </view>
       </view>
     </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && totalActivities === 0}}" class="empty-wrap">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无活动</text>
   </view>
 
   <view class="bottom-space"></view>

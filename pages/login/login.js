@@ -11,14 +11,13 @@ Page({
   },
 
   onLoad() {
-    // 已登录则直接跳过登录页
     if (app.globalData.currentUser) {
       wx.reLaunch({ url: '/pages/index/index' });
     }
   },
 
   onInput(e) {
-    const val = e.detail.value.replace(/\D/g, ''); // 只保留数字
+    const val = e.detail.value.replace(/\D/g, '');
     const canLogin = val.length === 8;
     this.setData({
       staffId: val,
@@ -28,13 +27,8 @@ Page({
     });
   },
 
-  onFocus() {
-    this.setData({ inputFocus: true });
-  },
-
-  onBlur() {
-    this.setData({ inputFocus: false });
-  },
+  onFocus() { this.setData({ inputFocus: true }); },
+  onBlur() { this.setData({ inputFocus: false }); },
 
   clearInput() {
     this.setData({ staffId: '', canLogin: false, errorMsg: '', inputError: false });
@@ -44,7 +38,6 @@ Page({
     const { staffId, canLogin, loading } = this.data;
     if (!canLogin || loading) return;
 
-    // 基础格式校验
     if (!/^\d{8}$/.test(staffId)) {
       this.setData({ inputError: true, errorMsg: '工号必须是 8 位数字' });
       return;
@@ -53,9 +46,8 @@ Page({
     this.setData({ loading: true, errorMsg: '' });
 
     try {
-      // 查询云数据库 administrators 集合
       const db = wx.cloud.database();
-      const res = await db.collection('administrators')
+      const res = await db.collection('users')
         .where({ staffId })
         .limit(1)
         .get();
@@ -63,15 +55,17 @@ Page({
       if (res.data && res.data.length > 0) {
         const user = res.data[0];
         const userInfo = {
+          _id: user._id,
           staffId: user.staffId,
           name: user.name || '',
           dept: user.dept || '',
+          role: user.role || 'user',
         };
 
-        // 保存登录态
         app.globalData.currentUser = userInfo;
         wx.setStorageSync('currentUser', userInfo);
 
+        const roleText = userInfo.role === 'admin' ? '管理员' : '';
         wx.showToast({ title: `欢迎，${userInfo.name || staffId}`, icon: 'success' });
 
         setTimeout(() => {
@@ -80,7 +74,7 @@ Page({
       } else {
         this.setData({
           inputError: true,
-          errorMsg: '工号不存在或无管理员权限，请联系活动负责人',
+          errorMsg: '工号未注册，请联系活动负责人添加',
           loading: false,
         });
       }

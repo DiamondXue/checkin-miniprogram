@@ -3,6 +3,18 @@
   background: #F3F4F6;
 }
 
+/* 加载中 */
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #9CA3AF;
+}
+
 /* 活动信息卡 */
 .info-card {
   background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);

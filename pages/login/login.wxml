@@ -10,7 +10,7 @@
 
   <!-- 登录卡片 -->
   <view class="login-card">
-    <text class="card-title">管理员登录</text>
+    <text class="card-title">员工登录</text>
     <text class="card-subtitle">请输入您的员工工号</text>
 
     <view class="input-wrap {{inputFocus ? 'input-focus' : ''}} {{inputError ? 'input-error' : ''}}">
@@ -50,6 +50,6 @@
   </view>
 
   <!-- 底部说明 -->
-  <text class="footer-tip">仅限活动管理员使用</text>
+  <text class="footer-tip">首次使用请联系管理员录入工号</text>
 
 </view>

@@ -1,0 +1,78 @@
+<!-- 普通用户签到页 -->
+<view class="container">
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <block wx:if="{{!loading && activity}}">
+    <!-- 活动信息卡片 -->
+    <view class="info-card">
+      <view class="activity-title-row">
+        <text class="activity-title">{{activity.name}}</text>
+      </view>
+      <view class="info-list">
+        <view class="info-row">
+          <text class="info-icon">📍</text>
+          <text class="info-value">{{activity.location}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-icon">📅</text>
+          <text class="info-value">{{activity.date}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-icon">🕐</text>
+          <text class="info-value">{{activity.startTime}} – {{activity.endTime}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-icon">👤</text>
+          <text class="info-value">主办：{{activity.organizer}}</text>
+        </view>
+      </view>
+
+      <!-- 位置状态栏 -->
+      <view class="location-bar" wx:if="{{activity.latitude && !myChecked}}">
+        <view class="location-bar-inner {{locationValid === false ? 'location-invalid' : locationValid === true ? 'location-valid' : ''}}">
+          <text class="location-text">{{checkingLocation ? '📍 定位中…' : locationInfo}}</text>
+          <view class="location-refresh" bindtap="refreshLocation">
+            <text>刷新</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 签到状态卡片 -->
+    <view class="status-card">
+      <!-- 已签到 -->
+      <view wx:if="{{myChecked}}" class="checked-status">
+        <view class="checked-icon-wrap">
+          <text class="checked-icon">✓</text>
+        </view>
+        <text class="checked-title">签到成功</text>
+        <text class="checked-time">签到时间：{{myCheckedAt}}</text>
+        <text class="checked-name">{{currentUser.name}} · {{currentUser.dept}}</text>
+      </view>
+
+      <!-- 未签到 -->
+      <view wx:else class="unchecked-status">
+        <view class="unchecked-icon-wrap">
+          <text class="unchecked-icon">🎯</text>
+        </view>
+        <text class="unchecked-title">等待签到</text>
+        <text class="unchecked-desc">到达活动现场后，点击下方按钮完成签到</text>
+        <button
+          class="checkin-btn"
+          bindtap="doCheckin"
+          disabled="{{checkinLoading || locationValid === false}}"
+        >
+          <text wx:if="{{!checkinLoading}}">立即签到</text>
+          <text wx:if="{{checkinLoading}}">签到中…</text>
+        </button>
+        <text wx:if="{{locationValid === false}}" class="out-of-range-tip">⚠️ 您不在签到范围内，无法签到</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="bottom-space"></view>
+</view>
