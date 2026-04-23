@@ -18,8 +18,8 @@ const db = cloud.database();
 // ============================================================
 const USERS = [
   { staffId: '43334382', name: 'Diamond', dept: 'IWPB', roles: ['admin', 'organizer'] },
-  { staffId: '43430068', name: 'Yuriko', dept: 'AMH' },                         // 默认 ['user']
-  { staffId: '43334337', name: 'Res',     dept: 'IWPB' },                       // 默认 ['user']
+  { staffId: '43430068', name: 'Yuriko', dept: 'AMH' },
+  { staffId: '43334337', name: 'Res',     dept: 'IWPB' },
 ];
 
 exports.main = async (event, context) => {

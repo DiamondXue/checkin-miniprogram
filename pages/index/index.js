@@ -60,17 +60,14 @@ Page({
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
-              const _ = db.command;
-              const pRes = await db.collection('activities')
-                .doc(act._id)
-                .collection('participants')
-                .count();
-              const cRes = await db.collection('activities')
-                .doc(act._id)
-                .collection('participants')
-                .where({ checked: true })
-                .count();
-              return { ...act, totalCount: pRes.total, checkedCount: cRes.total };
+              const statsResult = await wx.cloud.callFunction({
+                name: 'createActivity',
+                data: { action: 'getParticipantStats', activityId: act._id },
+              });
+              if (statsResult.result.success) {
+                return { ...act, totalCount: statsResult.result.totalCount, checkedCount: statsResult.result.checkedCount };
+              }
+              return { ...act, totalCount: 0, checkedCount: 0 };
             } catch (e) {
               return { ...act, totalCount: 0, checkedCount: 0 };
             }
@@ -88,17 +85,14 @@ Page({
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
-              const _ = db.command;
-              const pRes = await db.collection('activities')
-                .doc(act._id)
-                .collection('participants')
-                .count();
-              const cRes = await db.collection('activities')
-                .doc(act._id)
-                .collection('participants')
-                .where({ checked: true })
-                .count();
-              return { ...act, totalCount: pRes.total, checkedCount: cRes.total };
+              const statsResult = await wx.cloud.callFunction({
+                name: 'createActivity',
+                data: { action: 'getParticipantStats', activityId: act._id },
+              });
+              if (statsResult.result.success) {
+                return { ...act, totalCount: statsResult.result.totalCount, checkedCount: statsResult.result.checkedCount };
+              }
+              return { ...act, totalCount: 0, checkedCount: 0 };
             } catch (e) {
               return { ...act, totalCount: 0, checkedCount: 0 };
             }
@@ -119,19 +113,18 @@ Page({
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
-              const _ = db.command;
-              const pRes = await db.collection('activities')
-                .doc(act._id)
-                .collection('participants')
-                .where({ staffId: user.staffId })
-                .limit(1)
-                .get();
-              const myRecord = pRes.data[0] || {};
-              return {
-                ...act,
-                myChecked: !!myRecord.checked,
-                myCheckedAt: myRecord.checkedAt || '',
-              };
+              const checkinResult = await wx.cloud.callFunction({
+                name: 'createActivity',
+                data: { action: 'getMyCheckin', activityId: act._id, staffId: user.staffId },
+              });
+              if (checkinResult.result.success) {
+                return {
+                  ...act,
+                  myChecked: checkinResult.result.myChecked,
+                  myCheckedAt: checkinResult.result.myCheckedAt,
+                };
+              }
+              return { ...act, myChecked: false, myCheckedAt: '' };
             } catch (e) {
               return { ...act, myChecked: false, myCheckedAt: '' };
             }
@@ -152,7 +145,6 @@ Page({
       activities.forEach(act => {
         const status = this._getActivityStatus(act, todayStr, currentMinutes);
         act.status = status;
-        // 标记当前用户是否可管理（admin 或自己创建的）
         act.canManage = this.data.isAdmin || (this.data.isOrganizer && act.creatorStaffId === user.staffId);
         if (status === 'ongoing') ongoing.push(act);
         else if (status === 'upcoming') upcoming.push(act);
@@ -202,7 +194,6 @@ Page({
   goToDetail(e) {
     const id = e.currentTarget.dataset.id;
     const item = e.currentTarget.dataset.item;
-    // admin 或 organizer（且是自己创建的活动）走详情管理页
     if (item && item.canManage) {
       wx.navigateTo({ url: `/pages/detail/detail?id=${id}` });
     } else {

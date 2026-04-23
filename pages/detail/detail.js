@@ -15,7 +15,7 @@ Page({
     loading: true,
     statusTagClass: '',
     statusText: '',
-    canManage: false,  // 当前用户是否可管理此活动
+    canManage: false,
     // 位置相关
     locationInfo: '',
     locationValid: null,
@@ -42,10 +42,8 @@ Page({
 
       wx.setNavigationBarTitle({ title: activity.name });
 
-      // 判断当前用户是否可管理
       const canManage = app.canManageActivity(activity);
 
-      // 计算活动状态
       const now = new Date();
       const todayStr = this._formatDate(now);
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -59,15 +57,16 @@ Page({
       };
       const statusInfo = statusMap[status] || statusMap.ended;
 
-      // 加载参与者
+      // 通过云函数加载参与者
       let allParticipants = [];
       try {
-        const pRes = await db.collection('activities')
-          .doc(this.activityId)
-          .collection('participants')
-          .orderBy('checked', 'asc')
-          .get();
-        allParticipants = pRes.data;
+        const pResult = await wx.cloud.callFunction({
+          name: 'createActivity',
+          data: { action: 'getParticipants', activityId: this.activityId },
+        });
+        if (pResult.result.success) {
+          allParticipants = pResult.result.participants;
+        }
       } catch (e) {
         console.warn('加载参与者失败', e);
       }
@@ -91,7 +90,6 @@ Page({
 
       this.applyFilter();
 
-      // 进行中的活动自动检测位置
       if (status !== 'ended' && activity.latitude) {
         this.refreshLocation();
       }
@@ -174,12 +172,10 @@ Page({
     this.setData({ filteredList: list });
   },
 
-  // 编辑活动
   goToEdit() {
     wx.navigateTo({ url: `/pages/create-activity/create-activity?id=${this.activityId}` });
   },
 
-  // 删除活动
   doDelete() {
     wx.showModal({
       title: '删除活动',
@@ -190,13 +186,11 @@ Page({
         try {
           const db = wx.cloud.database();
 
-          // 先通过云函数删除参与者子集合
           await wx.cloud.callFunction({
             name: 'createActivity',
             data: { action: 'deleteParticipants', activityId: this.activityId },
           });
 
-          // 再删除主文档
           await db.collection('activities').doc(this.activityId).remove();
 
           wx.showToast({ title: '已删除', icon: 'success' });
@@ -209,15 +203,12 @@ Page({
     });
   },
 
-  // 管理员签到（含位置验证）
   async doCheckin(e) {
-    const id = e.currentTarget.dataset.id;
-    const db = wx.cloud.database();
+    const participantId = e.currentTarget.dataset.id;
     const { activity } = this.data;
 
     if (!activity || activity.status === 'ended') return;
 
-    // 位置验证
     if (activity.latitude && activity.checkinRadius > 0) {
       wx.showLoading({ title: '定位验证中…' });
       const result = await verifyCheckinLocation(activity);
@@ -231,7 +222,7 @@ Page({
             confirmText: '强制签到',
             cancelText: '取消',
             success: (res) => {
-              if (res.confirm) this._performCheckin(id, true);
+              if (res.confirm) this._performCheckin(participantId, true);
             }
           });
         } else {
@@ -246,29 +237,33 @@ Page({
       }
     }
 
-    this._performCheckin(id, false);
+    this._performCheckin(participantId, false);
   },
 
   async _performCheckin(participantId, isForced) {
-    const db = wx.cloud.database();
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
+    const checkedAt = `${hh}:${mm}${isForced ? '(强制)' : ''}`;
 
     try {
-      await db.collection('activities')
-        .doc(this.activityId)
-        .collection('participants')
-        .doc(participantId)
-        .update({
-          data: {
-            checked: true,
-            checkedAt: `${hh}:${mm}${isForced ? '(强制)' : ''}`,
-          },
-        });
+      const result = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: {
+          action: 'checkin',
+          activityId: this.activityId,
+          participantId,
+          checked: true,
+          checkedAt,
+        },
+      });
 
-      wx.showToast({ title: '签到成功', icon: 'success' });
-      this.loadActivity();
+      if (result.result.success) {
+        wx.showToast({ title: '签到成功', icon: 'success' });
+        this.loadActivity();
+      } else {
+        throw new Error(result.result.error);
+      }
     } catch (err) {
       console.error('签到失败', err);
       wx.showToast({ title: '签到失败，请重试', icon: 'none' });
@@ -276,8 +271,7 @@ Page({
   },
 
   undoCheckin(e) {
-    const id = e.currentTarget.dataset.id;
-    const db = wx.cloud.database();
+    const participantId = e.currentTarget.dataset.id;
     const { activity } = this.data;
 
     if (!activity || activity.status === 'ended') return;
@@ -288,15 +282,23 @@ Page({
       success: async (res) => {
         if (!res.confirm) return;
         try {
-          await db.collection('activities')
-            .doc(this.activityId)
-            .collection('participants')
-            .doc(id)
-            .update({
-              data: { checked: false, checkedAt: '' },
-            });
-          wx.showToast({ title: '已撤销', icon: 'none' });
-          this.loadActivity();
+          const result = await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: {
+              action: 'checkin',
+              activityId: this.activityId,
+              participantId,
+              checked: false,
+              checkedAt: '',
+            },
+          });
+
+          if (result.result.success) {
+            wx.showToast({ title: '已撤销', icon: 'none' });
+            this.loadActivity();
+          } else {
+            throw new Error(result.result.error);
+          }
         } catch (err) {
           console.error('撤销失败', err);
           wx.showToast({ title: '操作失败', icon: 'none' });

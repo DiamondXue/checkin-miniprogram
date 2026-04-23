@@ -35,15 +35,12 @@ Page({
 
       wx.setNavigationBarTitle({ title: activity.name });
 
-      // 加载当前用户的签到记录
-      const pRes = await db.collection('activities')
-        .doc(this.activityId)
-        .collection('participants')
-        .where({ staffId: user.staffId })
-        .limit(1)
-        .get();
-
-      const myRecord = pRes.data[0] || null;
+      // 通过云函数加载当前用户的签到记录
+      const pResult = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: { action: 'getParticipant', activityId: this.activityId, staffId: user.staffId },
+      });
+      const myRecord = pResult.result.success ? pResult.result.record : null;
       const myChecked = !!myRecord && !!myRecord.checked;
 
       this.setData({
@@ -55,7 +52,7 @@ Page({
       });
 
       // 未签到且活动未结束则检测位置
-      if (!myChecked && activity.status !== 'ended' && activity.latitude) {
+      if (!myChecked && activity.latitude) {
         this.refreshLocation();
       }
     } catch (err) {
@@ -119,41 +116,29 @@ Page({
     this.setData({ checkinLoading: true });
 
     try {
-      const db = wx.cloud.database();
       const user = app.globalData.currentUser;
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
+      const { myRecord } = this.data;
 
-      if (this.data.myRecord) {
-        // 更新已有记录
-        await db.collection('activities')
-          .doc(this.activityId)
-          .collection('participants')
-          .doc(this.data.myRecord._id)
-          .update({
-            data: {
-              checked: true,
-              checkedAt: `${hh}:${mm}`,
-            },
-          });
+      // 通过云函数签到
+      const checkinResult = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: {
+          action: 'checkin',
+          activityId: this.activityId,
+          participantId: myRecord ? myRecord._id : '',
+          staffId: user.staffId,
+          name: user.name || user.staffId,
+          dept: user.dept || '',
+          checked: true,
+        },
+      });
+
+      if (checkinResult.result.success) {
+        wx.showToast({ title: '签到成功 ✓', icon: 'success' });
       } else {
-        // 新增签到记录
-        await db.collection('activities')
-          .doc(this.activityId)
-          .collection('participants')
-          .add({
-            data: {
-              staffId: user.staffId,
-              name: user.name || user.staffId,
-              dept: user.dept || '',
-              checked: true,
-              checkedAt: `${hh}:${mm}`,
-            },
-          });
+        throw new Error(checkinResult.result.error);
       }
 
-      wx.showToast({ title: '签到成功 ✓', icon: 'success' });
       this.setData({ checkinLoading: false });
       this.loadActivity();
     } catch (err) {
