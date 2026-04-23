@@ -59,13 +59,16 @@ Page({
           staffId: user.staffId,
           name: user.name || '',
           dept: user.dept || '',
-          role: user.role || 'user',
+          roles: Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : ['user']),
         };
 
         app.globalData.currentUser = userInfo;
         wx.setStorageSync('currentUser', userInfo);
 
-        const roleMap = { admin: '管理员', organizer: '活动创建人' };
+        // 角色提示
+        const roleLabels = { admin: '管理员', organizer: '活动创建人', user: '成员' };
+        const roleText = userInfo.roles.map(r => roleLabels[r] || r).join(' / ');
+        console.log(`用户角色：${roleText}`);
         wx.showToast({ title: `欢迎，${userInfo.name || staffId}`, icon: 'success' });
 
         setTimeout(() => {

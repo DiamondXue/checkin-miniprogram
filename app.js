@@ -1,6 +1,6 @@
 App({
   globalData: {
-    currentUser: null,  // { _id, staffId, name, dept, role }
+    currentUser: null,  // { _id, staffId, name, dept, roles }
     cloudEnvId: 'cloud1-d9gq1b47d1a6184ac',
   },
 
@@ -24,13 +24,13 @@ App({
   // 判断当前用户是否是管理员
   isAdmin() {
     const user = this.globalData.currentUser;
-    return user && user.role === 'admin';
+    return user && Array.isArray(user.roles) && user.roles.includes('admin');
   },
 
   // 判断当前用户是否是活动创建人（organizer）
   isOrganizer() {
     const user = this.globalData.currentUser;
-    return user && user.role === 'organizer';
+    return user && Array.isArray(user.roles) && user.roles.includes('organizer');
   },
 
   // 判断当前用户是否可以管理某个活动

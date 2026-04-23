@@ -12,17 +12,14 @@ const db = cloud.database();
 //   staffId  - 8位工号（必填，唯一）
 //   name     - 姓名（必填）
 //   dept     - 部门（可选）
-//   role     - 角色：admin（管理员）/ organizer（活动创建人）/ user（普通用户，默认）
+//   roles    - 角色数组（默认 ['user']），可叠加多个角色：
+//              admin（管理员）/ organizer（活动创建人）/ user（普通成员）
+//              例：roles: ['admin', 'organizer'] 表示同时是管理员和活动创建人
 // ============================================================
 const USERS = [
-  { staffId: '43334382', name: '管理员',   dept: '行政部', role: 'admin' },
-  // 在下方继续添加用户，例如：
-  // { staffId: '10000001', name: '张伟', dept: '研发部', role: 'organizer' },
-  // { staffId: '10000002', name: '李娜', dept: '产品部', role: 'user' },
-  // { staffId: '10000003', name: '王芳', dept: '设计部', role: 'user' },
-  // { staffId: '10000004', name: '刘洋', dept: '研发部', role: 'user' },
-  // { staffId: '10000005', name: '陈静', dept: '运营部', role: 'user' },
-  // { staffId: '10000006', name: '赵磊', dept: '销售部', role: 'user' },
+  { staffId: '43334382', name: 'Diamond', dept: 'IWPB', roles: ['admin', 'organizer'] },
+  { staffId: '43430068', name: 'Yuriko', dept: 'AMH' },                         // 默认 ['user']
+  { staffId: '43334337', name: 'Res',     dept: 'IWPB' },                       // 默认 ['user']
 ];
 
 exports.main = async (event, context) => {
@@ -38,8 +35,10 @@ exports.main = async (event, context) => {
       }
       await col.add({
         data: {
-          ...user,
-          role: user.role || 'user',
+          staffId: user.staffId,
+          name: user.name,
+          dept: user.dept || '',
+          roles: Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : ['user']),
           createdAt: db.serverDate(),
         },
       });

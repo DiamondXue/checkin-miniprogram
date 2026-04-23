@@ -21,8 +21,9 @@ Page({
       return;
     }
     const user = app.globalData.currentUser;
-    const isAdmin = user.role === 'admin';
-    const isOrganizer = user.role === 'organizer';
+    const roles = Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : ['user']);
+    const isAdmin = roles.includes('admin');
+    const isOrganizer = roles.includes('organizer');
     const canCreate = isAdmin || isOrganizer;
 
     this.setData({
