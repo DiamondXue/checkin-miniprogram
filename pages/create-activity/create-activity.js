@@ -208,30 +208,34 @@ Page({
           },
         });
 
-        // 创建参与者子集合
+        // 创建参与者（通过云函数，小程序端不支持子集合操作）
         const actId = res._id;
-        const pCol = db.collection('activities').doc(actId).collection('participants');
 
-        // 查找参与者信息
-        for (const staffId of participantStaffIds) {
+        // 先查找参与者信息
+        const participantList = [];
+        for (const sId of participantStaffIds) {
           try {
-            const uRes = await db.collection('users').where({ staffId }).limit(1).get();
+            const uRes = await db.collection('users').where({ staffId: sId }).limit(1).get();
             const u = uRes.data[0];
-            await pCol.add({
-              data: {
-                staffId,
-                name: u ? u.name : staffId,
-                dept: u ? (u.dept || '') : '',
-                checked: false,
-                checkedAt: '',
-              },
+            participantList.push({
+              staffId: sId,
+              name: u ? u.name : sId,
+              dept: u ? (u.dept || '') : '',
             });
           } catch (e) {
-            // 用户不存在也写入
-            await pCol.add({
-              data: { staffId, name: staffId, dept: '', checked: false, checkedAt: '' },
-            });
+            participantList.push({ staffId: sId, name: sId, dept: '' });
           }
+        }
+
+        if (participantList.length > 0) {
+          await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: {
+              action: 'createParticipants',
+              activityId: actId,
+              participants: participantList,
+            },
+          });
         }
 
         wx.showToast({ title: '创建成功', icon: 'success' });
@@ -253,11 +257,16 @@ Page({
       success: async (res) => {
         if (!res.confirm) return;
         try {
-          const db = wx.cloud.database();
           const { activityId } = this.data;
 
-          // 删除参与者子集合
-          // 云端只能通过云函数删除子集合，小程序端只能删主文档
+          // 先通过云函数删除参与者子集合
+          await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'deleteParticipants', activityId },
+          });
+
+          // 再删除主文档
+          const db = wx.cloud.database();
           await db.collection('activities').doc(activityId).remove();
 
           wx.showToast({ title: '已删除', icon: 'success' });

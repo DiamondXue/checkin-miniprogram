@@ -189,7 +189,16 @@ Page({
         if (!res.confirm) return;
         try {
           const db = wx.cloud.database();
+
+          // 先通过云函数删除参与者子集合
+          await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'deleteParticipants', activityId: this.activityId },
+          });
+
+          // 再删除主文档
           await db.collection('activities').doc(this.activityId).remove();
+
           wx.showToast({ title: '已删除', icon: 'success' });
           setTimeout(() => wx.navigateBack(), 800);
         } catch (err) {

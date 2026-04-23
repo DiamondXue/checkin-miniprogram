@@ -1,0 +1,9 @@
+{
+  "name": "createActivity",
+  "version": "1.0.0",
+  "description": "创建活动及管理参与者子集合",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
