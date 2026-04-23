@@ -84,17 +84,22 @@ exports.main = async (event) => {
   if (action === 'checkin') {
     // 签到或撤销签到
     try {
-      if (participantId) {
-        // 更新已有记录
-        await db.collection('participants').doc(participantId).update({
-          data: { checked, checkedAt: checkedAt || '' },
-        });
-      } else {
-        // 新增签到记录
+      // 自动生成时间（如果签到，云端记录时间）
+      let finalCheckedAt = checkedAt || '';
+      if (checked === true && !checkedAt) {
         const now = new Date();
         const hh = String(now.getHours()).padStart(2, '0');
         const mm = String(now.getMinutes()).padStart(2, '0');
+        finalCheckedAt = `${hh}:${mm}`;
+      }
 
+      if (participantId) {
+        // 更新已有记录
+        await db.collection('participants').doc(participantId).update({
+          data: { checked, checkedAt: finalCheckedAt },
+        });
+      } else {
+        // 新增签到记录
         await db.collection('participants').add({
           data: {
             activityId,
@@ -102,7 +107,7 @@ exports.main = async (event) => {
             name: name || staffId,
             dept: dept || '',
             checked: true,
-            checkedAt: `${hh}:${mm}`,
+            checkedAt: finalCheckedAt,
             createdAt: db.serverDate(),
           },
         });
