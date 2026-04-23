@@ -1,0 +1,105 @@
+<!-- 创建/编辑活动页 -->
+<view class="container">
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 表单 -->
+    <view class="form-card">
+
+      <!-- 活动名称 -->
+      <view class="form-item">
+        <text class="form-label">活动名称 <text class="required">*</text></text>
+        <input class="form-input" placeholder="如：2026 Q2 团建" value="{{name}}" bindinput="onInput" data-field="name" />
+      </view>
+
+      <!-- 活动地点 -->
+      <view class="form-item">
+        <text class="form-label">活动地点 <text class="required">*</text></text>
+        <view class="location-row">
+          <input class="form-input location-input" placeholder="手动输入或点击右侧选点" value="{{location}}" bindinput="onInput" data-field="location" />
+          <view class="location-btn" bindtap="chooseLocation">
+            <text>📍</text>
+          </view>
+          <view class="location-btn" wx:if="{{latitude}}" bindtap="clearLocation">
+            <text>✕</text>
+          </view>
+        </view>
+        <text class="form-hint" wx:if="{{latitude}}">📍 已选择：{{locationAddress}}</text>
+      </view>
+
+      <!-- 活动日期 -->
+      <view class="form-item">
+        <text class="form-label">活动日期 <text class="required">*</text></text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange">
+          <view class="form-picker {{date ? '' : 'picker-placeholder'}}">
+            <text>{{date || '请选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 时间 -->
+      <view class="form-item form-row">
+        <view class="form-half">
+          <text class="form-label">开始时间</text>
+          <picker mode="time" value="{{startTime}}" bindchange="onStartTimeChange">
+            <view class="form-picker">
+              <text>{{startTime}}</text>
+              <text class="picker-arrow">›</text>
+            </view>
+          </picker>
+        </view>
+        <view class="form-half">
+          <text class="form-label">结束时间</text>
+          <picker mode="time" value="{{endTime}}" bindchange="onEndTimeChange">
+            <view class="form-picker">
+              <text>{{endTime}}</text>
+              <text class="picker-arrow">›</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <!-- 主办方 -->
+      <view class="form-item">
+        <text class="form-label">主办方 <text class="required">*</text></text>
+        <input class="form-input" placeholder="如：行政部、HR" value="{{organizer}}" bindinput="onInput" data-field="organizer" />
+      </view>
+
+      <!-- 签到半径 -->
+      <view class="form-item">
+        <text class="form-label">签到范围（米）</text>
+        <input class="form-input" type="number" placeholder="0 = 不限制位置，默认500" value="{{checkinRadius}}" bindinput="onRadiusInput" />
+        <text class="form-hint">设置签到有效范围，用户需在此范围内才能签到</text>
+      </view>
+
+      <!-- 参与者工号 -->
+      <view class="form-item">
+        <text class="form-label">参与者工号</text>
+        <textarea
+          class="form-textarea"
+          placeholder="输入参与者工号，用逗号或换行分隔&#10;如：43334382, 10000001, 10000002"
+          value="{{participantInput}}"
+          bindinput="onInput"
+          data-field="participantInput"
+          auto-height
+        ></textarea>
+        <text class="form-hint">创建后可在活动详情页管理签到</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-area">
+      <button class="save-btn {{saving ? 'btn-disabled' : ''}}" bindtap="doSave" disabled="{{saving}}">
+        <text wx:if="{{!saving}}">{{isEdit ? '保存修改' : '创建活动'}}</text>
+        <text wx:if="{{saving}}">{{isEdit ? '保存中…' : '创建中…'}}</text>
+      </button>
+      <button wx:if="{{isEdit}}" class="delete-btn" bindtap="doDelete">删除活动</button>
+    </view>
+  </block>
+
+  <view class="bottom-space"></view>
+</view>

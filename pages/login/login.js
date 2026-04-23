@@ -65,7 +65,7 @@ Page({
         app.globalData.currentUser = userInfo;
         wx.setStorageSync('currentUser', userInfo);
 
-        const roleText = userInfo.role === 'admin' ? '管理员' : '';
+        const roleMap = { admin: '管理员', organizer: '活动创建人' };
         wx.showToast({ title: `欢迎，${userInfo.name || staffId}`, icon: 'success' });
 
         setTimeout(() => {

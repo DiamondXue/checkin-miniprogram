@@ -1,5 +1,5 @@
 // 云函数：initUsers
-// 用途：初始化 users 集合，录入所有用户（管理员 + 普通用户）
+// 用途：初始化 users 集合，录入所有用户（管理员 + 活动创建人 + 普通用户）
 // 使用方法：编辑下方 USERS 数组，右键上传部署，手动触发一次
 
 const cloud = require('wx-server-sdk');
@@ -12,12 +12,12 @@ const db = cloud.database();
 //   staffId  - 8位工号（必填，唯一）
 //   name     - 姓名（必填）
 //   dept     - 部门（可选）
-//   role     - 角色：admin（管理员）/ user（普通用户，默认）
+//   role     - 角色：admin（管理员）/ organizer（活动创建人）/ user（普通用户，默认）
 // ============================================================
 const USERS = [
   { staffId: '43334382', name: '管理员',   dept: '行政部', role: 'admin' },
-  // 在下方继续添加普通用户，例如：
-  // { staffId: '10000001', name: '张伟', dept: '研发部', role: 'user' },
+  // 在下方继续添加用户，例如：
+  // { staffId: '10000001', name: '张伟', dept: '研发部', role: 'organizer' },
   // { staffId: '10000002', name: '李娜', dept: '产品部', role: 'user' },
   // { staffId: '10000003', name: '王芳', dept: '设计部', role: 'user' },
   // { staffId: '10000004', name: '刘洋', dept: '研发部', role: 'user' },

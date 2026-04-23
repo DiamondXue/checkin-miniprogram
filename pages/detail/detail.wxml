@@ -1,4 +1,4 @@
-<!-- 管理员活动详情 & 签到页 -->
+<!-- 管理员/创建人活动详情 & 签到页 -->
 <view class="container">
 
   <!-- 加载中 -->
@@ -30,6 +30,10 @@
           <text class="info-icon">👤</text>
           <text class="info-value">主办：{{activity.organizer}}</text>
         </view>
+        <view wx:if="{{activity.creatorName}}" class="info-row">
+          <text class="info-icon">✏️</text>
+          <text class="info-value">创建人：{{activity.creatorName}}</text>
+        </view>
       </view>
 
       <!-- 位置状态栏 -->
@@ -58,6 +62,16 @@
           <text class="stat-big">{{totalCount}}</text>
           <text class="stat-small">应到人数</text>
         </view>
+      </view>
+    </view>
+
+    <!-- 管理操作按钮 -->
+    <view class="manage-bar" wx:if="{{canManage}}">
+      <view class="manage-btn edit-btn" bindtap="goToEdit">
+        <text>✏️ 编辑活动</text>
+      </view>
+      <view class="manage-btn delete-btn" bindtap="doDelete">
+        <text>🗑️ 删除活动</text>
       </view>
     </view>
 

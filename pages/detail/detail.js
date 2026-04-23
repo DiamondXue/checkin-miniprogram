@@ -15,6 +15,7 @@ Page({
     loading: true,
     statusTagClass: '',
     statusText: '',
+    canManage: false,  // 当前用户是否可管理此活动
     // 位置相关
     locationInfo: '',
     locationValid: null,
@@ -33,12 +34,16 @@ Page({
   async loadActivity() {
     this.setData({ loading: true });
     const db = wx.cloud.database();
+    const user = app.globalData.currentUser;
 
     try {
       const actRes = await db.collection('activities').doc(this.activityId).get();
       const activity = actRes.data;
 
       wx.setNavigationBarTitle({ title: activity.name });
+
+      // 判断当前用户是否可管理
+      const canManage = app.canManageActivity(activity);
 
       // 计算活动状态
       const now = new Date();
@@ -80,6 +85,7 @@ Page({
         progressPct: pct,
         statusTagClass: statusInfo.class,
         statusText: statusInfo.text,
+        canManage,
         loading: false,
       });
 
@@ -166,6 +172,32 @@ Page({
     }
 
     this.setData({ filteredList: list });
+  },
+
+  // 编辑活动
+  goToEdit() {
+    wx.navigateTo({ url: `/pages/create-activity/create-activity?id=${this.activityId}` });
+  },
+
+  // 删除活动
+  doDelete() {
+    wx.showModal({
+      title: '删除活动',
+      content: '确认删除此活动？此操作不可恢复。',
+      confirmColor: '#EF4444',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          const db = wx.cloud.database();
+          await db.collection('activities').doc(this.activityId).remove();
+          wx.showToast({ title: '已删除', icon: 'success' });
+          setTimeout(() => wx.navigateBack(), 800);
+        } catch (err) {
+          console.error('删除失败', err);
+          wx.showToast({ title: '删除失败', icon: 'none' });
+        }
+      }
+    });
   },
 
   // 管理员签到（含位置验证）

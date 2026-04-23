@@ -7,10 +7,18 @@
     <view class="user-bar">
       <view class="user-info-left">
         <text class="user-greeting">{{currentUser.name || currentUser.staffId}}</text>
-        <text class="user-role">{{isAdmin ? '🔧 管理员' : '👤 参与者'}}</text>
+        <text class="user-role" wx:if="{{isAdmin}}">🔧 管理员</text>
+        <text class="user-role" wx:elif="{{isOrganizer}}">📋 活动创建人</text>
+        <text class="user-role" wx:else>👤 参与者</text>
       </view>
-      <view class="logout-btn" bindtap="doLogout">
-        <text>退出</text>
+      <view class="header-right">
+        <view class="create-btn" wx:if="{{canCreate}}" bindtap="goToCreate">
+          <text class="create-icon">+</text>
+          <text class="create-text">新建</text>
+        </view>
+        <view class="logout-btn" bindtap="doLogout">
+          <text>退出</text>
+        </view>
       </view>
     </view>
     <view class="stats-row">
@@ -43,8 +51,8 @@
       <text>进行中</text>
     </view>
     <block wx:for="{{ongoingList}}" wx:key="_id">
-      <!-- 管理员卡片 -->
-      <view wx:if="{{isAdmin}}" class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}">
+      <!-- 管理者卡片（admin + 自己创建的organizer） -->
+      <view wx:if="{{item.canManage}}" class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
         <view class="activity-header">
           <text class="activity-name">{{item.name}}</text>
           <view class="tag tag-ongoing">进行中</view>
@@ -73,11 +81,11 @@
           </view>
         </view>
         <view class="card-footer">
-          <text class="go-text">开始签到 →</text>
+          <text class="go-text">管理活动 →</text>
         </view>
       </view>
       <!-- 普通用户卡片 -->
-      <view wx:else class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}">
+      <view wx:else class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
         <view class="activity-header">
           <text class="activity-name">{{item.name}}</text>
           <view wx:if="{{item.myChecked}}" class="tag tag-checked">已签到 ✓</view>
@@ -106,29 +114,52 @@
       <view class="section-dot upcoming-dot"></view>
       <text>即将开始</text>
     </view>
-    <view class="card activity-card" wx:for="{{upcomingList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-      <view class="activity-header">
-        <text class="activity-name">{{item.name}}</text>
-        <view class="tag tag-upcoming">即将开始</view>
-      </view>
-      <view class="activity-info">
-        <view class="info-row">
-          <text class="info-icon">📍</text>
-          <text class="info-text">{{item.location}}</text>
+    <block wx:for="{{upcomingList}}" wx:key="_id">
+      <!-- 管理者卡片 -->
+      <view wx:if="{{item.canManage}}" class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
+        <view class="activity-header">
+          <text class="activity-name">{{item.name}}</text>
+          <view class="tag tag-upcoming">即将开始</view>
         </view>
-        <view class="info-row">
-          <text class="info-icon">🕐</text>
-          <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">👤</text>
+            <text class="info-text">主办：{{item.organizer}}</text>
+          </view>
         </view>
-        <view wx:if="{{isAdmin}}" class="info-row">
-          <text class="info-icon">👤</text>
-          <text class="info-text">主办：{{item.organizer}}</text>
+        <view class="card-footer">
+          <text class="go-text">管理活动 →</text>
         </view>
       </view>
-      <view class="card-footer">
-        <text class="go-text">查看详情 →</text>
+      <!-- 普通用户卡片 -->
+      <view wx:else class="card activity-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
+        <view class="activity-header">
+          <text class="activity-name">{{item.name}}</text>
+          <view class="tag tag-upcoming">即将开始</view>
+        </view>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <text class="go-text">查看详情 →</text>
+        </view>
       </view>
-    </view>
+    </block>
   </view>
 
   <!-- 已结束 -->
@@ -137,37 +168,62 @@
       <view class="section-dot ended-dot"></view>
       <text>已结束</text>
     </view>
-    <view class="card activity-card ended-card" wx:for="{{endedList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-      <view class="activity-header">
-        <text class="activity-name ended-name">{{item.name}}</text>
-        <view class="tag tag-ended">已结束</view>
+    <block wx:for="{{endedList}}" wx:key="_id">
+      <!-- 管理者卡片 -->
+      <view wx:if="{{item.canManage}}" class="card activity-card ended-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
+        <view class="activity-header">
+          <text class="activity-name ended-name">{{item.name}}</text>
+          <view class="tag tag-ended">已结束</view>
+        </view>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text ended-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text ended-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">👤</text>
+            <text class="info-text ended-text">主办：{{item.organizer}}</text>
+          </view>
+        </view>
+        <view class="progress-area">
+          <view class="progress-label">
+            <text class="ended-text">签到完成率</text>
+            <text class="progress-num ended-text">{{item.checkedCount}}/{{item.totalCount}}</text>
+          </view>
+          <view class="progress-bar-bg">
+            <view class="progress-bar-fill ended-fill" style="width: {{item.totalCount > 0 ? (item.checkedCount / item.totalCount * 100) : 0}}%"></view>
+          </view>
+        </view>
       </view>
-      <view class="activity-info">
-        <view class="info-row">
-          <text class="info-icon">📍</text>
-          <text class="info-text ended-text">{{item.location}}</text>
+      <!-- 普通用户卡片 -->
+      <view wx:else class="card activity-card ended-card" bindtap="goToDetail" data-id="{{item._id}}" data-item="{{item}}">
+        <view class="activity-header">
+          <text class="activity-name ended-name">{{item.name}}</text>
+          <view wx:if="{{item.myChecked}}" class="tag tag-checked">已签到 ✓</view>
+          <view wx:else class="tag tag-ended">已结束</view>
         </view>
-        <view class="info-row">
-          <text class="info-icon">🕐</text>
-          <text class="info-text ended-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+        <view class="activity-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text ended-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">🕐</text>
+            <text class="info-text ended-text">{{item.date}} {{item.startTime}}–{{item.endTime}}</text>
+          </view>
         </view>
       </view>
-      <view wx:if="{{isAdmin}}" class="progress-area">
-        <view class="progress-label">
-          <text class="ended-text">签到完成率</text>
-          <text class="progress-num ended-text">{{item.checkedCount}}/{{item.totalCount}}</text>
-        </view>
-        <view class="progress-bar-bg">
-          <view class="progress-bar-fill ended-fill" style="width: {{item.totalCount > 0 ? (item.checkedCount / item.totalCount * 100) : 0}}%"></view>
-        </view>
-      </view>
-    </view>
+    </block>
   </view>
 
   <!-- 空状态 -->
   <view wx:if="{{!loading && totalActivities === 0}}" class="empty-wrap">
-    <text class="empty-icon">📭</text>
-    <text class="empty-text">暂无活动</text>
+    <text class="empty-icon">{{canCreate ? '📝' : '📭'}}</text>
+    <text class="empty-text">{{canCreate ? '暂无活动，点击右上角新建' : '暂无活动'}}</text>
   </view>
 
   <view class="bottom-space"></view>

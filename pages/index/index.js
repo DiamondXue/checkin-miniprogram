@@ -10,6 +10,8 @@ Page({
     totalActivities: 0,
     currentUser: null,
     isAdmin: false,
+    isOrganizer: false,
+    canCreate: false,
     loading: true,
   },
 
@@ -19,9 +21,15 @@ Page({
       return;
     }
     const user = app.globalData.currentUser;
+    const isAdmin = user.role === 'admin';
+    const isOrganizer = user.role === 'organizer';
+    const canCreate = isAdmin || isOrganizer;
+
     this.setData({
       currentUser: user,
-      isAdmin: user.role === 'admin',
+      isAdmin,
+      isOrganizer,
+      canCreate,
     });
     this.loadActivities();
   },
@@ -48,11 +56,37 @@ Page({
         const res = await db.collection('activities').orderBy('date', 'desc').get();
         activities = res.data;
 
-        // 补充每个活动的签到统计
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
-              // 签到子集合只能通过云函数查询（小程序端限制），先用 count 统计
+              const _ = db.command;
+              const pRes = await db.collection('activities')
+                .doc(act._id)
+                .collection('participants')
+                .count();
+              const cRes = await db.collection('activities')
+                .doc(act._id)
+                .collection('participants')
+                .where({ checked: true })
+                .count();
+              return { ...act, totalCount: pRes.total, checkedCount: cRes.total };
+            } catch (e) {
+              return { ...act, totalCount: 0, checkedCount: 0 };
+            }
+          })
+        );
+        activities = activityStats;
+      } else if (this.data.isOrganizer) {
+        // 活动创建人：加载自己创建的活动
+        const res = await db.collection('activities')
+          .where({ creatorStaffId: user.staffId })
+          .orderBy('date', 'desc')
+          .get();
+        activities = res.data;
+
+        const activityStats = await Promise.all(
+          activities.map(async (act) => {
+            try {
               const _ = db.command;
               const pRes = await db.collection('activities')
                 .doc(act._id)
@@ -81,7 +115,6 @@ Page({
           .get();
         activities = res.data;
 
-        // 补充签到状态
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
@@ -118,6 +151,8 @@ Page({
       activities.forEach(act => {
         const status = this._getActivityStatus(act, todayStr, currentMinutes);
         act.status = status;
+        // 标记当前用户是否可管理（admin 或自己创建的）
+        act.canManage = this.data.isAdmin || (this.data.isOrganizer && act.creatorStaffId === user.staffId);
         if (status === 'ongoing') ongoing.push(act);
         else if (status === 'upcoming') upcoming.push(act);
         else ended.push(act);
@@ -139,7 +174,6 @@ Page({
     }
   },
 
-  // 计算活动状态
   _getActivityStatus(act, todayStr, currentMinutes) {
     if (!act.date) return 'upcoming';
     const actDate = act.date.replace(/-/g, '');
@@ -147,7 +181,6 @@ Page({
     if (actDate < todayStr) return 'ended';
     if (actDate > todayStr) return 'upcoming';
 
-    // 当天：根据时间判断
     const [startH, startM] = (act.startTime || '00:00').split(':').map(Number);
     const [endH, endM] = (act.endTime || '23:59').split(':').map(Number);
     const startMinutes = startH * 60 + startM;
@@ -167,11 +200,17 @@ Page({
 
   goToDetail(e) {
     const id = e.currentTarget.dataset.id;
-    if (this.data.isAdmin) {
+    const item = e.currentTarget.dataset.item;
+    // admin 或 organizer（且是自己创建的活动）走详情管理页
+    if (item && item.canManage) {
       wx.navigateTo({ url: `/pages/detail/detail?id=${id}` });
     } else {
       wx.navigateTo({ url: `/pages/my-checkin/my-checkin?id=${id}` });
     }
+  },
+
+  goToCreate() {
+    wx.navigateTo({ url: '/pages/create-activity/create-activity' });
   },
 
   onPullDownRefresh() {

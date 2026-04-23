@@ -4,15 +4,25 @@
 
 | 集合 | 说明 | 创建方式 |
 |------|------|---------|
-| `users` | 所有用户（管理员 + 普通用户） | `initUsers` 云函数 |
-| `activities` | 活动信息 | `initActivities` 云函数 |
-| `activities/{_id}/participants` | 活动的参与者（子集合） | `initActivities` 云函数自动创建 |
+| `users` | 所有用户（管理员 + 活动创建人 + 普通用户） | `initUsers` 云函数 |
+| `activities` | 活动信息 | `initActivities` 云函数 / 小程序端创建 |
+| `activities/{_id}/participants` | 活动的参与者（子集合） | `initActivities` 云函数 / 小程序端创建 |
+
+---
+
+## 角色权限模型
+
+| 角色 | 角色值 | 首页视图 | 活动操作 |
+|------|--------|---------|---------|
+| 管理员 | `admin` | 所有活动 + 签到进度 | 全部活动的增删改 + 签到/撤销 |
+| 活动创建人 | `organizer` | 自己创建的活动 + 签到进度 | 自己活动的增删改 + 签到/撤销 |
+| 普通用户 | `user` | 参与的活动 | 仅签到（不可改） |
 
 ---
 
 ## 集合：`users`
 
-存储所有小程序用户，通过 `role` 字段区分管理员和普通用户。
+存储所有小程序用户，通过 `role` 字段区分角色。
 
 ### 字段结构
 
@@ -22,7 +32,7 @@
 | `staffId` | String | ✅ | 员工工号（8位数字，唯一索引） |
 | `name` | String | ✅ | 员工姓名 |
 | `dept` | String | 推荐 | 部门名称 |
-| `role` | String | ✅ | 角色：`admin`（管理员）/ `user`（普通用户，默认） |
+| `role` | String | ✅ | 角色：`admin` / `organizer` / `user`（默认） |
 | `createdAt` | Date | 自动 | 创建时间 |
 
 ### 示例数据
@@ -31,8 +41,11 @@
 // 管理员
 { "staffId": "43334382", "name": "管理员", "dept": "行政部", "role": "admin" }
 
+// 活动创建人
+{ "staffId": "10000001", "name": "张伟", "dept": "研发部", "role": "organizer" }
+
 // 普通用户
-{ "staffId": "10000001", "name": "张伟", "dept": "研发部", "role": "user" }
+{ "staffId": "10000002", "name": "李娜", "dept": "产品部", "role": "user" }
 ```
 
 ### 初始化
@@ -59,6 +72,8 @@
 | `startTime` | String | ✅ | 开始时间（HH:mm） |
 | `endTime` | String | ✅ | 结束时间（HH:mm） |
 | `organizer` | String | ✅ | 主办方 |
+| `creatorStaffId` | String | ✅ | 创建人工号 |
+| `creatorName` | String | ✅ | 创建人姓名 |
 | `participantStaffIds` | Array | ✅ | 参与者工号列表（用于普通用户查询） |
 | `createdAt` | Date | 自动 | 创建时间 |
 
@@ -75,6 +90,8 @@
   "startTime": "09:00",
   "endTime": "18:00",
   "organizer": "行政部",
+  "creatorStaffId": "43334382",
+  "creatorName": "管理员",
   "participantStaffIds": ["43334382", "10000001", "10000002"]
 }
 ```
@@ -121,15 +138,15 @@
 
 ### activities 集合
 ```json
-{ "read": true, "write": false }
+{ "read": true, "write": true }
 ```
+> ⚠️ activities 需要写权限，因为 organizer 在小程序端创建/编辑活动。
 
 ### participants 子集合
 ```json
-{ "read": true, "write": false }
+{ "read": true, "write": true }
 ```
-
-> ⚠️ 所有写操作通过云函数或管理员操作完成，小程序端不开放写权限。
+> ⚠️ participants 需要写权限，用于签到操作。
 
 ---
 
@@ -159,7 +176,7 @@
 
 在云开发控制台 → 数据库中检查：
 - `users` 集合是否已有用户数据
-- `activities` 集合是否已有活动数据
+- `activities` 集合是否已有活动数据（含 `creatorStaffId` / `creatorName` 字段）
 - 点击某个活动文档 → 子集合 `participants` 是否有参与者数据
 
 ---
@@ -173,3 +190,15 @@ cloudEnvId: 'cloud1-d9gq1b47d1a6184ac'
 ```
 
 如需更换环境，修改此值即可。
+
+---
+
+## 页面路由
+
+| 页面 | 路径 | 访问权限 |
+|------|------|---------|
+| 登录 | `/pages/login/login` | 所有人 |
+| 首页 | `/pages/index/index` | 登录用户 |
+| 活动详情（管理） | `/pages/detail/detail` | admin / 自己创建的 organizer |
+| 活动签到（用户） | `/pages/my-checkin/my-checkin` | 普通用户 |
+| 创建/编辑活动 | `/pages/create-activity/create-activity` | admin / organizer |

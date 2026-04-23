@@ -27,6 +27,22 @@ App({
     return user && user.role === 'admin';
   },
 
+  // 判断当前用户是否是活动创建人（organizer）
+  isOrganizer() {
+    const user = this.globalData.currentUser;
+    return user && user.role === 'organizer';
+  },
+
+  // 判断当前用户是否可以管理某个活动
+  // admin 可以管理所有活动，organizer 只能管理自己创建的
+  canManageActivity(activity) {
+    if (this.isAdmin()) return true;
+    if (this.isOrganizer() && activity && activity.creatorStaffId === this.globalData.currentUser.staffId) {
+      return true;
+    }
+    return false;
+  },
+
   // 退出登录
   logout() {
     this.globalData.currentUser = null;

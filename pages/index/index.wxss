@@ -46,6 +46,32 @@
   color: rgba(255,255,255,0.75);
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.create-btn {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.25);
+  border-radius: 20rpx;
+  padding: 8rpx 20rpx;
+}
+
+.create-icon {
+  font-size: 28rpx;
+  color: #FFFFFF;
+  font-weight: 700;
+  margin-right: 6rpx;
+}
+
+.create-text {
+  font-size: 24rpx;
+  color: #FFFFFF;
+}
+
 .stats-row {
   display: flex;
   align-items: center;

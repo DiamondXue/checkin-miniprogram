@@ -23,6 +23,8 @@ const ACTIVITIES = [
     startTime: '09:00',
     endTime: '18:00',
     organizer: '行政部',
+    creatorStaffId: '43334382',   // 创建人工号（手动指定或由小程序自动填入）
+    creatorName: '管理员',         // 创建人姓名
     participantStaffIds: ['43334382', '10000001', '10000002', '10000003', '10000004', '10000005'],
     participants: [
       { staffId: '43334382', name: '管理员', dept: '行政部' },
@@ -44,6 +46,8 @@ const ACTIVITIES = [
   //   startTime: '18:30',
   //   endTime: '21:00',
   //   organizer: 'HR 部门',
+  //   creatorStaffId: '43334382',
+  //   creatorName: '管理员',
   //   participantStaffIds: ['10000001', '10000002', '10000003'],
   //   participants: [
   //     { staffId: '10000001', name: '张伟', dept: '研发部' },
@@ -82,6 +86,8 @@ exports.main = async (event, context) => {
           startTime: act.startTime,
           endTime: act.endTime,
           organizer: act.organizer,
+          creatorStaffId: act.creatorStaffId || '',
+          creatorName: act.creatorName || '',
           participantStaffIds: act.participantStaffIds || [],
           createdAt: db.serverDate(),
         },
