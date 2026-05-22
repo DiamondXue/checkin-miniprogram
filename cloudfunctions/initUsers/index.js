@@ -1,5 +1,5 @@
 // 云函数：initUsers
-// 用途：初始化 users 集合，录入所有用户（管理员 + 活动创建人 + 普通用户）
+// 用途：初始化 users 集合，录入所有用户（管理员 + 操作员 + 活动创建人 + 普通用户）
 // 使用方法：编辑下方 USERS 数组，右键上传部署，手动触发一次
 
 const cloud = require('wx-server-sdk');
@@ -13,13 +13,17 @@ const db = cloud.database();
 //   name     - 姓名（必填）
 //   dept     - 部门（可选）
 //   roles    - 角色数组（默认 ['user']），可叠加多个角色：
-//              admin（管理员）/ organizer（活动创建人）/ user（普通成员）
-//              例：roles: ['admin', 'organizer'] 表示同时是管理员和活动创建人
+//              admin（超级管理员，可管理/删除所有活动）
+//              operator（操作员，可管理/编辑所有活动，但不能删除）
+//              organizer（活动创建人，仅管理自己创建的活动）
+//              user（普通成员，仅签到）
+//              例：roles: ['operator'] 表示可以管理所有活动的签到情况
 // ============================================================
 const USERS = [
   { staffId: '43334382', name: 'Diamond', dept: 'IWPB', roles: ['admin', 'organizer'] },
   { staffId: '43430068', name: 'Yuriko', dept: 'AMH' },
   { staffId: '43334337', name: 'Res',     dept: 'IWPB' },
+  { staffId: '20260516', name: '工作人员', dept: '供应商', roles: ['operator'] },
 ];
 
 exports.main = async (event, context) => {

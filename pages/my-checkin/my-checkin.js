@@ -17,14 +17,34 @@ Page({
 
   onLoad(options) {
     this.activityId = options.id;
+    // 保存 activityId 到全局，登录后可用于跳转回来
+    if (options.id) {
+      app.globalData.pendingActivityId = options.id;
+    }
     this.loadActivity();
   },
 
   onShow() {
+    // 每次显示时检查：如果 globalData 里有 pendingActivityId 说明刚登录完，清掉并 reload
+    if (app.globalData.pendingActivityId) {
+      this.activityId = app.globalData.pendingActivityId;
+      delete app.globalData.pendingActivityId;
+    }
     if (this.activityId) this.loadActivity();
   },
 
+  // 登录检查：未登录则跳转登录页
+  _checkLogin() {
+    const user = app.globalData.currentUser;
+    if (!user || !user.staffId) {
+      wx.redirectTo({ url: '/pages/login/login' });
+      return false;
+    }
+    return true;
+  },
+
   async loadActivity() {
+    if (!this._checkLogin()) return;
     const db = wx.cloud.database();
     const user = app.globalData.currentUser;
 
@@ -32,6 +52,12 @@ Page({
       // 加载活动信息
       const actRes = await db.collection('activities').doc(this.activityId).get();
       const activity = actRes.data;
+
+      // 计算活动状态
+      const now = new Date();
+      const todayStr = this._formatDate(now);
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      activity.status = this._getActivityStatus(activity, todayStr, currentMinutes);
 
       wx.setNavigationBarTitle({ title: activity.name });
 
@@ -43,11 +69,21 @@ Page({
       const myRecord = pResult.result.success ? pResult.result.record : null;
       const myChecked = !!myRecord && !!myRecord.checked;
 
+      // 格式化签到时间，如果没有则显示当前时间（兜底）
+      let myCheckedAt = myRecord ? (myRecord.checkedAt || '') : '';
+      if (myChecked && !myCheckedAt) {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        myCheckedAt = `${hh}:${mm}`;
+      }
+
       this.setData({
         activity,
         myRecord,
         myChecked,
-        myCheckedAt: myRecord ? (myRecord.checkedAt || '') : '',
+        myCheckedAt,
+        currentUser: user,
         loading: false,
       });
 
@@ -86,6 +122,16 @@ Page({
   async doCheckin() {
     const { myChecked, activity, checkinLoading } = this.data;
     if (myChecked || checkinLoading) return;
+
+    // 活动未开始/已结束不允许签到
+    if (activity.status === 'upcoming') {
+      wx.showToast({ title: '活动尚未开始', icon: 'none' });
+      return;
+    }
+    if (activity.status === 'ended') {
+      wx.showToast({ title: '活动已结束', icon: 'none' });
+      return;
+    }
 
     // 位置验证
     if (activity.latitude && activity.checkinRadius > 0) {
@@ -146,5 +192,40 @@ Page({
       this.setData({ checkinLoading: false });
       wx.showToast({ title: '签到失败，请重试', icon: 'none' });
     }
+  },
+
+  onShareAppMessage() {
+    const { activity } = this.data;
+    return {
+      title: activity ? `${activity.name} - 签到` : '团建签到',
+      path: `/pages/my-checkin/my-checkin?id=${this.activityId}`,
+    };
+  },
+
+  onShareTimeline() {
+    const { activity } = this.data;
+    return {
+      title: activity ? `${activity.name} - 签到` : '团建签到',
+      query: `id=${this.activityId}`,
+    };
+  },
+
+  _getActivityStatus(act, todayStr, currentMinutes) {
+    if (!act.date) return 'upcoming';
+    const actDate = act.date.replace(/-/g, '');
+    if (actDate < todayStr) return 'ended';
+    if (actDate > todayStr) return 'upcoming';
+    const [startH, startM] = (act.startTime || '00:00').split(':').map(Number);
+    const [endH, endM] = (act.endTime || '23:59').split(':').map(Number);
+    if (currentMinutes < startH * 60 + startM) return 'upcoming';
+    if (currentMinutes > endH * 60 + endM) return 'ended';
+    return 'ongoing';
+  },
+
+  _formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}${m}${d}`;
   },
 });

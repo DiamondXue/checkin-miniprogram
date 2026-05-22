@@ -50,8 +50,9 @@
           <text class="checked-icon">✓</text>
         </view>
         <text class="checked-title">签到成功</text>
+        <text class="checked-name">{{myRecord.name || currentUser.name}}</text>
+        <text class="checked-dept">{{myRecord.dept || currentUser.dept}}</text>
         <text class="checked-time">签到时间：{{myCheckedAt}}</text>
-        <text class="checked-name">{{currentUser.name}} · {{currentUser.dept}}</text>
       </view>
 
       <!-- 未签到 -->
@@ -59,17 +60,36 @@
         <view class="unchecked-icon-wrap">
           <text class="unchecked-icon">🎯</text>
         </view>
-        <text class="unchecked-title">等待签到</text>
-        <text class="unchecked-desc">到达活动现场后，点击下方按钮完成签到</text>
-        <button
-          class="checkin-btn"
-          bindtap="doCheckin"
-          disabled="{{checkinLoading || locationValid === false}}"
-        >
-          <text wx:if="{{!checkinLoading}}">立即签到</text>
-          <text wx:if="{{checkinLoading}}">签到中…</text>
-        </button>
-        <text wx:if="{{locationValid === false}}" class="out-of-range-tip">⚠️ 您不在签到范围内，无法签到</text>
+        <!-- 活动未开始 -->
+        <block wx:if="{{activity.status === 'upcoming'}}">
+          <text class="unchecked-title">活动未开始</text>
+          <text class="unchecked-desc">活动将在 {{activity.date}} {{activity.startTime}} 开始，届时可签到</text>
+          <button class="checkin-btn" disabled>
+            <text>活动未开始</text>
+          </button>
+        </block>
+        <!-- 活动已结束 -->
+        <block wx:elif="{{activity.status === 'ended'}}">
+          <text class="unchecked-title">活动已结束</text>
+          <text class="unchecked-desc">签到已截止</text>
+          <button class="checkin-btn" disabled>
+            <text>活动已结束</text>
+          </button>
+        </block>
+        <!-- 进行中 -->
+        <block wx:else>
+          <text class="unchecked-title">等待签到</text>
+          <text class="unchecked-desc">到达活动现场后，点击下方按钮完成签到</text>
+          <button
+            class="checkin-btn"
+            bindtap="doCheckin"
+            disabled="{{checkinLoading || locationValid === false}}"
+          >
+            <text wx:if="{{!checkinLoading}}">立即签到</text>
+            <text wx:if="{{checkinLoading}}">签到中…</text>
+          </button>
+          <text wx:if="{{locationValid === false}}" class="out-of-range-tip">⚠️ 您不在签到范围内，无法签到</text>
+        </block>
       </view>
     </view>
   </block>

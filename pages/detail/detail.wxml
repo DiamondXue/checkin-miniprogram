@@ -66,13 +66,53 @@
     </view>
 
     <!-- 管理操作按钮 -->
-    <view class="manage-bar" wx:if="{{canManage}}">
+    <view class="manage-bar" wx:if="{{canEdit}}">
       <view class="manage-btn edit-btn" bindtap="goToEdit">
         <text>✏️ 编辑活动</text>
       </view>
-      <view class="manage-btn delete-btn" bindtap="doDelete">
+      <view class="manage-btn staff-btn" bindtap="toggleStaffPanel">
+        <text>👥 管理参与人</text>
+      </view>
+      <view class="manage-btn delete-btn" wx:if="{{canDelete}}" bindtap="doDelete">
         <text>🗑️ 删除活动</text>
       </view>
+    </view>
+
+    <!-- 管理参与人面板 -->
+    <view class="staff-panel" wx:if="{{showStaffPanel && canEdit}}">
+      <view class="panel-header">
+        <text class="panel-title">管理参与人</text>
+        <text class="panel-close" bindtap="toggleStaffPanel">✕</text>
+      </view>
+      <!-- 新增参与人 -->
+      <view class="panel-add">
+        <textarea
+          class="panel-textarea"
+          placeholder="输入工号，逗号或换行分隔"
+          value="{{newStaffInput}}"
+          bindinput="onNewStaffInput"
+          auto-height
+          maxlength="-1"
+        ></textarea>
+        <button class="panel-add-btn" bindtap="doAddParticipants" disabled="{{addingStaff}}">
+          {{addingStaff ? '添加中…' : '添加'}}
+        </button>
+      </view>
+      <!-- 已添加的人员列表（可删除） -->
+      <scroll-view class="panel-list" scroll-y style="max-height: 600rpx;">
+        <view wx:if="{{participants.length === 0}}" class="panel-empty">暂无参与人</view>
+        <view class="panel-item" wx:for="{{participants}}" wx:key="_id">
+          <view class="panel-item-info">
+            <text class="panel-item-name">{{item.name}}</text>
+            <text class="panel-item-dept">{{item.dept}}</text>
+            <text class="panel-item-id">{{item.staffId}}</text>
+            <text wx:if="{{item.checked}}" class="panel-item-checked">✓已签到</text>
+          </view>
+          <view class="panel-item-del" bindtap="doRemoveParticipant" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text>删除</text>
+          </view>
+        </view>
+      </scroll-view>
     </view>
 
     <!-- 搜索栏 -->

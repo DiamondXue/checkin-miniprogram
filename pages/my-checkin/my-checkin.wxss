@@ -144,12 +144,20 @@
   font-size: 28rpx;
   color: #10B981;
   font-weight: 600;
-  margin-bottom: 8rpx;
+  margin-bottom: 16rpx;
 }
 
 .checked-name {
-  font-size: 24rpx;
-  color: #9CA3AF;
+  font-size: 32rpx;
+  color: #111827;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.checked-dept {
+  font-size: 26rpx;
+  color: #6B7280;
+  margin-bottom: 24rpx;
 }
 
 /* 未签到 */

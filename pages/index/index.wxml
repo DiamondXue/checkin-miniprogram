@@ -16,7 +16,7 @@
           <text class="create-icon">+</text>
           <text class="create-text">新建</text>
         </view>
-        <view class="logout-btn" bindtap="doLogout">
+        <view class="logout-btn" wx:if="{{isAdmin}}" bindtap="doLogout">
           <text>退出</text>
         </view>
       </view>

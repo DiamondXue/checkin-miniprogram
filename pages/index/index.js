@@ -10,6 +10,7 @@ Page({
     totalActivities: 0,
     currentUser: null,
     isAdmin: false,
+    isOperator: false,
     isOrganizer: false,
     canCreate: false,
     loading: true,
@@ -23,12 +24,14 @@ Page({
     const user = app.globalData.currentUser;
     const roles = Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : ['user']);
     const isAdmin = roles.includes('admin');
+    const isOperator = roles.includes('operator');
     const isOrganizer = roles.includes('organizer');
     const canCreate = isAdmin || isOrganizer;
 
     this.setData({
       currentUser: user,
       isAdmin,
+      isOperator,
       isOrganizer,
       canCreate,
     });
@@ -52,8 +55,8 @@ Page({
     let activities = [];
 
     try {
-      if (this.data.isAdmin) {
-        // 管理员：加载所有活动
+      if (this.data.isAdmin || this.data.isOperator) {
+        // 管理员/操作员：加载所有活动
         const res = await db.collection('activities').orderBy('date', 'desc').get();
         activities = res.data;
 
@@ -145,7 +148,7 @@ Page({
       activities.forEach(act => {
         const status = this._getActivityStatus(act, todayStr, currentMinutes);
         act.status = status;
-        act.canManage = this.data.isAdmin || (this.data.isOrganizer && act.creatorStaffId === user.staffId);
+        act.canManage = this.data.isAdmin || this.data.isOperator || (this.data.isOrganizer && act.creatorStaffId === user.staffId);
         if (status === 'ongoing') ongoing.push(act);
         else if (status === 'upcoming') upcoming.push(act);
         else ended.push(act);
@@ -192,6 +195,11 @@ Page({
   },
 
   goToDetail(e) {
+    const user = app.globalData.currentUser;
+    if (!user || !user.staffId) {
+      wx.redirectTo({ url: '/pages/login/login' });
+      return;
+    }
     const id = e.currentTarget.dataset.id;
     const item = e.currentTarget.dataset.item;
     if (item && item.canManage) {
@@ -209,5 +217,18 @@ Page({
     this.loadActivities().then(() => {
       wx.stopPullDownRefresh();
     });
-  }
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '团建签到',
+      path: '/pages/index/index',
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '团建签到',
+    };
+  },
 });

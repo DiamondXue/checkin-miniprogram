@@ -208,34 +208,28 @@ Page({
           },
         });
 
-        // 创建参与者（通过云函数，小程序端不支持子集合操作）
+        // 创建参与者：分批调用云函数，每批50人，避免3秒超时
         const actId = res._id;
 
-        // 先查找参与者信息
-        const participantList = [];
-        for (const sId of participantStaffIds) {
-          try {
-            const uRes = await db.collection('users').where({ staffId: sId }).limit(1).get();
-            const u = uRes.data[0];
-            participantList.push({
-              staffId: sId,
-              name: u ? u.name : sId,
-              dept: u ? (u.dept || '') : '',
-            });
-          } catch (e) {
-            participantList.push({ staffId: sId, name: sId, dept: '' });
-          }
-        }
+        if (participantStaffIds.length > 0) {
+          const BATCH = 20;
+          const total = participantStaffIds.length;
+          let added = 0;
 
-        if (participantList.length > 0) {
-          await wx.cloud.callFunction({
-            name: 'createActivity',
-            data: {
-              action: 'createParticipants',
-              activityId: actId,
-              participants: participantList,
-            },
-          });
+          for (let i = 0; i < total; i += BATCH) {
+            const batch = participantStaffIds.slice(i, i + BATCH);
+            wx.showLoading({ title: `导入中 ${Math.min(i + BATCH, total)}/${total}…`, mask: true });
+            await wx.cloud.callFunction({
+              name: 'createActivity',
+              data: {
+                action: 'createParticipants',
+                activityId: actId,
+                staffIds: batch,
+              },
+            });
+            added += batch.length;
+          }
+          wx.hideLoading();
         }
 
         wx.showToast({ title: '创建成功', icon: 'success' });

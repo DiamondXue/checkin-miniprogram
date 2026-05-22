@@ -86,6 +86,7 @@
           bindinput="onInput"
           data-field="participantInput"
           auto-height
+          maxlength="-1"
         ></textarea>
         <text class="form-hint">创建后可在活动详情页管理签到</text>
       </view>

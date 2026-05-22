@@ -15,8 +15,12 @@ Page({
     loading: true,
     statusTagClass: '',
     statusText: '',
-    canManage: false,
-    // 位置相关
+    canEdit: false,
+    canDelete: false,
+    showStaffPanel: false,
+    newStaffInput: '',
+    addingStaff: false,
+    participants: [],
     locationInfo: '',
     locationValid: null,
     checkingLocation: false,
@@ -42,7 +46,8 @@ Page({
 
       wx.setNavigationBarTitle({ title: activity.name });
 
-      const canManage = app.canManageActivity(activity);
+      const canEdit = app.canManageActivity(activity);
+      const canDelete = app.canDeleteActivity();
 
       const now = new Date();
       const todayStr = this._formatDate(now);
@@ -84,7 +89,11 @@ Page({
         progressPct: pct,
         statusTagClass: statusInfo.class,
         statusText: statusInfo.text,
-        canManage,
+        canEdit,
+        canDelete,
+        showStaffPanel: false,
+        newStaffInput: '',
+        addingStaff: false,
         loading: false,
       });
 
@@ -170,6 +179,79 @@ Page({
     }
 
     this.setData({ filteredList: list });
+  },
+
+  toggleStaffPanel() {
+    const show = !this.data.showStaffPanel;
+    this.setData({ showStaffPanel: show });
+    if (show) this.loadParticipants();
+  },
+
+  async loadParticipants() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: { action: 'getParticipants', activityId: this.activityId },
+      });
+      if (res.result.success) {
+        this.setData({ participants: res.result.participants });
+      }
+    } catch (e) {
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    }
+  },
+
+  onNewStaffInput(e) {
+    this.setData({ newStaffInput: e.detail.value });
+  },
+
+  async doAddParticipants() {
+    const input = this.data.newStaffInput.trim();
+    if (!input) return;
+    const staffIds = input.split(/[,，\s\n]+/).map(s => s.trim()).filter(s => s.length > 0);
+    if (staffIds.length === 0) return;
+
+    this.setData({ addingStaff: true });
+    const BATCH = 20;
+    try {
+      for (let i = 0; i < staffIds.length; i += BATCH) {
+        const batch = staffIds.slice(i, i + BATCH);
+        await wx.cloud.callFunction({
+          name: 'createActivity',
+          data: { action: 'addParticipants', activityId: this.activityId, staffIds: batch },
+        });
+      }
+      wx.showToast({ title: '添加成功', icon: 'success' });
+      this.setData({ newStaffInput: '' });
+      this.loadParticipants();
+      this.loadActivity();
+    } catch (err) {
+      wx.showToast({ title: '添加失败', icon: 'none' });
+    }
+    this.setData({ addingStaff: false });
+  },
+
+  doRemoveParticipant(e) {
+    const { id, name } = e.currentTarget.dataset;
+    wx.showModal({
+      title: '删除参与人',
+      content: `确认删除「${name || '未命名'}」？`,
+      confirmColor: '#EF4444',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'removeParticipant', activityId: this.activityId, participantId: id },
+          });
+          wx.showToast({ title: '已删除', icon: 'none' });
+          this.loadParticipants();
+          this.loadActivity();
+        } catch (err) {
+          wx.showToast({ title: '删除失败', icon: 'none' });
+        }
+      },
+    });
   },
 
   goToEdit() {
@@ -305,5 +387,21 @@ Page({
         }
       }
     });
+  },
+
+  onShareAppMessage() {
+    const { activity } = this.data;
+    return {
+      title: activity ? `${activity.name} - 签到` : '团建签到',
+      path: `/pages/my-checkin/my-checkin?id=${this.activityId}`,
+    };
+  },
+
+  onShareTimeline() {
+    const { activity } = this.data;
+    return {
+      title: activity ? `${activity.name} - 签到` : '团建签到',
+      query: `id=${this.activityId}`,
+    };
   },
 });

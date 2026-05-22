@@ -387,3 +387,117 @@
 .bottom-space {
   height: 60rpx;
 }
+
+/* 管理参与人面板 */
+.staff-panel {
+  background: #FFFFFF;
+  margin: 24rpx;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.panel-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.panel-close {
+  font-size: 32rpx;
+  color: #9CA3AF;
+  padding: 8rpx 16rpx;
+}
+
+.panel-add {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+  align-items: flex-end;
+}
+
+.panel-textarea {
+  flex: 1;
+  min-height: 80rpx;
+  background: #F3F4F6;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+  color: #111827;
+  line-height: 1.5;
+}
+
+.panel-add-btn {
+  background: #4F46E5 !important;
+  color: #FFFFFF !important;
+  font-size: 26rpx !important;
+  font-weight: 600 !important;
+  border-radius: 12rpx !important;
+  padding: 16rpx 32rpx !important;
+  line-height: 1.4 !important;
+  border: none !important;
+}
+
+.panel-empty {
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 26rpx;
+  padding: 40rpx 0;
+}
+
+.panel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F3F4F6;
+}
+
+.panel-item-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.panel-item-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.panel-item-dept {
+  font-size: 20rpx;
+  color: #FFFFFF;
+  background: #6366F1;
+  padding: 2rpx 12rpx;
+  border-radius: 16rpx;
+}
+
+.panel-item-id {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+.panel-item-checked {
+  font-size: 20rpx;
+  color: #10B981;
+  font-weight: 600;
+}
+
+.panel-item-del {
+  background: #FEF2F2;
+  color: #EF4444;
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}

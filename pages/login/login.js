@@ -72,7 +72,14 @@ Page({
         wx.showToast({ title: `欢迎，${userInfo.name || staffId}`, icon: 'success' });
 
         setTimeout(() => {
-          wx.reLaunch({ url: '/pages/index/index' });
+          // 检是否有待跳转的签到活动
+          const pendingId = app.globalData.pendingActivityId;
+          if (pendingId) {
+            delete app.globalData.pendingActivityId;
+            wx.reLaunch({ url: `/pages/my-checkin/my-checkin?id=${pendingId}` });
+          } else {
+            wx.reLaunch({ url: '/pages/index/index' });
+          }
         }, 800);
       } else {
         this.setData({
@@ -89,5 +96,18 @@ Page({
         loading: false,
       });
     }
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '团建签到',
+      path: '/pages/index/index',
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '团建签到',
+    };
   },
 });

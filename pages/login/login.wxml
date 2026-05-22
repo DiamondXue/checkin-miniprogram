@@ -36,7 +36,7 @@
     </view>
 
     <!-- 工号格式提示 -->
-    <text class="format-tip" wx:if="{{!errorMsg}}">工号为 8 位数字，如：43334382</text>
+    <text class="format-tip" wx:if="{{!errorMsg}}">工号为 8 位数字</text>
 
     <!-- 登录按钮 -->
     <button
