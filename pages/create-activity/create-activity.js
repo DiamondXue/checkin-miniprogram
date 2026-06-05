@@ -184,6 +184,7 @@ Page({
           checkinRadius: parseInt(checkinRadius) || 0,
           latitude: latitude || null,
           longitude: longitude || null,
+          participantStaffIds: participantStaffIds,
         };
         await db.collection('activities').doc(activityId).update({ data: updateData });
         wx.showToast({ title: '保存成功', icon: 'success' });
