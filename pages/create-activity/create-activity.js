@@ -187,6 +187,22 @@ Page({
           participantStaffIds: participantStaffIds,
         };
         await db.collection('activities').doc(activityId).update({ data: updateData });
+
+        // 同步创建/更新参与者（addParticipants 会自动去重）
+        if (participantStaffIds.length > 0) {
+          const BATCH = 20;
+          const total = participantStaffIds.length;
+          for (let i = 0; i < total; i += BATCH) {
+            const batch = participantStaffIds.slice(i, i + BATCH);
+            wx.showLoading({ title: `同步中 ${Math.min(i + BATCH, total)}/${total}…`, mask: true });
+            await wx.cloud.callFunction({
+              name: 'createActivity',
+              data: { action: 'addParticipants', activityId, staffIds: batch },
+            });
+          }
+          wx.hideLoading();
+        }
+
         wx.showToast({ title: '保存成功', icon: 'success' });
         setTimeout(() => wx.navigateBack(), 800);
       } else {
