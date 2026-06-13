@@ -1,5 +1,6 @@
 const app = getApp();
 const { verifyCheckinLocation, formatDistance } = require('../../utils/location');
+const { cstDateStr, cstTotalMinutes, cstTimeStr } = require('../../utils/china-time');
 
 Page({
   data: {
@@ -49,9 +50,8 @@ Page({
       const canEdit = app.canManageActivity(activity);
       const canDelete = app.canDeleteActivity();
 
-      const now = new Date();
-      const todayStr = this._formatDate(now);
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const todayStr = cstDateStr();
+      const currentMinutes = cstTotalMinutes();
       const status = this._getActivityStatus(activity, todayStr, currentMinutes);
       activity.status = status;
 
@@ -119,13 +119,6 @@ Page({
     if (currentMinutes < startH * 60 + startM) return 'upcoming';
     if (currentMinutes > endH * 60 + endM) return 'ended';
     return 'ongoing';
-  },
-
-  _formatDate(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}${m}${d}`;
   },
 
   async refreshLocation() {
@@ -323,10 +316,8 @@ Page({
   },
 
   async _performCheckin(participantId, isForced) {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    const checkedAt = `${hh}:${mm}${isForced ? '(强制)' : ''}`;
+    // 显式使用 UTC+8（中国标准时间），避免微信环境本地时区不准确
+    const checkedAt = `${cstTimeStr()}${isForced ? '(强制)' : ''}`;
 
     try {
       const result = await wx.cloud.callFunction({

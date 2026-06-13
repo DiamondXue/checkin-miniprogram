@@ -1,5 +1,6 @@
 const app = getApp();
 const { verifyCheckinLocation, formatDistance } = require('../../utils/location');
+const { cstDateStr, cstTotalMinutes, cstTimeStr } = require('../../utils/china-time');
 
 Page({
   data: {
@@ -53,10 +54,9 @@ Page({
       const actRes = await db.collection('activities').doc(this.activityId).get();
       const activity = actRes.data;
 
-      // 计算活动状态
-      const now = new Date();
-      const todayStr = this._formatDate(now);
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      // 计算活动状态（使用中国标准时间）
+      const todayStr = cstDateStr();
+      const currentMinutes = cstTotalMinutes();
       activity.status = this._getActivityStatus(activity, todayStr, currentMinutes);
 
       wx.setNavigationBarTitle({ title: activity.name });
@@ -69,13 +69,10 @@ Page({
       const myRecord = pResult.result.success ? pResult.result.record : null;
       const myChecked = !!myRecord && !!myRecord.checked;
 
-      // 格式化签到时间，如果没有则显示当前时间（兜底）
+      // 格式化签到时间，如果没有则显示当前时间（兜底，使用中国标准时间）
       let myCheckedAt = myRecord ? (myRecord.checkedAt || '') : '';
       if (myChecked && !myCheckedAt) {
-        const now = new Date();
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        myCheckedAt = `${hh}:${mm}`;
+        myCheckedAt = cstTimeStr();
       }
 
       this.setData({
@@ -220,12 +217,5 @@ Page({
     if (currentMinutes < startH * 60 + startM) return 'upcoming';
     if (currentMinutes > endH * 60 + endM) return 'ended';
     return 'ongoing';
-  },
-
-  _formatDate(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}${m}${d}`;
   },
 });

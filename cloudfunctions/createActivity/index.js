@@ -238,12 +238,14 @@ exports.main = async (event) => {
   if (action === 'checkin') {
     // 签到或撤销签到
     try {
-      // 自动生成时间（如果签到，云端记录时间）
+      // 自动生成时间（如果签到，云端记录时间，显式使用 UTC+8 中国标准时间）
       let finalCheckedAt = checkedAt || '';
       if (checked === true && !checkedAt) {
         const now = new Date();
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
+        const chinaHours = (now.getUTCHours() + 8) % 24;
+        const chinaMinutes = now.getUTCMinutes();
+        const hh = String(chinaHours).padStart(2, '0');
+        const mm = String(chinaMinutes).padStart(2, '0');
         finalCheckedAt = `${hh}:${mm}`;
       }
 

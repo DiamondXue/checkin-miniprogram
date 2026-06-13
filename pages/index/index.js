@@ -1,4 +1,5 @@
 const app = getApp();
+const { cstDateStr, cstTotalMinutes } = require('../../utils/china-time');
 
 Page({
   data: {
@@ -136,10 +137,9 @@ Page({
         activities = activityStats;
       }
 
-      // 计算状态分区
-      const now = new Date();
-      const todayStr = this._formatDate(now);
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      // 计算状态分区（使用中国标准时间）
+      const todayStr = cstDateStr();
+      const currentMinutes = cstTotalMinutes();
 
       const ongoing = [];
       const upcoming = [];
@@ -185,13 +185,6 @@ Page({
     if (currentMinutes < startMinutes) return 'upcoming';
     if (currentMinutes > endMinutes) return 'ended';
     return 'ongoing';
-  },
-
-  _formatDate(date) {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${y}${m}${d}`;
   },
 
   goToDetail(e) {
