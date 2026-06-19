@@ -73,6 +73,9 @@
       <view class="manage-btn staff-btn" bindtap="toggleStaffPanel">
         <text>👥 管理参与人</text>
       </view>
+      <view class="manage-btn scan-btn" bindtap="goToScanConfirm">
+        <text>📷 扫码确认</text>
+      </view>
       <view class="manage-btn delete-btn" wx:if="{{canDelete}}" bindtap="doDelete">
         <text>🗑️ 删除活动</text>
       </view>

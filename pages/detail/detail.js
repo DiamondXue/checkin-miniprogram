@@ -251,6 +251,10 @@ Page({
     wx.navigateTo({ url: `/pages/create-activity/create-activity?id=${this.activityId}` });
   },
 
+  goToScanConfirm() {
+    wx.navigateTo({ url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}` });
+  },
+
   doDelete() {
     wx.showModal({
       title: '删除活动',

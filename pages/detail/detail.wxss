@@ -190,6 +190,16 @@
   color: #EF4444;
 }
 
+.staff-btn {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.scan-btn {
+  background: #ECFDF5;
+  color: #059669;
+}
+
 /* 搜索 & 筛选 */
 .search-wrap {
   background: #FFFFFF;
