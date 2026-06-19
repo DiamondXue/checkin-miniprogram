@@ -58,6 +58,13 @@ exports.main = async (event) => {
             dept: p.dept || '',
             checked: false,
             checkedAt: '',
+            // 领取确认字段（初始化）
+            teaConfirmed: false,
+            teaConfirmedAt: '',
+            teaConfirmedBy: '',
+            giftConfirmed: false,
+            giftConfirmedAt: '',
+            giftConfirmedBy: '',
             createdAt: db.serverDate(),
           },
         }).then(() => {
@@ -123,6 +130,12 @@ exports.main = async (event) => {
               dept: p.dept || '',
               checked: false,
               checkedAt: '',
+              teaConfirmed: false,
+              teaConfirmedAt: '',
+              teaConfirmedBy: '',
+              giftConfirmed: false,
+              giftConfirmedAt: '',
+              giftConfirmedBy: '',
               createdAt: db.serverDate(),
             },
           }).then(() => { results.added++; }).catch(err => {
@@ -264,6 +277,12 @@ exports.main = async (event) => {
             dept: dept || '',
             checked: true,
             checkedAt: finalCheckedAt,
+            teaConfirmed: false,
+            teaConfirmedAt: '',
+            teaConfirmedBy: '',
+            giftConfirmed: false,
+            giftConfirmedAt: '',
+            giftConfirmedBy: '',
             createdAt: db.serverDate(),
           },
         });
@@ -302,6 +321,64 @@ exports.main = async (event) => {
         success: true,
         myChecked: !!myRecord.checked,
         myCheckedAt: myRecord.checkedAt || '',
+      };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'confirmPickup') {
+    // 管理员确认领取（茶点/礼品等）
+    // 参数：activityId, staffId, participantId, field, timeField, confirmedByField, confirmedBy, confirmedAt
+    try {
+      const { field, timeField, confirmedByField, confirmedBy, confirmedAt } = event;
+
+      let updateData = {};
+      updateData[field] = true;
+      updateData[timeField] = confirmedAt || '';
+      updateData[confirmedByField] = confirmedBy || '';
+
+      if (participantId) {
+        await db.collection('participants').doc(participantId).update({
+          data: updateData,
+        });
+      } else if (activityId && staffId) {
+        // 查找参与者记录
+        const { data } = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(1)
+          .get();
+        if (data.length > 0) {
+          await db.collection('participants').doc(data[0]._id).update({
+            data: updateData,
+          });
+        } else {
+          return { success: false, error: '未找到该参与者的签到记录' };
+        }
+      } else {
+        return { success: false, error: '缺少 participantId 或 activityId+staffId' };
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'getUserInfo') {
+    // 根据 staffId 查询用户详细信息
+    try {
+      const { staffId } = event;
+      if (!staffId) return { success: false, error: '缺少 staffId' };
+
+      const { data } = await db.collection('users')
+        .where({ staffId })
+        .limit(1)
+        .get();
+
+      return {
+        success: true,
+        user: data.length > 0 ? data[0] : null,
       };
     } catch (err) {
       return { success: false, error: err.message };

@@ -42,7 +42,7 @@
       </view>
     </view>
 
-    <!-- 签到状态卡片 -->
+      <!-- 签到状态卡片 -->
     <view class="status-card">
       <!-- 已签到 -->
       <view wx:if="{{myChecked}}" class="checked-status">
@@ -53,6 +53,9 @@
         <text class="checked-name">{{myRecord.name || currentUser.name}}</text>
         <text class="checked-dept">{{myRecord.dept || currentUser.dept}}</text>
         <text class="checked-time">签到时间：{{myCheckedAt}}</text>
+        <navigator url="/pages/my-qrcode/my-qrcode?id={{activity._id}}" class="qrcode-btn">
+          出示签到码
+        </navigator>
       </view>
 
       <!-- 未签到 -->

@@ -4,6 +4,8 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/my-checkin/my-checkin",
+    "pages/my-qrcode/my-qrcode",
+    "pages/scan-confirm/scan-confirm",
     "pages/create-activity/create-activity"
   ],
   "window": {

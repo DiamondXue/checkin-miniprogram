@@ -1,0 +1,65 @@
+<view class="container">
+  <!-- 扫码按钮（未扫描时显示） -->
+  <view class="scan-section" wx:if="{{!scanned}}">
+    <view class="scan-icon-wrapper" bindtap="doScan">
+      <view class="scan-icon">⊞</view>
+    </view>
+    <view class="scan-text">点击扫码</view>
+    <view class="scan-sub">扫描用户出示的签到码</view>
+  </view>
+
+  <!-- 扫描结果 -->
+  <view class="result-section" wx:if="{{scanned}}">
+    <!-- 用户信息卡 -->
+    <view class="user-card">
+      <view class="user-avatar">{{scannedUser.name ? scannedUser.name[0] : '?'}}</view>
+      <view class="user-detail">
+        <view class="user-name">{{scannedUser.name}}</view>
+        <view class="user-staffid">工号：{{scannedUser.staffId}}</view>
+        <view class="user-dept" wx:if="{{scannedUser.dept}}">{{scannedUser.dept}}</view>
+      </view>
+    </view>
+
+    <!-- 签到状态 -->
+    <view class="checkin-card">
+      <view class="card-title">签到状态</view>
+      <view class="checkin-status {{scannedParticipant.checked ? 'checked' : 'not-checked'}}">
+        {{scannedParticipant.checked ? '✓ 已签到 ' + scannedParticipant.checkedAt : '未签到'}}
+      </view>
+    </view>
+
+    <!-- 领取确认 -->
+    <view class="confirm-section">
+      <view class="card-title">领取确认</view>
+
+      <!-- 茶点领取 -->
+      <view class="confirm-item">
+        <view class="confirm-label">下午茶点</view>
+        <view class="confirm-status" wx:if="{{scannedParticipant.teaConfirmed}}">
+          已确认 {{scannedParticipant.teaConfirmedAt}}
+        </view>
+        <button class="confirm-btn tea" wx:else bindtap="confirmPickup" data-type="tea">
+          确认领取
+        </button>
+      </view>
+
+      <!-- 礼品领取 -->
+      <view class="confirm-item">
+        <view class="confirm-label">活动礼品</view>
+        <view class="confirm-status" wx:if="{{scannedParticipant.giftConfirmed}}">
+          已确认 {{scannedParticipant.giftConfirmedAt}}
+        </view>
+        <button class="confirm-btn gift" wx:else bindtap="confirmPickup" data-type="gift">
+          确认领取
+        </button>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="scan-again-btn" bindtap="doScan">继续扫码</button>
+    </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">处理中...</view>
+</view>

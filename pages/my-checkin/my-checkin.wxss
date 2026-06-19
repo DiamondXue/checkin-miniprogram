@@ -221,6 +221,24 @@
   margin-top: 20rpx;
 }
 
+/* 出示签到码按钮 */
+.qrcode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  background: #FFFFFF;
+  color: #4F46E5;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: 2rpx solid #4F46E5;
+  margin-top: 32rpx;
+  text-align: center;
+  line-height: 80rpx;
+}
+
 .bottom-space {
   height: 60rpx;
 }

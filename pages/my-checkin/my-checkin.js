@@ -162,7 +162,7 @@ Page({
       const user = app.globalData.currentUser;
       const { myRecord } = this.data;
 
-      // 通过云函数签到
+      // 通过云函数签到，前端显式传入 UTC+8 时间，避免云函数环境时区不确定
       const checkinResult = await wx.cloud.callFunction({
         name: 'createActivity',
         data: {
@@ -173,6 +173,7 @@ Page({
           name: user.name || user.staffId,
           dept: user.dept || '',
           checked: true,
+          checkedAt: cstTimeStr(),
         },
       });
 

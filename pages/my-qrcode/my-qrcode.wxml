@@ -1,0 +1,34 @@
+<view class="container">
+  <!-- 顶部活动信息 -->
+  <view class="activity-card" wx:if="{{activity}}">
+    <view class="activity-name">{{activity.name}}</view>
+    <view class="activity-meta">
+      <text>{{activity.date}} {{activity.startTime}} - {{activity.endTime}}</text>
+    </view>
+    <view class="checkin-status checked" wx:if="{{myChecked}}">
+      ✓ 已签到 {{myCheckedAt}}
+    </view>
+  </view>
+
+  <!-- QR 码展示区域 -->
+  <view class="qrcode-section" wx:if="{{myChecked}}">
+    <view class="qrcode-label">向管理员出示此码</view>
+    <view class="qrcode-wrapper">
+      <canvas type="2d" id="qrcode-canvas" class="qrcode-canvas"></canvas>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{userInfo.name}}</text>
+      <text class="user-staffid">{{userInfo.staffId}}</text>
+    </view>
+    <view class="qrcode-tip">管理员扫码后可确认茶点/礼品领取</view>
+  </view>
+
+  <!-- 未签到提示 -->
+  <view class="not-checked" wx:if="{{!myChecked && !loading}}">
+    <view class="not-checked-icon">!</view>
+    <view class="not-checked-text">请先完成签到</view>
+    <view class="not-checked-sub">签到成功后会显示身份二维码</view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中...</view>
+</view>
