@@ -1,5 +1,5 @@
 const app = getApp();
-const { drawQR } = require('../../utils/qrcode');
+const QRCode = require('../../utils/qrcode-mp');
 
 Page({
   data: {
@@ -75,14 +75,45 @@ Page({
     query.select('#qrcode-canvas')
       .fields({ node: true, size: true })
       .exec((res) => {
-        if (!res[0]) {
+        if (!res[0] || !res[0].node) {
           // canvas 还没渲染，延迟重试
           setTimeout(() => this.generateQRCode(user), 300);
           return;
         }
         const canvas = res[0].node;
         const ctx = canvas.getContext('2d');
-        drawQR(canvas, ctx, { text: qrText, size: 200 });
+        const size = res[0].width || 200;
+
+        // 生成 QR 码矩阵（经过验证的算法）
+        const qr = QRCode.create(qrText, { errorCorrectionLevel: 'M' });
+        const n = qr.modules.size;
+
+        // 高清适配
+        const dpr = wx.getSystemInfoSync().pixelRatio || 2;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        ctx.scale(dpr, dpr);
+
+        // 背景
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, size, size);
+
+        // 绘制模块
+        const padding = size * 0.04; // 4% 边距
+        const cellSize = (size - padding * 2) / n;
+        ctx.fillStyle = '#000000';
+        for (let r = 0; r < n; r++) {
+          for (let c = 0; c < n; c++) {
+            if (qr.modules.get(r, c)) {
+              ctx.fillRect(
+                padding + c * cellSize,
+                padding + r * cellSize,
+                Math.ceil(cellSize),
+                Math.ceil(cellSize)
+              );
+            }
+          }
+        }
       });
   },
 
