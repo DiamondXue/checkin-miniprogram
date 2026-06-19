@@ -11,7 +11,7 @@ Page({
   },
 
   onLoad(options) {
-    this.activityId = options.id || '';
+    this.activityId = options.activityId || '';
     // 检查权限
     const user = app.globalData.currentUser;
     if (!user || !user.staffId) {
