@@ -327,6 +327,40 @@ exports.main = async (event) => {
     }
   }
 
+  if (action === 'getParticipant') {
+    // 管理员扫码后查询参与者的签到状态和领取状态
+    // 参数：activityId, staffId
+    try {
+      const { data } = await db.collection('participants')
+        .where({ activityId, staffId })
+        .limit(1)
+        .get();
+      const record = data[0] || null;
+      if (!record) {
+        return { success: true, record: null };
+      }
+      return {
+        success: true,
+        record: {
+          _id: record._id,
+          staffId: record.staffId,
+          name: record.name || '',
+          dept: record.dept || '',
+          checked: !!record.checked,
+          checkedAt: record.checkedAt || '',
+          teaConfirmed: !!record.teaConfirmed,
+          teaConfirmedAt: record.teaConfirmedAt || '',
+          teaConfirmedBy: record.teaConfirmedBy || '',
+          giftConfirmed: !!record.giftConfirmed,
+          giftConfirmedAt: record.giftConfirmedAt || '',
+          giftConfirmedBy: record.giftConfirmedBy || '',
+        },
+      };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
   if (action === 'confirmPickup') {
     // 管理员确认领取（茶点/礼品等）
     // 参数：activityId, staffId, participantId, field, timeField, confirmedByField, confirmedBy, confirmedAt
