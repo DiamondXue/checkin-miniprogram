@@ -446,7 +446,7 @@ exports.main = async (event) => {
 
   if (action === 'confirmPickup') {
     // 管理员确认领取（茶点/礼品等自定义项目）
-    // 领取时：更新 participants 记录 + 原子递减 activities.remainingCounts
+    // 使用事务保证参与者记录更新和余量更新的原子性，避免并发问题
     try {
       const { itemKey, confirmedBy, confirmedAt } = event;
 
@@ -495,15 +495,26 @@ exports.main = async (event) => {
         data: updateData,
       });
 
-      // 递减活动余量（先读后写，保证不为负）
+      // 使用事务更新活动余量（确保读取和写入的原子性，避免并发问题）
       if (itemKey && activityId) {
-        const actDoc = await db.collection('activities').doc(activityId).get();
-        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
-        if (currentRemaining !== undefined && currentRemaining !== null) {
-          const newRemaining = Math.max(0, currentRemaining - 1);
-          await db.collection('activities').doc(activityId).update({
-            data: { [`remainingCounts.${itemKey}`]: newRemaining },
-          });
+        const transaction = db.startTransaction();
+        try {
+          const actDoc = await transaction.collection('activities').doc(activityId).get();
+          const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+          if (currentRemaining !== undefined && currentRemaining !== null) {
+            if (currentRemaining <= 0) {
+              await transaction.rollback();
+              return { success: false, error: '该项目余量已不足' };
+            }
+            const newRemaining = Math.max(0, currentRemaining - 1);
+            await transaction.collection('activities').doc(activityId).update({
+              data: { [`remainingCounts.${itemKey}`]: newRemaining },
+            });
+          }
+          await transaction.commit();
+        } catch (e) {
+          await transaction.rollback();
+          return { success: false, error: '更新余量失败，请重试' };
         }
       }
 
@@ -554,16 +565,23 @@ exports.main = async (event) => {
         });
       }
 
-      // 递增活动余量（先读后写）
+      // 使用事务递增活动余量（确保读取和写入的原子性，避免并发问题）
       if (itemKey && activityId) {
-        const actDoc = await db.collection('activities').doc(activityId).get();
-        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
-        if (currentRemaining !== undefined && currentRemaining !== null) {
-          const total = (actDoc.data.confirmItems || []).find(c => c.key === itemKey)?.total;
-          const newRemaining = Math.min(total !== undefined ? total : currentRemaining + 1, currentRemaining + 1);
-          await db.collection('activities').doc(activityId).update({
-            data: { [`remainingCounts.${itemKey}`]: newRemaining },
-          });
+        const transaction = db.startTransaction();
+        try {
+          const actDoc = await transaction.collection('activities').doc(activityId).get();
+          const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+          if (currentRemaining !== undefined && currentRemaining !== null) {
+            const total = (actDoc.data.confirmItems || []).find(c => c.key === itemKey)?.total;
+            const newRemaining = Math.min(total !== undefined ? total : currentRemaining + 1, currentRemaining + 1);
+            await transaction.collection('activities').doc(activityId).update({
+              data: { [`remainingCounts.${itemKey}`]: newRemaining },
+            });
+          }
+          await transaction.commit();
+        } catch (e) {
+          await transaction.rollback();
+          return { success: false, error: '更新余量失败，请重试' };
         }
       }
 

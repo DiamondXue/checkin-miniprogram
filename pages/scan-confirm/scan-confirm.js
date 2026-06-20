@@ -141,7 +141,7 @@ Page({
     this.setData({ loading: true });
 
     try {
-      await wx.cloud.callFunction({
+      const result = await wx.cloud.callFunction({
         name: 'createActivity',
         data: {
           action: 'confirmPickup',
@@ -154,24 +154,15 @@ Page({
         },
       });
 
+      if (!result.result.success) {
+        wx.showToast({ title: result.result.error || '确认失败', icon: 'none' });
+        this.setData({ loading: false });
+        return;
+      }
+
       wx.showToast({ title: '确认成功', icon: 'success' });
 
-      // 刷新本地数据
-      const updatedConfirmations = { ...this.data.confirmations };
-      updatedConfirmations[itemKey] = {
-        confirmed: true,
-        at: cstTimeStr(),
-        by: currentUser ? currentUser.staffId : '',
-      };
-      const updatedRemaining = { ...this.data.remainingCounts };
-      if (updatedRemaining[itemKey] !== undefined) {
-        updatedRemaining[itemKey] = Math.max(0, updatedRemaining[itemKey] - 1);
-      }
-      this.setData({
-        confirmations: updatedConfirmations,
-        remainingCounts: updatedRemaining,
-        loading: false,
-      });
+      await this._refreshAfterPickup(scannedUser.staffId);
     } catch (err) {
       console.error('确认失败', err);
       this.setData({ loading: false });
@@ -190,7 +181,7 @@ Page({
     this.setData({ loading: true });
 
     try {
-      await wx.cloud.callFunction({
+      const result = await wx.cloud.callFunction({
         name: 'createActivity',
         data: {
           action: 'cancelPickup',
@@ -202,23 +193,46 @@ Page({
         },
       });
 
+      if (!result.result.success) {
+        wx.showToast({ title: result.result.error || '取消失败', icon: 'none' });
+        this.setData({ loading: false });
+        return;
+      }
+
       wx.showToast({ title: '已取消', icon: 'success' });
 
-      const updatedConfirmations = { ...this.data.confirmations };
-      updatedConfirmations[itemKey] = { confirmed: false, at: '', by: '' };
-      const updatedRemaining = { ...this.data.remainingCounts };
-      if (updatedRemaining[itemKey] !== undefined) {
-        updatedRemaining[itemKey] += 1;
-      }
-      this.setData({
-        confirmations: updatedConfirmations,
-        remainingCounts: updatedRemaining,
-        loading: false,
-      });
+      await this._refreshAfterPickup(scannedUser.staffId);
     } catch (err) {
       console.error('取消失败', err);
       this.setData({ loading: false });
       wx.showToast({ title: '取消失败', icon: 'none' });
+    }
+  },
+
+  // 领取/取消后重新查询数据库获取最新余量
+  async _refreshAfterPickup(staffId) {
+    if (!this.activityId || !staffId) return;
+    try {
+      const pRes = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: {
+          action: 'getParticipant',
+          activityId: this.activityId,
+          staffId: staffId,
+        },
+      });
+      if (pRes.result.success && pRes.result.record) {
+        this.setData({
+          confirmations: pRes.result.record.confirmations || {},
+          remainingCounts: pRes.result.remainingCounts || {},
+          loading: false,
+        });
+      } else {
+        this.setData({ loading: false });
+      }
+    } catch (e) {
+      console.error('刷新数据失败', e);
+      this.setData({ loading: false });
     }
   },
 
