@@ -53,9 +53,27 @@
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
 }
 
+/* Canvas 可见，确保真机能正确渲染和导出 */
 .qrcode-canvas {
-  width: 400rpx;
-  height: 400rpx;
+  width: 200px;
+  height: 200px;
+  display: block;
+}
+
+.qrcode-image {
+  width: 200px;
+  height: 200px;
+  display: block;
+}
+
+.qrcode-loading {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+  font-size: 24rpx;
 }
 
 .user-info {
@@ -82,6 +100,71 @@
   font-size: 24rpx;
   color: #9CA3AF;
   text-align: center;
+}
+
+/* 我的领取情况 */
+.my-pickup-section {
+  width: 100%;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-top: 30rpx;
+  box-sizing: border-box;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.my-pickup-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 20rpx;
+}
+
+.my-pickup-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F3F4F6;
+}
+
+.my-pickup-item:last-child {
+  border-bottom: none;
+}
+
+.my-pickup-label {
+  font-size: 28rpx;
+  color: #374151;
+  font-weight: 500;
+}
+
+.my-pickup-status {
+  text-align: right;
+}
+
+.status-ok {
+  color: #10B981;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.status-wait {
+  color: #F59E0B;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.status-detail {
+  font-size: 22rpx;
+  color: #9CA3AF;
+  margin-top: 4rpx;
+}
+
+.my-pickup-empty {
+  font-size: 26rpx;
+  color: #9CA3AF;
+  text-align: center;
+  padding: 20rpx 0;
 }
 
 .not-checked {

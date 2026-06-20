@@ -157,14 +157,7 @@
   color: #fff;
   border: none;
   line-height: 1.8;
-}
-
-.confirm-btn.tea {
-  background: #F59E0B;
-}
-
-.confirm-btn.gift {
-  background: #EC4899;
+  background: #4F46E5;
 }
 
 .confirm-btn::after {

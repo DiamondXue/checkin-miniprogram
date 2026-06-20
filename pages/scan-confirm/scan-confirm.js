@@ -4,9 +4,12 @@ const { cstTimeStr } = require('../../utils/china-time');
 Page({
   data: {
     activityId: '',
+    confirmItems: [],       // 活动的确认项目列表 [{ key, label }]
+    enableScanConfirm: false, // 活动是否开启了扫码确认
     scanned: false,
     scannedUser: null,      // 扫码解析出的用户信息 { staffId, name }
     scannedParticipant: null, // 该用户在 participants 表中的记录
+    confirmations: {},      // { itemKey: { confirmed, at, by } }
     loading: false,
   },
 
@@ -18,7 +21,6 @@ Page({
       wx.redirectTo({ url: '/pages/login/login' });
       return;
     }
-    // 非管理员只能看到自己的码（已在 my-qrcode 页面），这里不限制，由活动权限控制
   },
 
   // 扫码
@@ -75,7 +77,10 @@ Page({
       }
 
       // 查询参与者记录（签到状态 + 领取状态）
-      let participant = { checked: false, teaConfirmed: false, giftConfirmed: false };
+      let participant = { checked: false };
+      let confirmations = {};
+      let confirmItems = [];
+      let enableScanConfirm = false;
       if (this.activityId) {
         try {
           const pRes = await wx.cloud.callFunction({
@@ -88,7 +93,10 @@ Page({
           });
           if (pRes.result.success && pRes.result.record) {
             participant = pRes.result.record;
+            confirmations = pRes.result.record.confirmations || {};
           }
+          enableScanConfirm = pRes.result.enableScanConfirm !== false;
+          confirmItems = enableScanConfirm ? (pRes.result.confirmItems || []) : [];
         } catch (e) {
           // 忽略
         }
@@ -98,6 +106,9 @@ Page({
         scanned: true,
         scannedUser: userInfo,
         scannedParticipant: participant,
+        confirmations,
+        confirmItems,
+        enableScanConfirm,
         loading: false,
       });
     } catch (err) {
@@ -107,15 +118,11 @@ Page({
     }
   },
 
-  // 确认领取
+  // 确认领取（动态 itemKey）
   async confirmPickup(e) {
-    const type = e.currentTarget.dataset.type; // 'tea' or 'gift'
+    const itemKey = e.currentTarget.dataset.key;
     const { scannedUser, scannedParticipant } = this.data;
-    if (!scannedUser || !scannedUser.staffId) return;
-
-    const updateField = type === 'tea' ? 'teaConfirmed' : 'giftConfirmed';
-    const timeField = type === 'tea' ? 'teaConfirmedAt' : 'giftConfirmedAt';
-    const confirmedByField = type === 'tea' ? 'teaConfirmedBy' : 'giftConfirmedBy';
+    if (!scannedUser || !scannedUser.staffId || !itemKey) return;
 
     const currentUser = app.globalData.currentUser;
 
@@ -129,9 +136,7 @@ Page({
           activityId: this.activityId,
           staffId: scannedUser.staffId,
           participantId: scannedParticipant._id || '',
-          field: updateField,
-          timeField,
-          confirmedByField,
+          itemKey,
           confirmedBy: currentUser ? currentUser.staffId : '',
           confirmedAt: cstTimeStr(),
         },
@@ -139,10 +144,15 @@ Page({
 
       wx.showToast({ title: '确认成功', icon: 'success' });
 
-      // 刷新数据
+      // 刷新本地数据
+      const updatedConfirmations = { ...this.data.confirmations };
+      updatedConfirmations[itemKey] = {
+        confirmed: true,
+        at: cstTimeStr(),
+        by: currentUser ? currentUser.staffId : '',
+      };
       this.setData({
-        [`scannedParticipant.${updateField}`]: true,
-        [`scannedParticipant.${timeField}`]: cstTimeStr(),
+        confirmations: updatedConfirmations,
         loading: false,
       });
     } catch (err) {
@@ -150,5 +160,11 @@ Page({
       this.setData({ loading: false });
       wx.showToast({ title: '确认失败', icon: 'none' });
     }
+  },
+
+  // 获取 item 确认状态
+  getItemStatus(key) {
+    const conf = (this.data.confirmations || {})[key];
+    return conf || { confirmed: false, at: '', by: '' };
   },
 });

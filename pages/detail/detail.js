@@ -8,11 +8,14 @@ Page({
     participants: [],
     keyword: '',
     activeFilter: 'all',
+    activeConfirmFilter: 'all',   // 'all' | '{key}_confirmed' | '{key}_unconfirmed'
     filteredList: [],
     uncheckedCount: 0,
     checkedCount: 0,
     totalCount: 0,
     progressPct: 0,
+    confirmStats: [],              // [{ key, label, confirmed, total, unconfirmed }]
+    confirmItems: [],              // 活动定义的领取项目
     loading: true,
     statusTagClass: '',
     statusText: '',
@@ -76,17 +79,48 @@ Page({
         console.warn('加载参与者失败', e);
       }
 
-      const checkedCount = allParticipants.filter(p => p.checked).length;
-      const totalCount = allParticipants.length;
-      const pct = totalCount > 0 ? Math.round(checkedCount / totalCount * 100) : 0;
+      // 云函数已按 staffId 去重，前端再保底一次 + 显式布尔化 checked
+      const byStaffId = {};
+      allParticipants.forEach(p => {
+        const prev = byStaffId[p.staffId];
+        if (!prev) { byStaffId[p.staffId] = p; return; }
+        if (!!p.checked && !prev.checked) byStaffId[p.staffId] = p;
+      });
+      const uniqueParticipants = Object.values(byStaffId);
+
+      const checkedCount = uniqueParticipants.filter(p => !!p.checked).length;
+      const totalCount = uniqueParticipants.length;
+      const progressPct = totalCount > 0 ? Math.round(checkedCount / totalCount * 100) : 0;
+
+      // 计算确认领取统计：仅在开启扫码确认时计算
+      let confirmItems = [];
+      let confirmStats = [];
+      if (activity.enableScanConfirm !== false) {
+        confirmItems = (activity.confirmItems && activity.confirmItems.length > 0)
+          ? activity.confirmItems
+          : [{ key: 'tea', label: '茶点' }, { key: 'gift', label: '礼品' }];
+        confirmStats = confirmItems.map(ci => {
+          const confirmed = uniqueParticipants.filter(p => this._getConfirmation(p, ci.key).confirmed).length;
+          return {
+            key: ci.key,
+            label: ci.label,
+            confirmed,
+            total: totalCount,
+            unconfirmed: totalCount - confirmed,
+          };
+        });
+      }
 
       this.setData({
         activity,
-        participants: allParticipants,
+        participants: uniqueParticipants,
         totalCount,
         checkedCount,
         uncheckedCount: totalCount - checkedCount,
-        progressPct: pct,
+        progressPct,
+        confirmItems,
+        confirmStats,
+        activeConfirmFilter: 'all',
         statusTagClass: statusInfo.class,
         statusText: statusInfo.text,
         canEdit,
@@ -157,10 +191,22 @@ Page({
   },
 
   applyFilter() {
-    const { participants, keyword, activeFilter } = this.data;
+    const { participants, keyword, activeFilter, activeConfirmFilter, confirmItems } = this.data;
+
     let list = participants;
-    if (activeFilter === 'checked') list = list.filter(p => p.checked);
+    if (activeFilter === 'checked') list = list.filter(p => !!p.checked);
     else if (activeFilter === 'unchecked') list = list.filter(p => !p.checked);
+
+    // 确认筛选：activeConfirmFilter 格式为 'key_confirmed' 或 'key_unconfirmed'
+    if (activeConfirmFilter !== 'all') {
+      const parts = activeConfirmFilter.split('_');
+      const key = parts.slice(0, -1).join('_');
+      const status = parts[parts.length - 1];
+      list = list.filter(p => {
+        const c = this._getConfirmation(p, key);
+        return status === 'confirmed' ? c.confirmed : !c.confirmed;
+      });
+    }
 
     if (keyword.trim()) {
       const kw = keyword.trim().toLowerCase();
@@ -171,7 +217,39 @@ Page({
       );
     }
 
+    // 为每个人预计算确认展示数据（仅在活动开启扫码确认且有项目时生成）
+    if (confirmItems && confirmItems.length > 0) {
+      list = list.map(p => {
+        p._confirmDisplay = confirmItems.map(ci => ({
+          key: ci.key,
+          label: ci.label,
+          confirmed: this._getConfirmation(p, ci.key).confirmed,
+        }));
+        return p;
+      });
+    }
+
     this.setData({ filteredList: list });
+  },
+
+  /** 从参与者记录中读取确认状态，兼容新旧格式 */
+  _getConfirmation(p, key) {
+    if (p.confirmations && p.confirmations[key]) {
+      return p.confirmations[key];
+    }
+    // 向后兼容旧扁平字段
+    return {
+      confirmed: !!(p[key + 'Confirmed']),
+      at: p[key + 'ConfirmedAt'] || '',
+      by: p[key + 'ConfirmedBy'] || '',
+    };
+  },
+
+  /** 设置确认筛选 */
+  setConfirmFilter(e) {
+    const filter = e.currentTarget.dataset.filter;
+    this.setData({ activeConfirmFilter: filter });
+    this.applyFilter();
   },
 
   toggleStaffPanel() {

@@ -140,6 +140,66 @@
   box-sizing: border-box;
 }
 
+/* 扫码确认开关 */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-info {
+  flex: 1;
+}
+
+.toggle-info .form-label {
+  margin-bottom: 8rpx;
+}
+
+.toggle-info .form-hint {
+  margin-top: 0;
+}
+
+/* 确认项目列表 */
+.confirm-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.confirm-item-input {
+  flex: 1;
+}
+
+.confirm-item-del {
+  width: 64rpx;
+  height: 64rpx;
+  background: #FEE2E2;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #EF4444;
+  flex-shrink: 0;
+}
+
+.add-confirm-btn {
+  height: 72rpx;
+  background: #F3F4F6;
+  border: 2rpx dashed #D1D5DB;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8rpx;
+}
+
+.add-confirm-btn text {
+  font-size: 26rpx;
+  color: #6B7280;
+}
+
 /* 操作按钮 */
 .action-area {
   padding: 16rpx 24rpx;

@@ -53,7 +53,7 @@
         <text class="checked-name">{{myRecord.name || currentUser.name}}</text>
         <text class="checked-dept">{{myRecord.dept || currentUser.dept}}</text>
         <text class="checked-time">签到时间：{{myCheckedAt}}</text>
-        <navigator url="/pages/my-qrcode/my-qrcode?id={{activity._id}}" class="qrcode-btn">
+        <navigator wx:if="{{activity.enableScanConfirm !== false}}" url="/pages/my-qrcode/my-qrcode?id={{activity._id}}" class="qrcode-btn">
           出示签到码
         </navigator>
       </view>

@@ -29,27 +29,21 @@
     </view>
 
     <!-- 领取确认 -->
-    <view class="confirm-section">
+    <view class="confirm-section" wx:if="{{confirmItems.length > 0}}">
       <view class="card-title">领取确认</view>
 
-      <!-- 茶点领取 -->
-      <view class="confirm-item">
-        <view class="confirm-label">下午茶点</view>
-        <view class="confirm-status" wx:if="{{scannedParticipant.teaConfirmed}}">
-          已确认 {{scannedParticipant.teaConfirmedAt}}
+      <view class="confirm-item" wx:for="{{confirmItems}}" wx:key="key">
+        <view class="confirm-label">{{item.label}}</view>
+        <view class="confirm-status" wx:if="{{confirmations[item.key].confirmed}}">
+          已确认 {{confirmations[item.key].at}}
         </view>
-        <button class="confirm-btn tea" wx:else bindtap="confirmPickup" data-type="tea">
-          确认领取
-        </button>
-      </view>
-
-      <!-- 礼品领取 -->
-      <view class="confirm-item">
-        <view class="confirm-label">活动礼品</view>
-        <view class="confirm-status" wx:if="{{scannedParticipant.giftConfirmed}}">
-          已确认 {{scannedParticipant.giftConfirmedAt}}
-        </view>
-        <button class="confirm-btn gift" wx:else bindtap="confirmPickup" data-type="gift">
+        <button
+          class="confirm-btn"
+          wx:else
+          bindtap="confirmPickup"
+          data-key="{{item.key}}"
+          style="background: {{item._color || '#4F46E5'}};"
+        >
           确认领取
         </button>
       </view>

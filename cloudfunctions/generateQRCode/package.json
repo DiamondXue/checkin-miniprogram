@@ -1,0 +1,9 @@
+{
+  "name": "generateQRCode",
+  "version": "1.0.0",
+  "description": "生成二维码并上传到云存储",
+  "main": "index.js",
+  "dependencies": {
+    "qr-image": "^3.2.0"
+  }
+}

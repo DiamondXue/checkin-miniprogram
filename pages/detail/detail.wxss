@@ -162,6 +162,136 @@
   display: block;
 }
 
+/* === 确认领取统计卡片 === */
+.confirm-stats {
+  margin-top: 16rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.cs-card {
+  flex: 1;
+  min-width: 240rpx;
+  background: rgba(255,255,255,0.12);
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.cs-label {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.65);
+}
+
+.cs-progress-wrap {
+  height: 8rpx;
+}
+
+.cs-progress-bg {
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.cs-progress-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.9);
+  border-radius: 8rpx;
+  transition: width 0.4s ease;
+}
+
+.cs-nums {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+}
+
+/* === 确认筛选区 === */
+.confirm-filter-section {
+  background: #FFFFFF;
+  margin: 16rpx 24rpx 0;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.cf-section-label {
+  font-size: 22rpx;
+  color: #9CA3AF;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.cf-item-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.cf-item-row:last-child {
+  margin-bottom: 0;
+}
+
+.cf-item-label {
+  font-size: 24rpx;
+  color: #374151;
+  font-weight: 600;
+  width: 80rpx;
+  flex-shrink: 0;
+}
+
+.cf-tab-row {
+  display: flex;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.cf-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10rpx 8rpx;
+  font-size: 22rpx;
+  color: #6B7280;
+  background: #F3F4F6;
+  border-radius: 8rpx;
+  transition: all 0.2s;
+}
+
+.cf-tab.active {
+  color: #FFFFFF;
+  background: #4F46E5;
+  font-weight: 600;
+}
+
+/* === 确认图标（人员列表） === */
+.confirm-icons {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 8rpx;
+  flex-wrap: wrap;
+}
+
+.ci-badge {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+}
+
+.ci-done {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.ci-pending {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
 /* 管理操作栏 */
 .manage-bar {
   display: flex;

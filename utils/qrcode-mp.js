@@ -428,10 +428,38 @@ module.exports = BitMatrix
 },{}],6:[function(require,module,exports){
 const Mode = require('./mode')
 
+function textEncodeUtf8 (str) {
+  if (typeof TextEncoder !== 'undefined') {
+    return new TextEncoder('utf-8').encode(str)
+  }
+  // 微信小程序运行时 TextEncoder 缺失的回退实现（UTF-8 编码）
+  const result = []
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i)
+    if (c < 0x80) {
+      result.push(c)
+    } else if (c < 0x800) {
+      result.push(0xC0 | (c >> 6), 0x80 | (c & 0x3F))
+    } else if (c >= 0xD800 && c <= 0xDBFF && i + 1 < str.length) {
+      const c2 = str.charCodeAt(++i)
+      const code = 0x10000 + (((c & 0x3FF) << 10) | (c2 & 0x3FF))
+      result.push(
+        0xF0 | (code >> 18),
+        0x80 | ((code >> 12) & 0x3F),
+        0x80 | ((code >> 6) & 0x3F),
+        0x80 | (code & 0x3F)
+      )
+    } else {
+      result.push(0xE0 | (c >> 12), 0x80 | ((c >> 6) & 0x3F), 0x80 | (c & 0x3F))
+    }
+  }
+  return new Uint8Array(result)
+}
+
 function ByteData (data) {
   this.mode = Mode.BYTE
   if (typeof (data) === 'string') {
-    this.data = new TextEncoder().encode(data)
+    this.data = textEncodeUtf8(data)
   } else {
     this.data = new Uint8Array(data)
   }

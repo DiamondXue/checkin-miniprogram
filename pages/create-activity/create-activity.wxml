@@ -76,6 +76,38 @@
         <text class="form-hint">设置签到有效范围，用户需在此范围内才能签到</text>
       </view>
 
+      <!-- 扫码确认开关 -->
+      <view class="form-item">
+        <view class="toggle-row">
+          <view class="toggle-info">
+            <text class="form-label">扫码确认</text>
+            <text class="form-hint">开启后用户签到完成可出示身份码，管理员扫码确认领取项目</text>
+          </view>
+          <switch checked="{{enableScanConfirm}}" bindchange="onScanConfirmToggle" color="#4F46E5" />
+        </view>
+      </view>
+
+      <!-- 确认项目列表（开启扫码确认时显示） -->
+      <view class="form-item" wx:if="{{enableScanConfirm}}">
+        <text class="form-label">领取确认项目</text>
+        <text class="form-hint" style="margin-bottom: 16rpx;">定义管理员可扫码确认的领取项（如茶点、礼品等）</text>
+
+        <view class="confirm-item-row" wx:for="{{confirmItems}}" wx:key="key">
+          <input
+            class="form-input confirm-item-input"
+            placeholder="如：下午茶点"
+            value="{{item.label}}"
+            bindinput="onConfirmLabelInput"
+            data-index="{{index}}"
+          />
+          <view class="confirm-item-del" bindtap="removeConfirmItem" data-index="{{index}}">✕</view>
+        </view>
+
+        <view class="add-confirm-btn" bindtap="addConfirmItem">
+          <text>+ 添加项目</text>
+        </view>
+      </view>
+
       <!-- 参与者工号 -->
       <view class="form-item">
         <text class="form-label">参与者工号</text>

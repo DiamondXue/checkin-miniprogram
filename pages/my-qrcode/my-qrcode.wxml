@@ -14,12 +14,52 @@
   <view class="qrcode-section" wx:if="{{myChecked}}">
     <view class="qrcode-label">向管理员出示此码</view>
     <view class="qrcode-wrapper">
-      <canvas type="2d" id="qrcode-canvas" class="qrcode-canvas"></canvas>
+      <!-- 新版 type="2d" canvas：真机上更稳定，导出图片前也会直接显示绘制内容 -->
+      <canvas
+        id="qrcode-canvas"
+        type="2d"
+        class="qrcode-canvas"
+        style="{{qrcodeImagePath ? 'position:absolute;left:-9999px;visibility:hidden;' : ''}}"
+      ></canvas>
+      <!-- 导出成功后显示图片，便于保存和分享 -->
+      <image
+        wx:if="{{qrcodeImagePath}}"
+        src="{{qrcodeImagePath}}"
+        class="qrcode-image"
+        mode="aspectFit"
+      ></image>
+      <!-- 生成中遮罩：canvas 绘制过程中覆盖，导出成功后同步隐藏 -->
+      <view wx:if="{{!qrcodeImagePath}}" class="qrcode-loading">
+        生成中...
+      </view>
     </view>
     <view class="user-info">
       <text class="user-name">{{userInfo.name}}</text>
       <text class="user-staffid">{{userInfo.staffId}}</text>
     </view>
+
+    <!-- 我的领取情况 -->
+    <view class="my-pickup-section">
+      <view class="my-pickup-title">我的领取情况</view>
+      <block wx:if="{{myConfirmList.length > 0}}">
+        <view
+          wx:for="{{myConfirmList}}"
+          wx:key="key"
+          class="my-pickup-item {{item.confirmed ? 'confirmed' : 'unconfirmed'}}"
+        >
+          <view class="my-pickup-label">{{item.label}}</view>
+          <view class="my-pickup-status">
+            <text wx:if="{{item.confirmed}}" class="status-ok">✓ 已领取</text>
+            <text wx:else class="status-wait">未领取</text>
+            <view wx:if="{{item.confirmed}}" class="status-detail">
+              {{item.at}}{{item.by ? ' · ' + item.by : ''}}
+            </view>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="my-pickup-empty">暂无领取项目</view>
+    </view>
+
     <view class="qrcode-tip">管理员扫码后可确认茶点/礼品领取</view>
   </view>
 

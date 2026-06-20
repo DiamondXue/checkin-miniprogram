@@ -11,6 +11,49 @@ const _ = db.command;
 exports.main = async (event) => {
   const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt } = event;
 
+  // 获取活动的 confirmItems 配置，用于初始化 confirmations
+  async function getActivityConfirmItems() {
+    try {
+      const act = await db.collection('activities').doc(activityId).get();
+      if (act.data && act.data.confirmItems && act.data.confirmItems.length > 0) {
+        return act.data.confirmItems;
+      }
+    } catch (e) {}
+    return [];
+  }
+
+  // 生成确认字段（兼容新旧格式）
+  function buildConfirmFields(confirmItems) {
+    const fields = {};
+    if (confirmItems && confirmItems.length > 0) {
+      const confirmations = {};
+      confirmItems.forEach(item => {
+        confirmations[item.key] = { confirmed: false, at: '', by: '' };
+      });
+      fields.confirmations = confirmations;
+      // 向后兼容：如果有 tea/gift 标准 key，同时设置旧字段
+      if (confirmations.tea) {
+        fields.teaConfirmed = false;
+        fields.teaConfirmedAt = '';
+        fields.teaConfirmedBy = '';
+      }
+      if (confirmations.gift) {
+        fields.giftConfirmed = false;
+        fields.giftConfirmedAt = '';
+        fields.giftConfirmedBy = '';
+      }
+    } else {
+      // 默认：没有自定义项目，仅向后兼容
+      fields.teaConfirmed = false;
+      fields.teaConfirmedAt = '';
+      fields.teaConfirmedBy = '';
+      fields.giftConfirmed = false;
+      fields.giftConfirmedAt = '';
+      fields.giftConfirmedBy = '';
+    }
+    return fields;
+  }
+
   if (action === 'createParticipants') {
     // 支持两种模式：
     //   1. 传 staffIds（工号数组）→ 云端自动查 users 获取姓名部门（推荐，支持大量用户）
@@ -45,6 +88,10 @@ exports.main = async (event) => {
       participantList = participants;
     }
 
+    // 获取活动的确认项目配置
+    const confirmItems = await getActivityConfirmItems();
+    const confirmFields = buildConfirmFields(confirmItems);
+
     // 全部并发写入（前端已按20条分批，云函数直接一次性并发全部写入）
     const WRITE_BATCH = 20;
     for (let i = 0; i < participantList.length; i += WRITE_BATCH) {
@@ -58,13 +105,7 @@ exports.main = async (event) => {
             dept: p.dept || '',
             checked: false,
             checkedAt: '',
-            // 领取确认字段（初始化）
-            teaConfirmed: false,
-            teaConfirmedAt: '',
-            teaConfirmedBy: '',
-            giftConfirmed: false,
-            giftConfirmedAt: '',
-            giftConfirmedBy: '',
+            ...confirmFields,
             createdAt: db.serverDate(),
           },
         }).then(() => {
@@ -84,6 +125,8 @@ exports.main = async (event) => {
     // 同步更新 activities 表的 participantStaffIds 字段
     const results = { added: 0, skipped: 0, errors: [] };
     let participantList = [];
+    const confirmItems = await getActivityConfirmItems();
+    const confirmFields = buildConfirmFields(confirmItems);
 
     if (staffIds && staffIds.length > 0) {
       const QUERY_BATCH = 100;
@@ -108,10 +151,25 @@ exports.main = async (event) => {
     // 去重：跳过已有的参与者，同时收集需要追加的工号
     let newStaffIds = [];
     if (participantList.length > 0) {
-      const existing = await db.collection('participants')
-        .where({ activityId })
-        .get();
-      const existingIds = new Set(existing.data.map(p => p.staffId));
+      // 分页读取已有参与者，避免 .get() 默认 100 条限制导致重复添加
+      const existingIds = new Set();
+      const MAX_PER_PAGE = 100;
+      let hasMore = true;
+      let pageSkip = 0;
+      while (hasMore) {
+        try {
+          const page = await db.collection('participants')
+            .where({ activityId })
+            .limit(MAX_PER_PAGE)
+            .skip(pageSkip)
+            .get();
+          page.data.forEach(p => existingIds.add(p.staffId));
+          if (page.data.length < MAX_PER_PAGE) hasMore = false;
+          else pageSkip += MAX_PER_PAGE;
+        } catch (e) {
+          hasMore = false;
+        }
+      }
 
       newStaffIds = participantList
         .filter(p => !existingIds.has(p.staffId))
@@ -130,12 +188,7 @@ exports.main = async (event) => {
               dept: p.dept || '',
               checked: false,
               checkedAt: '',
-              teaConfirmed: false,
-              teaConfirmedAt: '',
-              teaConfirmedBy: '',
-              giftConfirmed: false,
-              giftConfirmedAt: '',
-              giftConfirmedBy: '',
+              ...confirmFields,
               createdAt: db.serverDate(),
             },
           }).then(() => { results.added++; }).catch(err => {
@@ -212,37 +265,35 @@ exports.main = async (event) => {
     }
   }
 
-  if (action === 'getParticipant') {
-    // 查询某个参与者的签到记录
-    try {
+  // 获取活动全部参与者并按 staffId 去重（同一工号已签到优先）
+  async function fetchUniqueParticipants(actId) {
+    const MAX = 100;
+    let all = [];
+    let skip = 0;
+    while (true) {
       const { data } = await db.collection('participants')
-        .where({ activityId, staffId })
-        .limit(1)
+        .where({ activityId: actId })
+        .skip(skip)
+        .limit(MAX)
         .get();
-      return { success: true, record: data[0] || null };
-    } catch (err) {
-      return { success: false, error: err.message };
+      all = all.concat(data);
+      if (data.length < MAX) break;
+      skip += MAX;
     }
+    const byStaffId = {};
+    all.forEach(p => {
+      const prev = byStaffId[p.staffId];
+      if (!prev) { byStaffId[p.staffId] = p; return; }
+      // 已签到的记录永远优先；其他情况保留第一条
+      if (!!p.checked && !prev.checked) byStaffId[p.staffId] = p;
+    });
+    return Object.values(byStaffId);
   }
 
   if (action === 'getParticipants') {
-    // 查询活动所有参与者（分页取全量，突破单次100条限制）
     try {
-      let allData = [];
-      let skip = 0;
-      const LIMIT = 100;
-      while (true) {
-        const { data } = await db.collection('participants')
-          .where({ activityId })
-          .orderBy('checked', 'asc')
-          .skip(skip)
-          .limit(LIMIT)
-          .get();
-        allData = allData.concat(data);
-        if (data.length < LIMIT) break;
-        skip += LIMIT;
-      }
-      return { success: true, participants: allData };
+      const list = await fetchUniqueParticipants(activityId);
+      return { success: true, participants: list };
     } catch (err) {
       return { success: false, error: err.message };
     }
@@ -262,30 +313,38 @@ exports.main = async (event) => {
         finalCheckedAt = `${hh}:${mm}`;
       }
 
+      // 优先用 participantId；若无则按 activityId + staffId 查找已有记录
       if (participantId) {
-        // 更新已有记录
         await db.collection('participants').doc(participantId).update({
           data: { checked, checkedAt: finalCheckedAt },
         });
-      } else {
-        // 新增签到记录
-        await db.collection('participants').add({
-          data: {
-            activityId,
-            staffId,
-            name: name || staffId,
-            dept: dept || '',
-            checked: true,
-            checkedAt: finalCheckedAt,
-            teaConfirmed: false,
-            teaConfirmedAt: '',
-            teaConfirmedBy: '',
-            giftConfirmed: false,
-            giftConfirmedAt: '',
-            giftConfirmedBy: '',
-            createdAt: db.serverDate(),
-          },
-        });
+      } else if (staffId) {
+        const existing = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(1)
+          .get();
+        if (existing.data.length > 0) {
+          // 更新已有记录（杜绝重复创建）
+          await db.collection('participants').doc(existing.data[0]._id).update({
+            data: { checked, checkedAt: finalCheckedAt },
+          });
+        } else {
+          // 确实没有记录，才新建
+          const confirmItems = await getActivityConfirmItems();
+          const confirmFields = buildConfirmFields(confirmItems);
+          await db.collection('participants').add({
+            data: {
+              activityId,
+              staffId,
+              name: name || staffId,
+              dept: dept || '',
+              checked: !!checked,
+              checkedAt: finalCheckedAt,
+              ...confirmFields,
+              createdAt: db.serverDate(),
+            },
+          });
+        }
       }
 
       return { success: true };
@@ -295,15 +354,12 @@ exports.main = async (event) => {
   }
 
   if (action === 'getParticipantStats') {
-    // 获取活动的参与者统计（总数 + 已签到数）
+    // 获取活动的参与者统计（总数 + 已签到数，按 staffId 去重）
     try {
-      const { total } = await db.collection('participants')
-        .where({ activityId })
-        .count();
-      const { total: checkedTotal } = await db.collection('participants')
-        .where({ activityId, checked: true })
-        .count();
-      return { success: true, totalCount: total, checkedCount: checkedTotal };
+      const list = await fetchUniqueParticipants(activityId);
+      const totalCount = list.length;
+      const checkedCount = list.filter(p => !!p.checked).length;
+      return { success: true, totalCount, checkedCount };
     } catch (err) {
       return { success: false, error: err.message };
     }
@@ -312,15 +368,17 @@ exports.main = async (event) => {
   if (action === 'getMyCheckin') {
     // 普通用户获取自己的签到状态
     try {
+      // 查所有该工号的记录并选已签到的那条（避免重复记录导致取到旧记录）
       const { data } = await db.collection('participants')
         .where({ activityId, staffId })
-        .limit(1)
+        .limit(20)
         .get();
-      const myRecord = data[0] || {};
+      const checkedRecord = data.find(p => !!p.checked);
+      const record = checkedRecord || data[0] || {};
       return {
         success: true,
-        myChecked: !!myRecord.checked,
-        myCheckedAt: myRecord.checkedAt || '',
+        myChecked: !!record.checked,
+        myCheckedAt: record.checkedAt || '',
       };
     } catch (err) {
       return { success: false, error: err.message };
@@ -331,14 +389,39 @@ exports.main = async (event) => {
     // 管理员扫码后查询参与者的签到状态和领取状态
     // 参数：activityId, staffId
     try {
+      // 查多条后选已签到的那条（避免重复记录时取到未签到的旧记录）
       const { data } = await db.collection('participants')
         .where({ activityId, staffId })
-        .limit(1)
+        .limit(20)
         .get();
-      const record = data[0] || null;
+      let record = data.find(p => !!p.checked);
+      if (!record) record = data[0] || null;
       if (!record) {
-        return { success: true, record: null };
+        return { success: true, record: null, confirmItems: [], enableScanConfirm: false };
       }
+      // 同时获取活动的配置（用于前端动态渲染确认按钮）
+      let confirmItems = [];
+      let enableScanConfirm = false;
+      try {
+        const act = await db.collection('activities').doc(activityId).get();
+        if (act.data) {
+          confirmItems = act.data.confirmItems || [];
+          enableScanConfirm = act.data.enableScanConfirm !== false;
+        }
+      } catch (e) {}
+
+      // 兼容新旧数据格式
+      const confirmations = record.confirmations || {};
+      if (!record.confirmations) {
+        // 旧格式 → 转换为新格式
+        if (record.teaConfirmed !== undefined) {
+          confirmations.tea = { confirmed: !!record.teaConfirmed, at: record.teaConfirmedAt || '', by: record.teaConfirmedBy || '' };
+        }
+        if (record.giftConfirmed !== undefined) {
+          confirmations.gift = { confirmed: !!record.giftConfirmed, at: record.giftConfirmedAt || '', by: record.giftConfirmedBy || '' };
+        }
+      }
+
       return {
         success: true,
         record: {
@@ -348,13 +431,10 @@ exports.main = async (event) => {
           dept: record.dept || '',
           checked: !!record.checked,
           checkedAt: record.checkedAt || '',
-          teaConfirmed: !!record.teaConfirmed,
-          teaConfirmedAt: record.teaConfirmedAt || '',
-          teaConfirmedBy: record.teaConfirmedBy || '',
-          giftConfirmed: !!record.giftConfirmed,
-          giftConfirmedAt: record.giftConfirmedAt || '',
-          giftConfirmedBy: record.giftConfirmedBy || '',
+          confirmations,
         },
+        confirmItems,
+        enableScanConfirm,
       };
     } catch (err) {
       return { success: false, error: err.message };
@@ -362,15 +442,37 @@ exports.main = async (event) => {
   }
 
   if (action === 'confirmPickup') {
-    // 管理员确认领取（茶点/礼品等）
-    // 参数：activityId, staffId, participantId, field, timeField, confirmedByField, confirmedBy, confirmedAt
+    // 管理员确认领取（茶点/礼品等自定义项目）
+    // 新格式：itemKey, confirmedBy, confirmedAt
+    // 旧格式（兼容）：field, timeField, confirmedByField, confirmedBy, confirmedAt
     try {
-      const { field, timeField, confirmedByField, confirmedBy, confirmedAt } = event;
+      const { itemKey, confirmedBy, confirmedAt } = event;
 
       let updateData = {};
-      updateData[field] = true;
-      updateData[timeField] = confirmedAt || '';
-      updateData[confirmedByField] = confirmedBy || '';
+
+      if (itemKey) {
+        // 新格式：使用 confirmations map
+        const mapKey = `confirmations.${itemKey}`;
+        updateData[`${mapKey}.confirmed`] = true;
+        updateData[`${mapKey}.at`] = confirmedAt || '';
+        updateData[`${mapKey}.by`] = confirmedBy || '';
+        // 同时更新旧格式字段（向后兼容）
+        if (itemKey === 'tea') {
+          updateData.teaConfirmed = true;
+          updateData.teaConfirmedAt = confirmedAt || '';
+          updateData.teaConfirmedBy = confirmedBy || '';
+        } else if (itemKey === 'gift') {
+          updateData.giftConfirmed = true;
+          updateData.giftConfirmedAt = confirmedAt || '';
+          updateData.giftConfirmedBy = confirmedBy || '';
+        }
+      } else {
+        // 旧格式兼容
+        const { field, timeField, confirmedByField } = event;
+        updateData[field] = true;
+        updateData[timeField] = confirmedAt || '';
+        updateData[confirmedByField] = confirmedBy || '';
+      }
 
       if (participantId) {
         await db.collection('participants').doc(participantId).update({

@@ -12,6 +12,12 @@ Page({
     endTime: '18:00',
     organizer: '',
     checkinRadius: 500,
+    // 扫码确认
+    enableScanConfirm: true,
+    confirmItems: [
+      { key: 'tea', label: '下午茶点' },
+      { key: 'gift', label: '活动礼品' },
+    ],
     // 位置
     latitude: null,
     longitude: null,
@@ -55,6 +61,10 @@ Page({
         longitude: act.longitude || null,
         locationAddress: act.latitude ? '已设置' : '',
         participantInput: (act.participantStaffIds || []).join(', '),
+        enableScanConfirm: act.enableScanConfirm !== false,
+        confirmItems: (act.confirmItems && act.confirmItems.length > 0)
+          ? act.confirmItems
+          : [{ key: 'tea', label: '下午茶点' }, { key: 'gift', label: '活动礼品' }],
         loading: false,
       });
       wx.setNavigationBarTitle({ title: '编辑活动' });
@@ -119,6 +129,36 @@ Page({
     this.setData({ latitude: null, longitude: null, locationAddress: '' });
   },
 
+  // === 扫码确认 ===
+
+  // 切换扫码确认开关
+  onScanConfirmToggle() {
+    this.setData({ enableScanConfirm: !this.data.enableScanConfirm });
+  },
+
+  // 修改确认项目标签
+  onConfirmLabelInput(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    const key = `confirmItems[${index}].label`;
+    this.setData({ [key]: e.detail.value });
+  },
+
+  // 添加确认项目
+  addConfirmItem() {
+    const items = this.data.confirmItems;
+    const key = 'item_' + Date.now();
+    this.setData({
+      confirmItems: [...items, { key, label: '' }],
+    });
+  },
+
+  // 删除确认项目
+  removeConfirmItem(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    const items = this.data.confirmItems.filter((_, i) => i !== index);
+    this.setData({ confirmItems: items });
+  },
+
   async doSave() {
     const { name, location, date, startTime, endTime, organizer, checkinRadius, saving, isEdit } = this.data;
 
@@ -169,7 +209,10 @@ Page({
 
     const user = app.globalData.currentUser;
     const db = wx.cloud.database();
-    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude } = this.data;
+    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude, enableScanConfirm, confirmItems } = this.data;
+
+    // 过滤掉空标签的确认项目
+    const validConfirmItems = (confirmItems || []).filter(item => item.label.trim());
 
     try {
       if (isEdit) {
@@ -185,6 +228,8 @@ Page({
           latitude: latitude || null,
           longitude: longitude || null,
           participantStaffIds: participantStaffIds,
+          enableScanConfirm: !!enableScanConfirm,
+          confirmItems: validConfirmItems,
         };
         await db.collection('activities').doc(activityId).update({ data: updateData });
 
@@ -221,6 +266,8 @@ Page({
             creatorStaffId: user.staffId,
             creatorName: user.name || user.staffId,
             participantStaffIds: participantStaffIds,
+            enableScanConfirm: !!enableScanConfirm,
+            confirmItems: validConfirmItems,
             createdAt: db.serverDate(),
           },
         });

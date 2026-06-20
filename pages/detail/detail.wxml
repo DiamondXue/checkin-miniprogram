@@ -63,6 +63,20 @@
           <text class="stat-small">应到人数</text>
         </view>
       </view>
+
+      <!-- 确认领取统计卡片 -->
+      <view class="confirm-stats" wx:if="{{activity.enableScanConfirm !== false && confirmStats.length > 0}}">
+        <view class="cs-card {{item.confirmed === item.total ? 'cs-all-done' : item.confirmed > 0 ? 'cs-partial' : 'cs-none'}}"
+              wx:for="{{confirmStats}}" wx:key="key">
+          <text class="cs-label">{{item.label}}</text>
+          <view class="cs-progress-wrap">
+            <view class="cs-progress-bg">
+              <view class="cs-progress-fill" style="width: {{item.total > 0 ? item.confirmed / item.total * 100 : 0}}%"></view>
+            </view>
+          </view>
+          <text class="cs-nums">{{item.confirmed}}/{{item.total}} 已确认</text>
+        </view>
+      </view>
     </view>
 
     <!-- 管理操作按钮 -->
@@ -73,7 +87,7 @@
       <view class="manage-btn staff-btn" bindtap="toggleStaffPanel">
         <text>👥 管理参与人</text>
       </view>
-      <view class="manage-btn scan-btn" bindtap="goToScanConfirm">
+      <view class="manage-btn scan-btn" wx:if="{{activity.enableScanConfirm !== false}}" bindtap="goToScanConfirm">
         <text>📷 扫码确认</text>
       </view>
       <view class="manage-btn delete-btn" wx:if="{{canDelete}}" bindtap="doDelete">
@@ -136,6 +150,19 @@
         <view class="filter-tab {{activeFilter === 'unchecked' ? 'active' : ''}}" bindtap="setFilter" data-filter="unchecked">未签到({{uncheckedCount}})</view>
         <view class="filter-tab {{activeFilter === 'checked' ? 'active' : ''}}" bindtap="setFilter" data-filter="checked">已签到({{checkedCount}})</view>
       </view>
+
+      <!-- 确认领取筛选 -->
+      <view class="confirm-filter-section" wx:if="{{activity.enableScanConfirm !== false && confirmStats.length > 0}}">
+        <text class="cf-section-label">确认筛选</text>
+        <view class="cf-item-row" wx:for="{{confirmStats}}" wx:key="key">
+          <text class="cf-item-label">{{item.label}}</text>
+          <view class="cf-tab-row">
+            <view class="cf-tab {{activeConfirmFilter === 'all' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="all">全部</view>
+            <view class="cf-tab {{activeConfirmFilter === item.key + '_confirmed' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="{{item.key}}_confirmed">已领({{item.confirmed}})</view>
+            <view class="cf-tab {{activeConfirmFilter === item.key + '_unconfirmed' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="{{item.key}}_unconfirmed">未领({{item.unconfirmed}})</view>
+          </view>
+        </view>
+      </view>
     </view>
 
     <!-- 人员列表 -->
@@ -159,6 +186,11 @@
           </view>
           <text class="person-phone">工号：{{item.staffId}}</text>
           <text wx:if="{{item.checked}}" class="checked-time">✓ 已签到 {{item.checkedAt}}</text>
+          <!-- 确认领取状态 -->
+          <view class="confirm-icons" wx:if="{{item._confirmDisplay && item._confirmDisplay.length > 0}}">
+            <text wx:for="{{item._confirmDisplay}}" wx:for-item="ci" wx:key="key"
+                  class="ci-badge {{ci.confirmed ? 'ci-done' : 'ci-pending'}}">{{ci.label}} {{ci.confirmed ? '✓' : '✗'}}</text>
+          </view>
         </view>
         <view class="checkin-btn-wrap">
           <button
