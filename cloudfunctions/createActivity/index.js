@@ -446,12 +446,47 @@ exports.main = async (event) => {
 
   if (action === 'confirmPickup') {
     // 管理员确认领取（茶点/礼品等自定义项目）
-    // 使用事务保证参与者记录更新和余量更新的原子性，避免并发问题
+    // 使用原子操作保证并发安全：
+    //   1. 先用原子递减余量（通过 where 条件过滤保证不为负）
+    //   2. 再更新参与者记录
     try {
       const { itemKey, confirmedBy, confirmedAt } = event;
 
-      let updateData = {};
+      let participantRecordId = null;
+      if (participantId) {
+        participantRecordId = participantId;
+      } else if (activityId && staffId) {
+        const { data } = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(1)
+          .get();
+        if (data.length > 0) {
+          participantRecordId = data[0]._id;
+        } else {
+          return { success: false, error: '未找到该参与者的签到记录' };
+        }
+      } else {
+        return { success: false, error: '缺少 participantId 或 activityId+staffId' };
+      }
 
+      // 先原子递减余量（通过 where 条件只对 remainingCounts.xxx > 0 时递减）
+      if (itemKey && activityId) {
+        // 读取当前余量，判断是否足够
+        const actDoc = await db.collection('activities').doc(activityId).get();
+        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+        if (currentRemaining !== undefined && currentRemaining !== null && currentRemaining <= 0) {
+          return { success: false, error: '该项目余量已不足' };
+        }
+        // 原子递减（使用 _.inc(-1) 保证并发安全，db 层面串行处理）
+        if (currentRemaining !== undefined && currentRemaining !== null) {
+          await db.collection('activities').doc(activityId).update({
+            data: { [`remainingCounts.${itemKey}`]: _.inc(-1) },
+          });
+        }
+      }
+
+      // 再更新参与者记录
+      let updateData = {};
       if (itemKey) {
         const mapKey = `confirmations.${itemKey}`;
         updateData[`${mapKey}.confirmed`] = true;
@@ -472,51 +507,9 @@ exports.main = async (event) => {
         updateData[timeField] = confirmedAt || '';
         updateData[confirmedByField] = confirmedBy || '';
       }
-
-      let participantRecordId = null;
-      if (participantId) {
-        participantRecordId = participantId;
-      } else if (activityId && staffId) {
-        const { data } = await db.collection('participants')
-          .where({ activityId, staffId })
-          .limit(1)
-          .get();
-        if (data.length > 0) {
-          participantRecordId = data[0]._id;
-        } else {
-          return { success: false, error: '未找到该参与者的签到记录' };
-        }
-      } else {
-        return { success: false, error: '缺少 participantId 或 activityId+staffId' };
-      }
-
-      // 更新参与者记录
       await db.collection('participants').doc(participantRecordId).update({
         data: updateData,
       });
-
-      // 使用事务更新活动余量（确保读取和写入的原子性，避免并发问题）
-      if (itemKey && activityId) {
-        const transaction = db.startTransaction();
-        try {
-          const actDoc = await transaction.collection('activities').doc(activityId).get();
-          const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
-          if (currentRemaining !== undefined && currentRemaining !== null) {
-            if (currentRemaining <= 0) {
-              await transaction.rollback();
-              return { success: false, error: '该项目余量已不足' };
-            }
-            const newRemaining = Math.max(0, currentRemaining - 1);
-            await transaction.collection('activities').doc(activityId).update({
-              data: { [`remainingCounts.${itemKey}`]: newRemaining },
-            });
-          }
-          await transaction.commit();
-        } catch (e) {
-          await transaction.rollback();
-          return { success: false, error: '更新余量失败，请重试' };
-        }
-      }
 
       return { success: true };
     } catch (err) {
@@ -529,6 +522,36 @@ exports.main = async (event) => {
     try {
       const { itemKey, confirmedBy } = event;
 
+      let participantRecordId = null;
+      if (participantId) {
+        participantRecordId = participantId;
+      } else if (activityId && staffId) {
+        const { data } = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(1)
+          .get();
+        if (data.length > 0) {
+          participantRecordId = data[0]._id;
+        }
+      }
+
+      // 先原子递增余量
+      if (itemKey && activityId) {
+        const actDoc = await db.collection('activities').doc(activityId).get();
+        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+        const total = (actDoc.data.confirmItems || []).find(c => c.key === itemKey)?.total;
+        if (currentRemaining !== undefined && currentRemaining !== null) {
+          // 限制不超过总数
+          const maxVal = total !== undefined ? total : currentRemaining + 1;
+          if (currentRemaining < maxVal) {
+            await db.collection('activities').doc(activityId).update({
+              data: { [`remainingCounts.${itemKey}`]: _.inc(1) },
+            });
+          }
+        }
+      }
+
+      // 再更新参与者记录
       let updateData = {};
       if (itemKey) {
         const mapKey = `confirmations.${itemKey}`;
@@ -545,44 +568,10 @@ exports.main = async (event) => {
           updateData.giftConfirmedBy = confirmedBy || '';
         }
       }
-
-      let participantRecordId = null;
-      if (participantId) {
-        participantRecordId = participantId;
-      } else if (activityId && staffId) {
-        const { data } = await db.collection('participants')
-          .where({ activityId, staffId })
-          .limit(1)
-          .get();
-        if (data.length > 0) {
-          participantRecordId = data[0]._id;
-        }
-      }
-
       if (participantRecordId) {
         await db.collection('participants').doc(participantRecordId).update({
           data: updateData,
         });
-      }
-
-      // 使用事务递增活动余量（确保读取和写入的原子性，避免并发问题）
-      if (itemKey && activityId) {
-        const transaction = db.startTransaction();
-        try {
-          const actDoc = await transaction.collection('activities').doc(activityId).get();
-          const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
-          if (currentRemaining !== undefined && currentRemaining !== null) {
-            const total = (actDoc.data.confirmItems || []).find(c => c.key === itemKey)?.total;
-            const newRemaining = Math.min(total !== undefined ? total : currentRemaining + 1, currentRemaining + 1);
-            await transaction.collection('activities').doc(activityId).update({
-              data: { [`remainingCounts.${itemKey}`]: newRemaining },
-            });
-          }
-          await transaction.commit();
-        } catch (e) {
-          await transaction.rollback();
-          return { success: false, error: '更新余量失败，请重试' };
-        }
       }
 
       return { success: true };
