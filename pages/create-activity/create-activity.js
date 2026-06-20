@@ -15,8 +15,8 @@ Page({
     // 扫码确认
     enableScanConfirm: true,
     confirmItems: [
-      { key: 'tea', label: '下午茶点' },
-      { key: 'gift', label: '活动礼品' },
+      { key: 'tea', label: '下午茶点', total: 50 },
+      { key: 'gift', label: '活动礼品', total: 30 },
     ],
     // 位置
     latitude: null,
@@ -63,8 +63,8 @@ Page({
         participantInput: (act.participantStaffIds || []).join(', '),
         enableScanConfirm: act.enableScanConfirm !== false,
         confirmItems: (act.confirmItems && act.confirmItems.length > 0)
-          ? act.confirmItems
-          : [{ key: 'tea', label: '下午茶点' }, { key: 'gift', label: '活动礼品' }],
+          ? act.confirmItems.map(item => ({ ...item, total: item.total }))  // 兼容旧数据
+          : [{ key: 'tea', label: '下午茶点', total: 50 }, { key: 'gift', label: '活动礼品', total: 30 }],
         loading: false,
       });
       wx.setNavigationBarTitle({ title: '编辑活动' });
@@ -143,12 +143,19 @@ Page({
     this.setData({ [key]: e.detail.value });
   },
 
+  onConfirmTotalInput(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    const val = parseInt(e.detail.value);
+    const key = `confirmItems[${index}].total`;
+    this.setData({ [key]: isNaN(val) ? 0 : val });
+  },
+
   // 添加确认项目
   addConfirmItem() {
     const items = this.data.confirmItems;
     const key = 'item_' + Date.now();
     this.setData({
-      confirmItems: [...items, { key, label: '' }],
+      confirmItems: [...items, { key, label: '', total: 0 }],
     });
   },
 
@@ -211,8 +218,14 @@ Page({
     const db = wx.cloud.database();
     const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude, enableScanConfirm, confirmItems } = this.data;
 
-    // 过滤掉空标签的确认项目
+    // 过滤掉空标签的确认项目，并计算余量初始值
     const validConfirmItems = (confirmItems || []).filter(item => item.label.trim());
+    const remainingCounts = {};
+    validConfirmItems.forEach(item => {
+      if (item.total !== undefined && item.total !== null && item.total > 0) {
+        remainingCounts[item.key] = item.total;
+      }
+    });
 
     try {
       if (isEdit) {
@@ -230,6 +243,7 @@ Page({
           participantStaffIds: participantStaffIds,
           enableScanConfirm: !!enableScanConfirm,
           confirmItems: validConfirmItems,
+          remainingCounts,
         };
         await db.collection('activities').doc(activityId).update({ data: updateData });
 
@@ -268,6 +282,7 @@ Page({
             participantStaffIds: participantStaffIds,
             enableScanConfirm: !!enableScanConfirm,
             confirmItems: validConfirmItems,
+            remainingCounts,
             createdAt: db.serverDate(),
           },
         });

@@ -4,7 +4,8 @@ const { cstTimeStr } = require('../../utils/china-time');
 Page({
   data: {
     activityId: '',
-    confirmItems: [],       // 活动的确认项目列表 [{ key, label }]
+    confirmItems: [],       // 活动的确认项目列表 [{ key, label, total }]
+    remainingCounts: {},    // 各项目剩余数量 { tea: 45, gift: 28 }
     enableScanConfirm: false, // 活动是否开启了扫码确认
     scanned: false,
     scannedUser: null,      // 扫码解析出的用户信息 { staffId, name }
@@ -20,6 +21,14 @@ Page({
     if (!user || !user.staffId) {
       wx.redirectTo({ url: '/pages/login/login' });
       return;
+    }
+    // 支持从活动详情页直接跳转并加载指定参与者
+    if (options.staffId) {
+      const userPayload = JSON.stringify({
+        staffId: options.staffId,
+        name: decodeURIComponent(options.name || ''),
+      });
+      this.handleScanResult(userPayload);
     }
   },
 
@@ -80,6 +89,7 @@ Page({
       let participant = { checked: false };
       let confirmations = {};
       let confirmItems = [];
+      let remainingCounts = {};
       let enableScanConfirm = false;
       if (this.activityId) {
         try {
@@ -97,6 +107,7 @@ Page({
           }
           enableScanConfirm = pRes.result.enableScanConfirm !== false;
           confirmItems = enableScanConfirm ? (pRes.result.confirmItems || []) : [];
+          remainingCounts = pRes.result.remainingCounts || {};
         } catch (e) {
           // 忽略
         }
@@ -108,6 +119,7 @@ Page({
         scannedParticipant: participant,
         confirmations,
         confirmItems,
+        remainingCounts,
         enableScanConfirm,
         loading: false,
       });
@@ -151,14 +163,62 @@ Page({
         at: cstTimeStr(),
         by: currentUser ? currentUser.staffId : '',
       };
+      const updatedRemaining = { ...this.data.remainingCounts };
+      if (updatedRemaining[itemKey] !== undefined) {
+        updatedRemaining[itemKey] = Math.max(0, updatedRemaining[itemKey] - 1);
+      }
       this.setData({
         confirmations: updatedConfirmations,
+        remainingCounts: updatedRemaining,
         loading: false,
       });
     } catch (err) {
       console.error('确认失败', err);
       this.setData({ loading: false });
       wx.showToast({ title: '确认失败', icon: 'none' });
+    }
+  },
+
+  // 取消领取
+  async cancelPickup(e) {
+    const itemKey = e.currentTarget.dataset.key;
+    const { scannedUser, scannedParticipant } = this.data;
+    if (!scannedUser || !scannedUser.staffId || !itemKey) return;
+
+    const currentUser = app.globalData.currentUser;
+
+    this.setData({ loading: true });
+
+    try {
+      await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: {
+          action: 'cancelPickup',
+          activityId: this.activityId,
+          staffId: scannedUser.staffId,
+          participantId: scannedParticipant._id || '',
+          itemKey,
+          confirmedBy: currentUser ? currentUser.staffId : '',
+        },
+      });
+
+      wx.showToast({ title: '已取消', icon: 'success' });
+
+      const updatedConfirmations = { ...this.data.confirmations };
+      updatedConfirmations[itemKey] = { confirmed: false, at: '', by: '' };
+      const updatedRemaining = { ...this.data.remainingCounts };
+      if (updatedRemaining[itemKey] !== undefined) {
+        updatedRemaining[itemKey] += 1;
+      }
+      this.setData({
+        confirmations: updatedConfirmations,
+        remainingCounts: updatedRemaining,
+        loading: false,
+      });
+    } catch (err) {
+      console.error('取消失败', err);
+      this.setData({ loading: false });
+      wx.showToast({ title: '取消失败', icon: 'none' });
     }
   },
 

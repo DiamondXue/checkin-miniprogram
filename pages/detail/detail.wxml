@@ -66,15 +66,19 @@
 
       <!-- 确认领取统计卡片 -->
       <view class="confirm-stats" wx:if="{{activity.enableScanConfirm !== false && confirmStats.length > 0}}">
-        <view class="cs-card {{item.confirmed === item.total ? 'cs-all-done' : item.confirmed > 0 ? 'cs-partial' : 'cs-none'}}"
+        <view class="cs-card {{item.unlimited ? (item.confirmed > 0 ? 'cs-partial' : 'cs-none') : (item.remaining !== null && item.remaining <= 0 ? 'cs-all-done' : item.confirmed > 0 ? 'cs-partial' : 'cs-none')}}"
               wx:for="{{confirmStats}}" wx:key="key">
           <text class="cs-label">{{item.label}}</text>
-          <view class="cs-progress-wrap">
+          <view class="cs-progress-wrap" wx:if="{{!item.unlimited}}">
             <view class="cs-progress-bg">
               <view class="cs-progress-fill" style="width: {{item.total > 0 ? item.confirmed / item.total * 100 : 0}}%"></view>
             </view>
           </view>
-          <text class="cs-nums">{{item.confirmed}}/{{item.total}} 已确认</text>
+          <view class="cs-nums">
+            <text wx:if="{{!item.unlimited && item.total !== null}}">余量 {{item.remaining}} / {{item.total}}</text>
+            <text wx:elif="{{!item.unlimited}}">已领 {{item.confirmed}}</text>
+            <text wx:else>已领 {{item.confirmed}} 人</text>
+          </view>
         </view>
       </view>
     </view>
@@ -155,11 +159,11 @@
       <view class="confirm-filter-section" wx:if="{{activity.enableScanConfirm !== false && confirmStats.length > 0}}">
         <text class="cf-section-label">确认筛选</text>
         <view class="cf-item-row" wx:for="{{confirmStats}}" wx:key="key">
-          <text class="cf-item-label">{{item.label}}</text>
+          <text class="cf-item-label">{{item.label}}{{item.remaining !== null ? ' (余' + item.remaining + ')' : ''}}</text>
           <view class="cf-tab-row">
             <view class="cf-tab {{activeConfirmFilter === 'all' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="all">全部</view>
             <view class="cf-tab {{activeConfirmFilter === item.key + '_confirmed' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="{{item.key}}_confirmed">已领({{item.confirmed}})</view>
-            <view class="cf-tab {{activeConfirmFilter === item.key + '_unconfirmed' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="{{item.key}}_unconfirmed">未领({{item.unconfirmed}})</view>
+            <view class="cf-tab {{activeConfirmFilter === item.key + '_unconfirmed' ? 'active' : ''}}" bindtap="setConfirmFilter" data-filter="{{item.key}}_unconfirmed">未领({{totalCount - item.confirmed}})</view>
           </view>
         </view>
       </view>
@@ -193,6 +197,13 @@
           </view>
         </view>
         <view class="checkin-btn-wrap">
+          <button
+            wx:if="{{activity.enableScanConfirm !== false && item._confirmDisplay && item._confirmDisplay.length > 0}}"
+            class="confirm-direct-btn"
+            bindtap="gotoConfirm"
+            data-staff-id="{{item.staffId}}"
+            data-name="{{item.name}}"
+          >核销</button>
           <button
             wx:if="{{!item.checked && activity.status !== 'ended'}}"
             class="checkin-btn"

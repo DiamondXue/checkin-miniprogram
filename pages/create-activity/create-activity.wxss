@@ -171,6 +171,12 @@
   flex: 1;
 }
 
+.confirm-total-input {
+  width: 150rpx;
+  flex: none;
+  text-align: center;
+}
+
 .confirm-item-del {
   width: 64rpx;
   height: 64rpx;

@@ -148,6 +148,19 @@
 .confirm-status {
   font-size: 26rpx;
   color: #059669;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.status-confirmed {
+  color: #059669;
+}
+
+.confirm-remaining {
+  font-size: 24rpx;
+  color: #9CA3AF;
+  margin-left: 12rpx;
 }
 
 .confirm-btn {
@@ -162,6 +175,26 @@
 
 .confirm-btn::after {
   border: none;
+}
+
+.cancel-btn {
+  font-size: 22rpx;
+  padding: 4rpx 20rpx;
+  border-radius: 20rpx;
+  color: #EF4444;
+  border: 1rpx solid #EF4444;
+  background: transparent;
+  line-height: 1.8;
+}
+
+.cancel-btn::after {
+  border: none;
+}
+
+.confirm-btn-disabled {
+  font-size: 26rpx;
+  color: #9CA3AF;
+  padding: 8rpx 30rpx;
 }
 
 /* 操作按钮 */

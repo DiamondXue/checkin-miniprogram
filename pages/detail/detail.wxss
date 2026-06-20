@@ -524,6 +524,17 @@
   line-height: 1.4 !important;
 }
 
+.confirm-direct-btn {
+  background: #059669 !important;
+  color: #FFFFFF !important;
+  font-size: 22rpx !important;
+  font-weight: 600 !important;
+  padding: 8rpx 20rpx !important;
+  border-radius: 8rpx !important;
+  border: none !important;
+  line-height: 1.4 !important;
+}
+
 .bottom-space {
   height: 60rpx;
 }

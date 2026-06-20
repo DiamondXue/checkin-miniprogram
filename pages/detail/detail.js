@@ -99,14 +99,19 @@ Page({
         confirmItems = (activity.confirmItems && activity.confirmItems.length > 0)
           ? activity.confirmItems
           : [{ key: 'tea', label: '茶点' }, { key: 'gift', label: '礼品' }];
+        const remainingCounts = activity.remainingCounts || {};
         confirmStats = confirmItems.map(ci => {
           const confirmed = uniqueParticipants.filter(p => this._getConfirmation(p, ci.key).confirmed).length;
+          const total = ci.total;
+          const unlimited = (total === undefined || total === null);
+          const remaining = remainingCounts[ci.key];
           return {
             key: ci.key,
             label: ci.label,
             confirmed,
-            total: totalCount,
-            unconfirmed: totalCount - confirmed,
+            total: unlimited ? null : total,
+            remaining: (remaining !== undefined) ? remaining : null,
+            unlimited,
           };
         });
       }
@@ -459,6 +464,16 @@ Page({
           wx.showToast({ title: '操作失败', icon: 'none' });
         }
       }
+    });
+  },
+
+  // 跳转到该参与者的领取项目核销页
+  gotoConfirm(e) {
+    const { staffId, name } = e.currentTarget.dataset;
+    if (!staffId) return;
+    const safeName = encodeURIComponent(name || '');
+    wx.navigateTo({
+      url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}&staffId=${staffId}&name=${safeName}`,
     });
   },
 

@@ -402,11 +402,13 @@ exports.main = async (event) => {
       // 同时获取活动的配置（用于前端动态渲染确认按钮）
       let confirmItems = [];
       let enableScanConfirm = false;
+      let remainingCounts = {};
       try {
         const act = await db.collection('activities').doc(activityId).get();
         if (act.data) {
           confirmItems = act.data.confirmItems || [];
           enableScanConfirm = act.data.enableScanConfirm !== false;
+          remainingCounts = act.data.remainingCounts || {};
         }
       } catch (e) {}
 
@@ -434,6 +436,7 @@ exports.main = async (event) => {
           confirmations,
         },
         confirmItems,
+        remainingCounts,
         enableScanConfirm,
       };
     } catch (err) {
@@ -443,20 +446,17 @@ exports.main = async (event) => {
 
   if (action === 'confirmPickup') {
     // 管理员确认领取（茶点/礼品等自定义项目）
-    // 新格式：itemKey, confirmedBy, confirmedAt
-    // 旧格式（兼容）：field, timeField, confirmedByField, confirmedBy, confirmedAt
+    // 领取时：更新 participants 记录 + 原子递减 activities.remainingCounts
     try {
       const { itemKey, confirmedBy, confirmedAt } = event;
 
       let updateData = {};
 
       if (itemKey) {
-        // 新格式：使用 confirmations map
         const mapKey = `confirmations.${itemKey}`;
         updateData[`${mapKey}.confirmed`] = true;
         updateData[`${mapKey}.at`] = confirmedAt || '';
         updateData[`${mapKey}.by`] = confirmedBy || '';
-        // 同时更新旧格式字段（向后兼容）
         if (itemKey === 'tea') {
           updateData.teaConfirmed = true;
           updateData.teaConfirmedAt = confirmedAt || '';
@@ -467,32 +467,104 @@ exports.main = async (event) => {
           updateData.giftConfirmedBy = confirmedBy || '';
         }
       } else {
-        // 旧格式兼容
         const { field, timeField, confirmedByField } = event;
         updateData[field] = true;
         updateData[timeField] = confirmedAt || '';
         updateData[confirmedByField] = confirmedBy || '';
       }
 
+      let participantRecordId = null;
       if (participantId) {
-        await db.collection('participants').doc(participantId).update({
-          data: updateData,
-        });
+        participantRecordId = participantId;
       } else if (activityId && staffId) {
-        // 查找参与者记录
         const { data } = await db.collection('participants')
           .where({ activityId, staffId })
           .limit(1)
           .get();
         if (data.length > 0) {
-          await db.collection('participants').doc(data[0]._id).update({
-            data: updateData,
-          });
+          participantRecordId = data[0]._id;
         } else {
           return { success: false, error: '未找到该参与者的签到记录' };
         }
       } else {
         return { success: false, error: '缺少 participantId 或 activityId+staffId' };
+      }
+
+      // 更新参与者记录
+      await db.collection('participants').doc(participantRecordId).update({
+        data: updateData,
+      });
+
+      // 递减活动余量（先读后写，保证不为负）
+      if (itemKey && activityId) {
+        const actDoc = await db.collection('activities').doc(activityId).get();
+        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+        if (currentRemaining !== undefined && currentRemaining !== null) {
+          const newRemaining = Math.max(0, currentRemaining - 1);
+          await db.collection('activities').doc(activityId).update({
+            data: { [`remainingCounts.${itemKey}`]: newRemaining },
+          });
+        }
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'cancelPickup') {
+    // 取消领取：更新 participants 记录（置 confirmed=false）+ 原子递增 activities.remainingCounts
+    try {
+      const { itemKey, confirmedBy } = event;
+
+      let updateData = {};
+      if (itemKey) {
+        const mapKey = `confirmations.${itemKey}`;
+        updateData[`${mapKey}.confirmed`] = false;
+        updateData[`${mapKey}.at`] = '';
+        updateData[`${mapKey}.by`] = confirmedBy || '';
+        if (itemKey === 'tea') {
+          updateData.teaConfirmed = false;
+          updateData.teaConfirmedAt = '';
+          updateData.teaConfirmedBy = confirmedBy || '';
+        } else if (itemKey === 'gift') {
+          updateData.giftConfirmed = false;
+          updateData.giftConfirmedAt = '';
+          updateData.giftConfirmedBy = confirmedBy || '';
+        }
+      }
+
+      let participantRecordId = null;
+      if (participantId) {
+        participantRecordId = participantId;
+      } else if (activityId && staffId) {
+        const { data } = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(1)
+          .get();
+        if (data.length > 0) {
+          participantRecordId = data[0]._id;
+        }
+      }
+
+      if (participantRecordId) {
+        await db.collection('participants').doc(participantRecordId).update({
+          data: updateData,
+        });
+      }
+
+      // 递增活动余量（先读后写）
+      if (itemKey && activityId) {
+        const actDoc = await db.collection('activities').doc(activityId).get();
+        const currentRemaining = (actDoc.data.remainingCounts || {})[itemKey];
+        if (currentRemaining !== undefined && currentRemaining !== null) {
+          const total = (actDoc.data.confirmItems || []).find(c => c.key === itemKey)?.total;
+          const newRemaining = Math.min(total !== undefined ? total : currentRemaining + 1, currentRemaining + 1);
+          await db.collection('activities').doc(activityId).update({
+            data: { [`remainingCounts.${itemKey}`]: newRemaining },
+          });
+        }
       }
 
       return { success: true };

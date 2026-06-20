@@ -100,6 +100,14 @@
             bindinput="onConfirmLabelInput"
             data-index="{{index}}"
           />
+          <input
+            class="form-input confirm-total-input"
+            type="number"
+            placeholder="数量"
+            value="{{item.total || item.total === 0 ? item.total : ''}}"
+            bindinput="onConfirmTotalInput"
+            data-index="{{index}}"
+          />
           <view class="confirm-item-del" bindtap="removeConfirmItem" data-index="{{index}}">✕</view>
         </view>
 

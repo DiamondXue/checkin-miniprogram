@@ -154,6 +154,12 @@
   font-weight: 600;
 }
 
+.status-done {
+  color: #9CA3AF;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
 .status-detail {
   font-size: 22rpx;
   color: #9CA3AF;

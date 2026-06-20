@@ -58,14 +58,19 @@ Page({
               ? activity.confirmItems
               : [{ key: 'tea', label: '茶点' }, { key: 'gift', label: '礼品' }]);
 
+          const remainingCounts = (activity && activity.remainingCounts) || {};
           myConfirmList = confirmItems.map(ci => {
             const c = this._getConfirmation(myRecord, ci.key);
+            const unlimited = (ci.total === undefined || ci.total === null);
             return {
               key: ci.key,
               label: ci.label,
               confirmed: c.confirmed,
               at: c.at,
               by: c.by,
+              total: ci.total,
+              remaining: unlimited ? null : (remainingCounts[ci.key] !== undefined ? remainingCounts[ci.key] : null),
+              unlimited,
             };
           });
         }

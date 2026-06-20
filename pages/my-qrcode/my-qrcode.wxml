@@ -50,7 +50,9 @@
           <view class="my-pickup-label">{{item.label}}</view>
           <view class="my-pickup-status">
             <text wx:if="{{item.confirmed}}" class="status-ok">✓ 已领取</text>
-            <text wx:else class="status-wait">未领取</text>
+            <text wx:elif="{{item.unlimited || item.remaining === null}}" class="status-wait">未领取</text>
+            <text wx:elif="{{item.remaining <= 0}}" class="status-done">已领完</text>
+            <text wx:else class="status-wait">未领取 · 余{{item.remaining}}</text>
             <view wx:if="{{item.confirmed}}" class="status-detail">
               {{item.at}}{{item.by ? ' · ' + item.by : ''}}
             </view>
@@ -60,7 +62,7 @@
       <view wx:else class="my-pickup-empty">暂无领取项目</view>
     </view>
 
-    <view class="qrcode-tip">管理员扫码后可确认茶点/礼品领取</view>
+    <view class="qrcode-tip">管理员扫码后可确认领取</view>
   </view>
 
   <!-- 未签到提示 -->

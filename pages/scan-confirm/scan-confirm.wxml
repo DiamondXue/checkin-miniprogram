@@ -33,19 +33,22 @@
       <view class="card-title">领取确认</view>
 
       <view class="confirm-item" wx:for="{{confirmItems}}" wx:key="key">
-        <view class="confirm-label">{{item.label}}</view>
+        <view class="confirm-label">
+          {{item.label}}
+          <text wx:if="{{item.total !== undefined && item.total !== null && remainingCounts[item.key] !== undefined}}" class="confirm-remaining">余{{remainingCounts[item.key]}}/{{item.total}}</text>
+          <text wx:elif="{{item.total !== undefined && item.total !== null}}" class="confirm-remaining">共{{item.total}}</text>
+        </view>
         <view class="confirm-status" wx:if="{{confirmations[item.key].confirmed}}">
-          已确认 {{confirmations[item.key].at}}
+          <text class="status-confirmed">已确认 {{confirmations[item.key].at}}</text>
+          <button class="cancel-btn" bindtap="cancelPickup" data-key="{{item.key}}">取消</button>
         </view>
         <button
           class="confirm-btn"
-          wx:else
+          wx:elif="{{item.total === undefined || item.total === null || remainingCounts[item.key] === undefined || remainingCounts[item.key] > 0}}"
           bindtap="confirmPickup"
           data-key="{{item.key}}"
-          style="background: {{item._color || '#4F46E5'}};"
-        >
-          确认领取
-        </button>
+        >确认领取</button>
+        <text wx:else class="confirm-btn-disabled">已领完</text>
       </view>
     </view>
 
