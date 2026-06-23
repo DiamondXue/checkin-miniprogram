@@ -7,7 +7,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
 // ============================================================
-// 数据来源：initWPSUsers.md
+// 数据来源：WPSUsers.csv，共 934 人
 // ============================================================
 const USERS = [
   { staffId: '45124680', name: 'Vervin Peng', dept: 'Accounts' },
@@ -76,7 +76,8 @@ const USERS = [
   { staffId: '45480747', name: 'Tina Y Han', dept: 'Wealth Management' },
   { staffId: '45479612', name: 'Harlan w h Zhong', dept: 'Wealth Management' },
   { staffId: '45111142', name: 'Nicole X Y Song', dept: 'Wealth Management' },
-  { staffId: '45482000', name: 'Transaction Banking', dept: '' },
+  { staffId: '45482000', name: '', dept: 'Transaction Banking' },
+  { staffId: '45479599', name: 'Wei Tan', dept: 'SPS' },
   { staffId: '45479450', name: 'Kasper Deng', dept: 'Transaction Banking' },
   { staffId: '43706255', name: 'Coey J Y Guo', dept: 'Wealth Management' },
   { staffId: '45195952', name: 'Esther Zeng', dept: 'Wealth Management' },
@@ -199,14 +200,16 @@ const USERS = [
   { staffId: '45143453', name: 'Alice J M Tang', dept: 'Wealth Management' },
   { staffId: '45244712', name: 'Kenway Lin', dept: 'Wealth Management' },
   { staffId: '45055119', name: 'Jiacong Liu', dept: 'Wealth Management' },
-  { staffId: '43386867', name: 'Wealth Management', dept: '' },
+  { staffId: '43386867', name: '', dept: 'Wealth Management' },
+  { staffId: '45110962', name: 'Sam Y S Xuan', dept: 'Wealth Management' },
   { staffId: '43764042', name: 'Vanessa X L Liu', dept: 'Wealth Management' },
   { staffId: '44001013', name: 'Rachel Q J LV', dept: 'Wealth Management' },
   { staffId: '44089010', name: 'Yong Xia', dept: 'Accounts' },
   { staffId: '45350528', name: 'Jerry Cao', dept: 'SPS' },
   { staffId: '43608234', name: 'Vinta X D Shao', dept: 'Transaction Banking' },
   { staffId: '45468156', name: 'Rocky Q Luo', dept: 'Wealth Management' },
-  { staffId: '45462658', name: 'International & Premier', dept: '' },
+  { staffId: '45462658', name: '', dept: 'International & Premier' },
+  { staffId: '45464898', name: 'Hao Ran Zhang', dept: 'Transaction Banking' },
   { staffId: '45119041', name: 'Jin Jiang', dept: 'Transaction Banking' },
   { staffId: '45173741', name: 'Deng Ke He', dept: 'Wealth Management' },
   { staffId: '43915579', name: 'William W J Chen', dept: 'Wealth Management' },
@@ -294,7 +297,8 @@ const USERS = [
   { staffId: '45454757', name: 'Jianbing Chen', dept: 'SPS' },
   { staffId: '45455381', name: 'Lawrence GJ Shen', dept: 'SPS' },
   { staffId: '45455412', name: 'Qi Du Yang', dept: 'Wealth Management' },
-  { staffId: '43695780', name: 'Transaction Banking', dept: '' },
+  { staffId: '43695780', name: '', dept: 'Transaction Banking' },
+  { staffId: '45455711', name: 'Xinyi Zhu', dept: 'Transaction Banking' },
   { staffId: '45456163', name: 'Eve Y Y Wang', dept: 'Transaction Banking' },
   { staffId: '45452774', name: 'Andrew Huang', dept: 'Transaction Banking' },
   { staffId: '45450354', name: 'Tingtao Xu', dept: 'SPS' },
@@ -456,7 +460,8 @@ const USERS = [
   { staffId: '44138809', name: 'Arlene Lin', dept: 'SPS' },
   { staffId: '45224144', name: 'Cyrus Liang', dept: 'Transaction Banking' },
   { staffId: '45042303', name: 'Betty Yang', dept: 'Transaction Banking' },
-  { staffId: '45412355', name: 'Transaction Banking', dept: '' },
+  { staffId: '45412355', name: '', dept: 'Transaction Banking' },
+  { staffId: '45027047', name: 'Krystal Y Zheng', dept: 'Wealth Management' },
   { staffId: '45248841', name: 'Wei Hao Zhang', dept: 'SPS' },
   { staffId: '45119801', name: 'Cyrus X Zhang', dept: 'Transaction Banking' },
   { staffId: '45062100', name: 'Kevin Y F Xiong', dept: 'Wealth Management' },
@@ -896,7 +901,8 @@ const USERS = [
   { staffId: '45015794', name: 'Yusuf Hong', dept: 'Wealth Management' },
   { staffId: '45020695', name: 'Roy J P Tan', dept: 'Wealth Management' },
   { staffId: '43315484', name: 'Zi Qian Huang', dept: 'Wealth Management' },
-  { staffId: '43252973', name: 'International & Premier', dept: '' },
+  { staffId: '43252973', name: '', dept: 'International & Premier' },
+  { staffId: '43427655', name: 'Yippee Huang', dept: 'Wealth Management' },
   { staffId: '43543745', name: 'Hao Long', dept: 'International & Premier' },
   { staffId: '43952990', name: 'Robin H Lei', dept: 'FCS' },
   { staffId: '43549418', name: 'Simon Chen', dept: 'Wealth Management' },
