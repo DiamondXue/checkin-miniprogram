@@ -2,10 +2,9 @@
 // 用途：初始化 users 集合，录入 WPS 所有用户
 // 数据来源：WPSUsers.csv，共 934 人
 //
-// ⚠️  使用前请先在云开发控制台为 users 集合创建唯一索引：
-//     云开发 → 数据库 → users → 索引管理 → 新建索引
-//     字段：staffId，类型：唯一索引
-//     这样可以从数据库层面保证 staffId 唯一，避免并发重复插入
+// 设计说明：
+//   - 使用 staffId 作为文档 _id，天然保证唯一性（_id 自带唯一约束）
+//   - 已存在的 staffId 插入时会报错，自动归类为"跳过"
 //
 // 使用方法：右键上传部署 → 上传并部署：云端安装依赖 → 控制台手动触发
 
@@ -958,15 +957,16 @@ exports.main = async (event, context) => {
 
   for (const user of USERS) {
     try {
-      // 先查是否已存在
+      // 先检查 staffId 是否已存在（兼容旧数据：_id 可能不是 staffId）
       const { total } = await col.where({ staffId: user.staffId }).count();
       if (total > 0) {
         results.skipped++;
         continue;
       }
-      // 不存在则插入
+      // 用 staffId 作为 _id，利用 _id 的唯一性保证不重复
       await col.add({
         data: {
+          _id: user.staffId,
           staffId: user.staffId,
           name: user.name,
           dept: user.dept || '',
@@ -977,11 +977,12 @@ exports.main = async (event, context) => {
       });
       results.added++;
     } catch (err) {
-      // 如果设置了唯一索引，重复插入会报错，这里归类为跳过
-      if (err.errMsg && err.errMsg.includes('duplicate key')) {
+      // _id 已存在会报错，归类为跳过
+      const msg = err.errMsg || err.message || '';
+      if (msg.includes('duplicate key') || msg.includes('already exists') || msg.includes('E11000')) {
         results.skipped++;
       } else {
-        results.errors.push({ staffId: user.staffId, error: err.message });
+        results.errors.push({ staffId: user.staffId, error: msg });
       }
     }
   }
