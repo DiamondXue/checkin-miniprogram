@@ -1,13 +1,19 @@
 // 云函数：initWPSUsers
 // 用途：初始化 users 集合，录入 WPS 所有用户
-// 使用方法：编辑下方 USERS 数组，右键上传部署，手动触发一次
+// 数据来源：WPSUsers.csv，共 934 人
+//
+// ⚠️  使用前请先在云开发控制台为 users 集合创建唯一索引：
+//     云开发 → 数据库 → users → 索引管理 → 新建索引
+//     字段：staffId，类型：唯一索引
+//     这样可以从数据库层面保证 staffId 唯一，避免并发重复插入
+//
+// 使用方法：右键上传部署 → 上传并部署：云端安装依赖 → 控制台手动触发
 
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
+const _ = db.command;
 
-// ============================================================
-// 数据来源：WPSUsers.csv，共 934 人
 // ============================================================
 const USERS = [
   { staffId: '45124680', name: 'Vervin Peng', dept: 'Accounts' },
@@ -948,35 +954,42 @@ const USERS = [
 
 exports.main = async (event, context) => {
   const col = db.collection('users');
-  const results = { added: [], skipped: [], errors: [] };
+  const results = { added: 0, skipped: 0, errors: [] };
 
   for (const user of USERS) {
     try {
+      // 先查是否已存在
       const { total } = await col.where({ staffId: user.staffId }).count();
       if (total > 0) {
-        results.skipped.push(user.staffId);
+        results.skipped++;
         continue;
       }
+      // 不存在则插入
       await col.add({
         data: {
           staffId: user.staffId,
           name: user.name,
           dept: user.dept || '',
-          group: user.group || null,
-          roles: Array.isArray(user.roles) ? user.roles : ['user'],
+          group: null,
+          roles: ['user'],
           createdAt: db.serverDate(),
         },
       });
-      results.added.push(user.staffId);
+      results.added++;
     } catch (err) {
-      results.errors.push({ staffId: user.staffId, error: err.message });
+      // 如果设置了唯一索引，重复插入会报错，这里归类为跳过
+      if (err.errMsg && err.errMsg.includes('duplicate key')) {
+        results.skipped++;
+      } else {
+        results.errors.push({ staffId: user.staffId, error: err.message });
+      }
     }
   }
 
   console.log('初始化完成：', results);
   return {
     success: true,
-    message: `新增 ${results.added.length} 条，跳过 ${results.skipped.length} 条，失败 ${results.errors.length} 条`,
+    message: `新增 ${results.added} 条，跳过 ${results.skipped} 条，失败 ${results.errors.length} 条`,
     details: results,
   };
 };
