@@ -1,10 +1,10 @@
 {
   "name": "exportCheckinData",
   "version": "1.0.0",
-  "description": "导出活动签到数据为 Excel",
+  "description": "导出活动签到数据为 Excel（含签名图片）",
   "main": "index.js",
   "dependencies": {
     "wx-server-sdk": "~2.6.3",
-    "xlsx": "^0.18.5"
+    "exceljs": "^4.4.0"
   }
 }
