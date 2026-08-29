@@ -94,6 +94,9 @@
       <view class="manage-btn scan-btn" wx:if="{{activity.enableScanConfirm !== false}}" bindtap="goToScanConfirm">
         <text>📷 扫码确认</text>
       </view>
+      <view class="manage-btn export-btn" bindtap="exportCheckinData">
+        <text>{{exportLoading ? '导出中…' : '📊 导出签到表'}}</text>
+      </view>
       <view class="manage-btn delete-btn" wx:if="{{canDelete}}" bindtap="doDelete">
         <text>🗑️ 删除活动</text>
       </view>

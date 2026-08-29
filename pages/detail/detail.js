@@ -24,6 +24,7 @@ Page({
     showStaffPanel: false,
     newStaffInput: '',
     addingStaff: false,
+    exportLoading: false,
     participants: [],
     locationInfo: '',
     locationValid: null,
@@ -485,6 +486,50 @@ Page({
       urls: [fileId],
       current: fileId,
     });
+  },
+
+  // 导出签到数据 Excel
+  async exportCheckinData() {
+    if (this.data.exportLoading) return;
+    this.setData({ exportLoading: true });
+    wx.showLoading({ title: '导出中…', mask: true });
+
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'exportCheckinData',
+        data: { activityId: this.activityId },
+      });
+
+      wx.hideLoading();
+
+      if (!res.result.success) {
+        throw new Error(res.result.error);
+      }
+
+      // 下载并打开 Excel
+      const { fileID } = res.result;
+      wx.showLoading({ title: '下载文件中…', mask: true });
+      const dlRes = await wx.cloud.downloadFile({ fileID });
+      wx.hideLoading();
+
+      wx.openDocument({
+        filePath: dlRes.tempFilePath,
+        fileType: 'xlsx',
+        showMenu: true,
+        success: () => {
+          wx.showToast({ title: '已打开，可分享/保存', icon: 'none' });
+        },
+        fail: () => {
+          wx.showToast({ title: '文件已下载到临时路径', icon: 'none' });
+        },
+      });
+    } catch (err) {
+      console.error('导出失败', err);
+      wx.hideLoading();
+      wx.showToast({ title: '导出失败，请重试', icon: 'none' });
+    } finally {
+      this.setData({ exportLoading: false });
+    }
   },
 
   onShareAppMessage() {
