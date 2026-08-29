@@ -85,7 +85,7 @@
 
     <!-- 管理操作按钮 -->
     <view class="manage-bar" wx:if="{{canEdit}}">
-      <view class="manage-btn edit-btn" bindtap="goToEdit">
+      <view class="manage-btn edit-btn" wx:if="{{canDelete}}" bindtap="goToEdit">
         <text>✏️ 编辑活动</text>
       </view>
       <view class="manage-btn staff-btn" bindtap="toggleStaffPanel">
@@ -94,7 +94,7 @@
       <view class="manage-btn scan-btn" wx:if="{{activity.enableScanConfirm !== false}}" bindtap="goToScanConfirm">
         <text>📷 扫码确认</text>
       </view>
-      <view class="manage-btn export-btn" bindtap="exportCheckinData">
+      <view class="manage-btn export-btn" wx:if="{{canDelete}}" bindtap="exportCheckinData">
         <text>{{exportLoading ? '导出中…' : '📊 导出签到表'}}</text>
       </view>
       <view class="manage-btn delete-btn" wx:if="{{canDelete}}" bindtap="doDelete">
