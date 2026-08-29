@@ -1,0 +1,934 @@
+{"_id":"45124680","staffId":"45124680","name":"Vervin Peng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.175Z"}}
+{"_id":"45450355","staffId":"45450355","name":"Kathy Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.286Z"}}
+{"_id":"45298832","staffId":"45298832","name":"Autumn Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.407Z"}}
+{"_id":"45479237","staffId":"45479237","name":"Andy Weng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.524Z"}}
+{"_id":"45499863","staffId":"45499863","name":"Shi Li Wu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.612Z"}}
+{"_id":"43539471","staffId":"43539471","name":"Nick Huang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.716Z"}}
+{"_id":"45496578","staffId":"45496578","name":"Kyle Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.8Z"}}
+{"_id":"45388000","staffId":"45388000","name":"James Mei","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.887Z"}}
+{"_id":"45434319","staffId":"45434319","name":"Hugo Hu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:07.999Z"}}
+{"_id":"45484958","staffId":"45484958","name":"Jack X S Fan","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.082Z"}}
+{"_id":"45146537","staffId":"45146537","name":"Bo B Ou Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.181Z"}}
+{"_id":"45069653","staffId":"45069653","name":"Michael Yuan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.272Z"}}
+{"_id":"45034377","staffId":"45034377","name":"John B Z Chen","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.359Z"}}
+{"_id":"43608230","staffId":"43608230","name":"Solar Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.453Z"}}
+{"_id":"45135550","staffId":"45135550","name":"Sunson H Q Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.544Z"}}
+{"_id":"45042370","staffId":"45042370","name":"Seal X Lam","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.648Z"}}
+{"_id":"43769251","staffId":"43769251","name":"Simon Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.745Z"}}
+{"_id":"45153421","staffId":"45153421","name":"Sans Ruan","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.84Z"}}
+{"_id":"45479862","staffId":"45479862","name":"Jia Nan Jiang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:08.943Z"}}
+{"_id":"45463738","staffId":"45463738","name":"Ping Gong","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.039Z"}}
+{"_id":"45461529","staffId":"45461529","name":"Kidd Q D Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.132Z"}}
+{"_id":"45462421","staffId":"45462421","name":"Ivan yf Zhang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.223Z"}}
+{"_id":"45479825","staffId":"45479825","name":"Helly Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.316Z"}}
+{"_id":"45482002","staffId":"45482002","name":"Bob Yan Bo Ye","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.411Z"}}
+{"_id":"45484941","staffId":"45484941","name":"Derrick Luo","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.486Z"}}
+{"_id":"45492847","staffId":"45492847","name":"Xiaotong Guo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.573Z"}}
+{"_id":"45489134","staffId":"45489134","name":"Jay Hu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.671Z"}}
+{"_id":"45489768","staffId":"45489768","name":"Kim Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.747Z"}}
+{"_id":"45461922","staffId":"45461922","name":"Leah Meng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.836Z"}}
+{"_id":"45491358","staffId":"45491358","name":"May Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:09.918Z"}}
+{"_id":"45482346","staffId":"45482346","name":"Jia Long Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.01Z"}}
+{"_id":"45479596","staffId":"45479596","name":"Yang Zhou","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.113Z"}}
+{"_id":"45479830","staffId":"45479830","name":"Ya Qi Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.196Z"}}
+{"_id":"45479416","staffId":"45479416","name":"Kian Wang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.277Z"}}
+{"_id":"44137466","staffId":"44137466","name":"Justin Zhou","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.362Z"}}
+{"_id":"45383796","staffId":"45383796","name":"Weber Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.46Z"}}
+{"_id":"45482492","staffId":"45482492","name":"Hui Long Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.549Z"}}
+{"_id":"45124630","staffId":"45124630","name":"Shawn Pang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.639Z"}}
+{"_id":"45373874","staffId":"45373874","name":"Kammy Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.731Z"}}
+{"_id":"45485472","staffId":"45485472","name":"Reyna Lin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.831Z"}}
+{"_id":"45150512","staffId":"45150512","name":"Yu Yang Huang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:10.915Z"}}
+{"_id":"45469620","staffId":"45469620","name":"Hao Min Wu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.005Z"}}
+{"_id":"45269184","staffId":"45269184","name":"Caroline J W Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.093Z"}}
+{"_id":"45125235","staffId":"45125235","name":"May H M Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.176Z"}}
+{"_id":"45125755","staffId":"45125755","name":"Jacen Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.252Z"}}
+{"_id":"45249301","staffId":"45249301","name":"Weibin Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.336Z"}}
+{"_id":"45374072","staffId":"45374072","name":"Wood Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.421Z"}}
+{"_id":"44037986","staffId":"44037986","name":"Tommy Tang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.509Z"}}
+{"_id":"45126234","staffId":"45126234","name":"Wason Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.581Z"}}
+{"_id":"45151788","staffId":"45151788","name":"Jim Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.685Z"}}
+{"_id":"45479964","staffId":"45479964","name":"Leo Peng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.773Z"}}
+{"_id":"45484294","staffId":"45484294","name":"Tommy Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.863Z"}}
+{"_id":"45484229","staffId":"45484229","name":"Huan Huan Guo","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:11.968Z"}}
+{"_id":"45211011","staffId":"45211011","name":"Duke Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.056Z"}}
+{"_id":"45124810","staffId":"45124810","name":"Mason Qiao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.15Z"}}
+{"_id":"45249335","staffId":"45249335","name":"Michael Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.253Z"}}
+{"_id":"45075105","staffId":"45075105","name":"Jia Ming Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.333Z"}}
+{"_id":"45378183","staffId":"45378183","name":"Canvas Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.407Z"}}
+{"_id":"45482984","staffId":"45482984","name":"Anlier Shen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.5Z"}}
+{"_id":"45479859","staffId":"45479859","name":"Matt Fu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.596Z"}}
+{"_id":"45481984","staffId":"45481984","name":"Hang Zhong","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.68Z"}}
+{"_id":"45127087","staffId":"45127087","name":"David A Y Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.77Z"}}
+{"_id":"45211680","staffId":"45211680","name":"Eric Cui","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.859Z"}}
+{"_id":"45480747","staffId":"45480747","name":"Tina Y Han","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:12.945Z"}}
+{"_id":"45479612","staffId":"45479612","name":"Harlan w h Zhong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.03Z"}}
+{"_id":"45111142","staffId":"45111142","name":"Nicole X Y Song","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.11Z"}}
+{"_id":"45482000","staffId":"45482000","name":"","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.211Z"}}
+{"_id":"45479599","staffId":"45479599","name":"Wei Tan","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.304Z"}}
+{"_id":"45479450","staffId":"45479450","name":"Kasper Deng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.404Z"}}
+{"_id":"43706255","staffId":"43706255","name":"Coey J Y Guo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.502Z"}}
+{"_id":"45195952","staffId":"45195952","name":"Esther Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.59Z"}}
+{"_id":"45271436","staffId":"45271436","name":"Sylvester Cai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.674Z"}}
+{"_id":"45480541","staffId":"45480541","name":"Tim M T Qin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.771Z"}}
+{"_id":"45480316","staffId":"45480316","name":"Zane Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.843Z"}}
+{"_id":"45484235","staffId":"45484235","name":"Jack Liu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:13.955Z"}}
+{"_id":"45482508","staffId":"45482508","name":"Cheng Wei Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.051Z"}}
+{"_id":"45480558","staffId":"45480558","name":"Wei Jiang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.14Z"}}
+{"_id":"45480315","staffId":"45480315","name":"Guizhi Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.221Z"}}
+{"_id":"45480873","staffId":"45480873","name":"Benson J Z Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.31Z"}}
+{"_id":"45394258","staffId":"45394258","name":"Jim Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.4Z"}}
+{"_id":"45481990","staffId":"45481990","name":"Danilo D Tang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.48Z"}}
+{"_id":"45482300","staffId":"45482300","name":"Talon Zhang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.569Z"}}
+{"_id":"45480335","staffId":"45480335","name":"Yi Shen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.654Z"}}
+{"_id":"45480342","staffId":"45480342","name":"Waylon Zheng","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:14.918Z"}}
+{"_id":"45480328","staffId":"45480328","name":"Forrest P Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.025Z"}}
+{"_id":"45482323","staffId":"45482323","name":"Vivian X T Tang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.121Z"}}
+{"_id":"43869475","staffId":"43869475","name":"Jie Ya Sylcia Su","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.215Z"}}
+{"_id":"43933878","staffId":"43933878","name":"Hong Min Plery Si Tu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.299Z"}}
+{"_id":"45482297","staffId":"45482297","name":"Jack Lau","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.397Z"}}
+{"_id":"45468626","staffId":"45468626","name":"Cher Xiao Xuan Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.481Z"}}
+{"_id":"45481995","staffId":"45481995","name":"Pei Hui Xie","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.572Z"}}
+{"_id":"45482265","staffId":"45482265","name":"Kent X W Ke","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.656Z"}}
+{"_id":"45480026","staffId":"45480026","name":"Si Cong Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.739Z"}}
+{"_id":"45482019","staffId":"45482019","name":"Shane Hui","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.817Z"}}
+{"_id":"45482027","staffId":"45482027","name":"Terra Zheng","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.9Z"}}
+{"_id":"45481994","staffId":"45481994","name":"Victor X Yan","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:15.995Z"}}
+{"_id":"45479839","staffId":"45479839","name":"Wen Ju Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.073Z"}}
+{"_id":"45482020","staffId":"45482020","name":"Felix H X Wang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.158Z"}}
+{"_id":"45482001","staffId":"45482001","name":"Marvin H R Zhang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.24Z"}}
+{"_id":"45481996","staffId":"45481996","name":"Yuki Xue","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.336Z"}}
+{"_id":"45479838","staffId":"45479838","name":"Sean Song Huang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.421Z"}}
+{"_id":"45482296","staffId":"45482296","name":"Linford L F HU","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.501Z"}}
+{"_id":"45482018","staffId":"45482018","name":"Olivia Wan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.585Z"}}
+{"_id":"45364943","staffId":"45364943","name":"Cathy Yuan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.656Z"}}
+{"_id":"45179796","staffId":"45179796","name":"Hans Z P Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.724Z"}}
+{"_id":"45266324","staffId":"45266324","name":"Jasmine Yao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.803Z"}}
+{"_id":"45112297","staffId":"45112297","name":"Lina Fan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.896Z"}}
+{"_id":"45479802","staffId":"45479802","name":"Evan Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:16.972Z"}}
+{"_id":"45479856","staffId":"45479856","name":"Evan Li","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.062Z"}}
+{"_id":"45479608","staffId":"45479608","name":"Miao Zhu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.152Z"}}
+{"_id":"45479606","staffId":"45479606","name":"Jackdeng Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.229Z"}}
+{"_id":"45480014","staffId":"45480014","name":"Eric Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.317Z"}}
+{"_id":"45479804","staffId":"45479804","name":"Dickson H Z Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.4Z"}}
+{"_id":"45479987","staffId":"45479987","name":"Vincent W H Fu","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.484Z"}}
+{"_id":"45479850","staffId":"45479850","name":"Hang Chen","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.576Z"}}
+{"_id":"45479791","staffId":"45479791","name":"Jay Sun","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.654Z"}}
+{"_id":"45480005","staffId":"45480005","name":"Jason H C Xie","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.729Z"}}
+{"_id":"45480196","staffId":"45480196","name":"James P Xue","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.819Z"}}
+{"_id":"45479996","staffId":"45479996","name":"Verzin Zhong","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.887Z"}}
+{"_id":"45479834","staffId":"45479834","name":"Quinn Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:17.99Z"}}
+{"_id":"45459935","staffId":"45459935","name":"Vic Q T Liu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.073Z"}}
+{"_id":"45461188","staffId":"45461188","name":"Antonio Huang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.166Z"}}
+{"_id":"43702892","staffId":"43702892","name":"Ross Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.25Z"}}
+{"_id":"43950153","staffId":"43950153","name":"Jin Rong Jenny Zhuang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.323Z"}}
+{"_id":"45205603","staffId":"45205603","name":"Jerry Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.403Z"}}
+{"_id":"43845731","staffId":"43845731","name":"Zhi Qiang Tian","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.499Z"}}
+{"_id":"45085019","staffId":"45085019","name":"Ivan Ye","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.577Z"}}
+{"_id":"45479239","staffId":"45479239","name":"Ying Hang Deng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.668Z"}}
+{"_id":"45479238","staffId":"45479238","name":"Richie Wu","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.758Z"}}
+{"_id":"44065253","staffId":"44065253","name":"George Yuan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.854Z"}}
+{"_id":"45013371","staffId":"45013371","name":"Zi Hao Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:18.925Z"}}
+{"_id":"43937059","staffId":"43937059","name":"Kitting Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.012Z"}}
+{"_id":"45149584","staffId":"45149584","name":"Sam T R Liao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.103Z"}}
+{"_id":"45168778","staffId":"45168778","name":"De Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.201Z"}}
+{"_id":"45055228","staffId":"45055228","name":"Anqi Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.285Z"}}
+{"_id":"43845730","staffId":"43845730","name":"Ze Peng Richard Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.362Z"}}
+{"_id":"44000910","staffId":"44000910","name":"Xiao Yun Lavender Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.45Z"}}
+{"_id":"45143205","staffId":"45143205","name":"Kary J Q Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.535Z"}}
+{"_id":"45127103","staffId":"45127103","name":"City L C Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.612Z"}}
+{"_id":"44000921","staffId":"44000921","name":"Yi Shan Kira Li","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.686Z"}}
+{"_id":"43619196","staffId":"43619196","name":"Jennifer Liang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.762Z"}}
+{"_id":"45460893","staffId":"45460893","name":"Chris Yu Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.832Z"}}
+{"_id":"45464896","staffId":"45464896","name":"Ren Jie Jiang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:19.916Z"}}
+{"_id":"43285699","staffId":"43285699","name":"Steven Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.004Z"}}
+{"_id":"43696822","staffId":"43696822","name":"Allen Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.084Z"}}
+{"_id":"45028503","staffId":"45028503","name":"Yu Ping Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.159Z"}}
+{"_id":"43639973","staffId":"43639973","name":"Ben Huang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.254Z"}}
+{"_id":"45464602","staffId":"45464602","name":"Jue Xiao Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.354Z"}}
+{"_id":"45462678","staffId":"45462678","name":"Jack JJ Lin","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.428Z"}}
+{"_id":"44133216","staffId":"44133216","name":"Yun Xiong Sean He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.505Z"}}
+{"_id":"43792328","staffId":"43792328","name":"Kenny Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.591Z"}}
+{"_id":"43796829","staffId":"43796829","name":"Ray Lei","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.682Z"}}
+{"_id":"44000056","staffId":"44000056","name":"Sam Gao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.767Z"}}
+{"_id":"43228433","staffId":"43228433","name":"Barry X Y Qiu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.893Z"}}
+{"_id":"43359319","staffId":"43359319","name":"Brian Z M Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:20.97Z"}}
+{"_id":"43167006","staffId":"43167006","name":"Susan Lian","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.055Z"}}
+{"_id":"43339784","staffId":"43339784","name":"Nicole Lao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.159Z"}}
+{"_id":"43619249","staffId":"43619249","name":"Cynthia W S Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.22Z"}}
+{"_id":"45460550","staffId":"45460550","name":"Mandy J Q He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.3Z"}}
+{"_id":"45460552","staffId":"45460552","name":"Lucas Y M Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.38Z"}}
+{"_id":"45154297","staffId":"45154297","name":"Shuping S P Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.472Z"}}
+{"_id":"34065676","staffId":"34065676","name":"Jackphen Z F Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.555Z"}}
+{"_id":"43176169","staffId":"43176169","name":"Ivan Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.638Z"}}
+{"_id":"43228380","staffId":"43228380","name":"Sam Sui","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.738Z"}}
+{"_id":"43227720","staffId":"43227720","name":"Greeny Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.832Z"}}
+{"_id":"43604841","staffId":"43604841","name":"Wing Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.904Z"}}
+{"_id":"43695783","staffId":"43695783","name":"Tao Na Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:21.988Z"}}
+{"_id":"43663760","staffId":"43663760","name":"Derek Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.067Z"}}
+{"_id":"43601176","staffId":"43601176","name":"Leo Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.164Z"}}
+{"_id":"43416831","staffId":"43416831","name":"Vicky Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.247Z"}}
+{"_id":"43377032","staffId":"43377032","name":"Hilda Yu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.331Z"}}
+{"_id":"43398271","staffId":"43398271","name":"January Jing Wen Gan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.416Z"}}
+{"_id":"43904882","staffId":"43904882","name":"Joe Y Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.527Z"}}
+{"_id":"43334274","staffId":"43334274","name":"Tony Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.626Z"}}
+{"_id":"43233057","staffId":"43233057","name":"Parkin Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.702Z"}}
+{"_id":"43166998","staffId":"43166998","name":"Samuel Z X Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.792Z"}}
+{"_id":"43631229","staffId":"43631229","name":"Lucia X M Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.877Z"}}
+{"_id":"43545515","staffId":"43545515","name":"Alex He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:22.968Z"}}
+{"_id":"43227706","staffId":"43227706","name":"Becky B Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.057Z"}}
+{"_id":"45013980","staffId":"45013980","name":"Lulu Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.136Z"}}
+{"_id":"43566018","staffId":"43566018","name":"Tom Qiu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.223Z"}}
+{"_id":"43425254","staffId":"43425254","name":"Nathan Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.303Z"}}
+{"_id":"43402922","staffId":"43402922","name":"Mango X H Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.378Z"}}
+{"_id":"43988563","staffId":"43988563","name":"Lesile Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.447Z"}}
+{"_id":"43861524","staffId":"43861524","name":"Phone Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.526Z"}}
+{"_id":"45046199","staffId":"45046199","name":"Anderson Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.601Z"}}
+{"_id":"43970609","staffId":"43970609","name":"He Ming Herman Pang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.688Z"}}
+{"_id":"45143453","staffId":"45143453","name":"Alice J M Tang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.767Z"}}
+{"_id":"45244712","staffId":"45244712","name":"Kenway Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.837Z"}}
+{"_id":"45055119","staffId":"45055119","name":"Jiacong Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.915Z"}}
+{"_id":"43386867","staffId":"43386867","name":"","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:23.983Z"}}
+{"_id":"45110962","staffId":"45110962","name":"Sam Y S Xuan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.07Z"}}
+{"_id":"43764042","staffId":"43764042","name":"Vanessa X L Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.161Z"}}
+{"_id":"44001013","staffId":"44001013","name":"Rachel Q J LV","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.232Z"}}
+{"_id":"44089010","staffId":"44089010","name":"Yong Xia","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.317Z"}}
+{"_id":"45350528","staffId":"45350528","name":"Jerry Cao","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.389Z"}}
+{"_id":"43608234","staffId":"43608234","name":"Vinta X D Shao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.469Z"}}
+{"_id":"45468156","staffId":"45468156","name":"Rocky Q Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.558Z"}}
+{"_id":"45462658","staffId":"45462658","name":"","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.63Z"}}
+{"_id":"45464898","staffId":"45464898","name":"Hao Ran Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.719Z"}}
+{"_id":"45119041","staffId":"45119041","name":"Jin Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.791Z"}}
+{"_id":"45173741","staffId":"45173741","name":"Deng Ke He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.871Z"}}
+{"_id":"43915579","staffId":"43915579","name":"William W J Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:24.948Z"}}
+{"_id":"43708507","staffId":"43708507","name":"Horace Z Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.036Z"}}
+{"_id":"45173367","staffId":"45173367","name":"Ray Y L Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.119Z"}}
+{"_id":"43987647","staffId":"43987647","name":"Jayden X J Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.203Z"}}
+{"_id":"45029676","staffId":"45029676","name":"Lucia M J Cai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.285Z"}}
+{"_id":"45159829","staffId":"45159829","name":"George Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.365Z"}}
+{"_id":"43457749","staffId":"43457749","name":"Edward Yan Hua Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.449Z"}}
+{"_id":"45164571","staffId":"45164571","name":"Jerry Liao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.539Z"}}
+{"_id":"45156949","staffId":"45156949","name":"Jim J Q Jiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.621Z"}}
+{"_id":"43692224","staffId":"43692224","name":"Steven Z X Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.7Z"}}
+{"_id":"43165085","staffId":"43165085","name":"Peter W K Peng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.786Z"}}
+{"_id":"45160278","staffId":"45160278","name":"Eason Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.85Z"}}
+{"_id":"45072345","staffId":"45072345","name":"Wynn W W Zhang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.926Z"}}
+{"_id":"43857631","staffId":"43857631","name":"Hong Shen Andy Xie","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:25.998Z"}}
+{"_id":"45464562","staffId":"45464562","name":"Zi Hua Feng","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.072Z"}}
+{"_id":"45463737","staffId":"45463737","name":"Bo Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.169Z"}}
+{"_id":"45463304","staffId":"45463304","name":"Ben Xie","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.259Z"}}
+{"_id":"45057723","staffId":"45057723","name":"Jin Ou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.344Z"}}
+{"_id":"45056760","staffId":"45056760","name":"Dan Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.426Z"}}
+{"_id":"45464341","staffId":"45464341","name":"Nathan C G WANG","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.514Z"}}
+{"_id":"45463726","staffId":"45463726","name":"Steven H Yang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.607Z"}}
+{"_id":"45464563","staffId":"45464563","name":"Suki Y L WANG","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.678Z"}}
+{"_id":"43534365","staffId":"43534365","name":"Kony M Q Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.746Z"}}
+{"_id":"43419727","staffId":"43419727","name":"Dragonfly Yu","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.853Z"}}
+{"_id":"45459160","staffId":"45459160","name":"Cynthia M Y Tang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:26.926Z"}}
+{"_id":"45460839","staffId":"45460839","name":"Jiayi Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.003Z"}}
+{"_id":"45461747","staffId":"45461747","name":"Jimmy M","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.085Z"}}
+{"_id":"45080528","staffId":"45080528","name":"Alice Wang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.159Z"}}
+{"_id":"45456399","staffId":"45456399","name":"Morris Liang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.227Z"}}
+{"_id":"45073438","staffId":"45073438","name":"Vic Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.302Z"}}
+{"_id":"45461713","staffId":"45461713","name":"Joy Xiao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.378Z"}}
+{"_id":"45464549","staffId":"45464549","name":"Andy Liao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.464Z"}}
+{"_id":"45467872","staffId":"45467872","name":"Luke Y Q Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.541Z"}}
+{"_id":"45467868","staffId":"45467868","name":"Marshall X W LI","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.618Z"}}
+{"_id":"43571493","staffId":"43571493","name":"Richard L K HOU","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.706Z"}}
+{"_id":"45464621","staffId":"45464621","name":"Jasper Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.788Z"}}
+{"_id":"45460267","staffId":"45460267","name":"Anson Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.876Z"}}
+{"_id":"43596783","staffId":"43596783","name":"Nick XL Ao","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:27.964Z"}}
+{"_id":"45461499","staffId":"45461499","name":"Zhan Yu Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.046Z"}}
+{"_id":"45267635","staffId":"45267635","name":"Claire Y Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.127Z"}}
+{"_id":"43335322","staffId":"43335322","name":"Glynn Deng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.2Z"}}
+{"_id":"45321094","staffId":"45321094","name":"Julian Liang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.267Z"}}
+{"_id":"45173331","staffId":"45173331","name":"Alex Ling","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.358Z"}}
+{"_id":"43691275","staffId":"43691275","name":"Sue Su","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.438Z"}}
+{"_id":"45156000","staffId":"45156000","name":"Bruce B W Ou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.514Z"}}
+{"_id":"45132019","staffId":"45132019","name":"Dorian Q L Gao","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.608Z"}}
+{"_id":"45164141","staffId":"45164141","name":"Leo Z M Li","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.682Z"}}
+{"_id":"45073042","staffId":"45073042","name":"Gui Jin Liang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.75Z"}}
+{"_id":"43702875","staffId":"43702875","name":"Lisa L Z Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.818Z"}}
+{"_id":"45155963","staffId":"45155963","name":"Jay Z F Huang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:28.912Z"}}
+{"_id":"45059926","staffId":"45059926","name":"Maybach Z H Fang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.001Z"}}
+{"_id":"44015724","staffId":"44015724","name":"Iven Z Q Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.077Z"}}
+{"_id":"43985772","staffId":"43985772","name":"Topher Y J Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.153Z"}}
+{"_id":"43251266","staffId":"43251266","name":"Man Li","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.244Z"}}
+{"_id":"45137206","staffId":"45137206","name":"Free Y T Cai","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.328Z"}}
+{"_id":"43975870","staffId":"43975870","name":"Sunny Cai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.407Z"}}
+{"_id":"43930998","staffId":"43930998","name":"Paulo Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.498Z"}}
+{"_id":"45458139","staffId":"45458139","name":"Yuki Shen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.586Z"}}
+{"_id":"45159546","staffId":"45159546","name":"Richard ZH Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.66Z"}}
+{"_id":"45461163","staffId":"45461163","name":"Mark Wu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.741Z"}}
+{"_id":"45461926","staffId":"45461926","name":"Ze Xiang Wu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.821Z"}}
+{"_id":"45461193","staffId":"45461193","name":"Yinyin Lv","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.892Z"}}
+{"_id":"45461742","staffId":"45461742","name":"Sam Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:29.979Z"}}
+{"_id":"45117038","staffId":"45117038","name":"Jaffray Tan","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.059Z"}}
+{"_id":"45459594","staffId":"45459594","name":"Louise Cheng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.126Z"}}
+{"_id":"45125238","staffId":"45125238","name":"Atonia S Ding","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.21Z"}}
+{"_id":"45029741","staffId":"45029741","name":"Kelli Tan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.286Z"}}
+{"_id":"45125234","staffId":"45125234","name":"Young Z Y Xie","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.347Z"}}
+{"_id":"45460539","staffId":"45460539","name":"Jia Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.427Z"}}
+{"_id":"45459415","staffId":"45459415","name":"Peng Huang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.504Z"}}
+{"_id":"45459152","staffId":"45459152","name":"Zhuodong Andrew Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.584Z"}}
+{"_id":"45459626","staffId":"45459626","name":"Eliot Zheng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.67Z"}}
+{"_id":"45459433","staffId":"45459433","name":"Marco J J Lai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.753Z"}}
+{"_id":"43465496","staffId":"43465496","name":"Mabel Shao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.823Z"}}
+{"_id":"45043007","staffId":"45043007","name":"Edison X J Du","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:30.92Z"}}
+{"_id":"43968909","staffId":"43968909","name":"Nikita Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.01Z"}}
+{"_id":"45352212","staffId":"45352212","name":"Ian Y Y Lai","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.09Z"}}
+{"_id":"45459435","staffId":"45459435","name":"Vincent J H Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.171Z"}}
+{"_id":"45207221","staffId":"45207221","name":"Claire Zhu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.252Z"}}
+{"_id":"45456145","staffId":"45456145","name":"Young Y Jiao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.349Z"}}
+{"_id":"45454520","staffId":"45454520","name":"Wenbin Han","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.425Z"}}
+{"_id":"45454809","staffId":"45454809","name":"Billy He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.498Z"}}
+{"_id":"45454757","staffId":"45454757","name":"Jianbing Chen","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.591Z"}}
+{"_id":"45455381","staffId":"45455381","name":"Lawrence GJ Shen","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.664Z"}}
+{"_id":"45455412","staffId":"45455412","name":"Qi Du Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.729Z"}}
+{"_id":"43695780","staffId":"43695780","name":"","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.798Z"}}
+{"_id":"45455711","staffId":"45455711","name":"Xinyi Zhu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.884Z"}}
+{"_id":"45456163","staffId":"45456163","name":"Eve Y Y Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:31.949Z"}}
+{"_id":"45452774","staffId":"45452774","name":"Andrew Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.017Z"}}
+{"_id":"45450354","staffId":"45450354","name":"Tingtao Xu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.104Z"}}
+{"_id":"45297861","staffId":"45297861","name":"Karma Dai","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.179Z"}}
+{"_id":"45455416","staffId":"45455416","name":"Timmy S F Hu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.26Z"}}
+{"_id":"43633725","staffId":"43633725","name":"Killy Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.337Z"}}
+{"_id":"45117003","staffId":"45117003","name":"Eric W F Yang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.405Z"}}
+{"_id":"43850615","staffId":"43850615","name":"Joe Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.478Z"}}
+{"_id":"45333585","staffId":"45333585","name":"Peter Fu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.553Z"}}
+{"_id":"43764041","staffId":"43764041","name":"Xiuya X Y He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.627Z"}}
+{"_id":"43991852","staffId":"43991852","name":"Tian Zhu Ye","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.704Z"}}
+{"_id":"43569351","staffId":"43569351","name":"Max Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.775Z"}}
+{"_id":"45189057","staffId":"45189057","name":"Jam Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.853Z"}}
+{"_id":"44023028","staffId":"44023028","name":"Alex Y F Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:32.946Z"}}
+{"_id":"43457731","staffId":"43457731","name":"Kitty Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.028Z"}}
+{"_id":"45196445","staffId":"45196445","name":"Henry X N Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.091Z"}}
+{"_id":"43801032","staffId":"43801032","name":"Ada Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.162Z"}}
+{"_id":"45454557","staffId":"45454557","name":"Kyran Deng","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.222Z"}}
+{"_id":"45453236","staffId":"45453236","name":"Nickel Fang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.306Z"}}
+{"_id":"45124986","staffId":"45124986","name":"Claire Y H Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.393Z"}}
+{"_id":"45452143","staffId":"45452143","name":"Kevin YZ Zhu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.474Z"}}
+{"_id":"45454590","staffId":"45454590","name":"Jun Gao","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.559Z"}}
+{"_id":"45381041","staffId":"45381041","name":"Hao Chen","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.623Z"}}
+{"_id":"43926117","staffId":"43926117","name":"Barry C F XU","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.697Z"}}
+{"_id":"45156869","staffId":"45156869","name":"Alfred S B Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.772Z"}}
+{"_id":"45451862","staffId":"45451862","name":"Wilbur TF Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.835Z"}}
+{"_id":"45451670","staffId":"45451670","name":"Brian Liao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.908Z"}}
+{"_id":"45452227","staffId":"45452227","name":"Claire Zhao","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:33.985Z"}}
+{"_id":"45272356","staffId":"45272356","name":"Shawn Pan","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.057Z"}}
+{"_id":"45431620","staffId":"45431620","name":"David YQ Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.147Z"}}
+{"_id":"45452198","staffId":"45452198","name":"Frank Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.214Z"}}
+{"_id":"45454041","staffId":"45454041","name":"Cerie Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.308Z"}}
+{"_id":"45451647","staffId":"45451647","name":"Ray Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.403Z"}}
+{"_id":"45454233","staffId":"45454233","name":"Eason Cheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.486Z"}}
+{"_id":"45078075","staffId":"45078075","name":"Leo Lu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.56Z"}}
+{"_id":"45117835","staffId":"45117835","name":"Leo Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.637Z"}}
+{"_id":"43350911","staffId":"43350911","name":"Chenghao Pan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.727Z"}}
+{"_id":"45451878","staffId":"45451878","name":"Scarlett Cao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.806Z"}}
+{"_id":"45121683","staffId":"45121683","name":"Dan Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.894Z"}}
+{"_id":"45040345","staffId":"45040345","name":"Vison Z W Fan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:34.966Z"}}
+{"_id":"43614025","staffId":"43614025","name":"Lanee Zeng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.04Z"}}
+{"_id":"45451631","staffId":"45451631","name":"Eric Qin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.111Z"}}
+{"_id":"45451026","staffId":"45451026","name":"Jian Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.19Z"}}
+{"_id":"45447817","staffId":"45447817","name":"Zilong Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.295Z"}}
+{"_id":"45179474","staffId":"45179474","name":"Simon W Lu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.364Z"}}
+{"_id":"45361732","staffId":"45361732","name":"Tian Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.439Z"}}
+{"_id":"45379795","staffId":"45379795","name":"Eric Lin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.527Z"}}
+{"_id":"43596078","staffId":"43596078","name":"Nicole Zhong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.607Z"}}
+{"_id":"45449939","staffId":"45449939","name":"Ethan Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.682Z"}}
+{"_id":"45122793","staffId":"45122793","name":"Pely Xiao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.757Z"}}
+{"_id":"43227993","staffId":"43227993","name":"Cherry Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.842Z"}}
+{"_id":"45451903","staffId":"45451903","name":"Joy H Hu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.909Z"}}
+{"_id":"45431947","staffId":"45431947","name":"Kathy Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:35.981Z"}}
+{"_id":"45453375","staffId":"45453375","name":"Faye Wei","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.055Z"}}
+{"_id":"45435013","staffId":"45435013","name":"Jack Zhu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.126Z"}}
+{"_id":"45242426","staffId":"45242426","name":"Leo Yin","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.211Z"}}
+{"_id":"45185875","staffId":"45185875","name":"Luke Q Zhong","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.284Z"}}
+{"_id":"45106720","staffId":"45106720","name":"Eva Yih","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.352Z"}}
+{"_id":"43617705","staffId":"43617705","name":"Mini X Hu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.426Z"}}
+{"_id":"43167012","staffId":"43167012","name":"Sharon Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.496Z"}}
+{"_id":"45077311","staffId":"45077311","name":"Victor Z C Zhong","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.572Z"}}
+{"_id":"45134907","staffId":"45134907","name":"Willow Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.656Z"}}
+{"_id":"45124752","staffId":"45124752","name":"Joe C C Duan","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.725Z"}}
+{"_id":"45448943","staffId":"45448943","name":"Dan Chen","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.8Z"}}
+{"_id":"45448962","staffId":"45448962","name":"Livan Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.866Z"}}
+{"_id":"45043450","staffId":"45043450","name":"Fred Long","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:36.932Z"}}
+{"_id":"44058003","staffId":"44058003","name":"Ryan Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.015Z"}}
+{"_id":"45439953","staffId":"45439953","name":"Ming Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.091Z"}}
+{"_id":"45132001","staffId":"45132001","name":"You Y Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.176Z"}}
+{"_id":"45448507","staffId":"45448507","name":"Andro L Wei","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.259Z"}}
+{"_id":"45449126","staffId":"45449126","name":"Sheldon Xia","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.341Z"}}
+{"_id":"44120945","staffId":"44120945","name":"Jacky Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.407Z"}}
+{"_id":"45123884","staffId":"45123884","name":"Ryan Y E Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.489Z"}}
+{"_id":"34014369","staffId":"34014369","name":"Ellie C L Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.571Z"}}
+{"_id":"43619218","staffId":"43619218","name":"Windy Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.642Z"}}
+{"_id":"43334765","staffId":"43334765","name":"Terry Lan","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.737Z"}}
+{"_id":"43584961","staffId":"43584961","name":"Alan Pu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.806Z"}}
+{"_id":"45424136","staffId":"45424136","name":"Kit Y J Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.872Z"}}
+{"_id":"45447449","staffId":"45447449","name":"Joshua Gou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:37.95Z"}}
+{"_id":"45213665","staffId":"45213665","name":"Wei Ming Zhuang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.015Z"}}
+{"_id":"43234152","staffId":"43234152","name":"Apollo Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.09Z"}}
+{"_id":"45447458","staffId":"45447458","name":"Joanna Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.163Z"}}
+{"_id":"45069656","staffId":"45069656","name":"Chad Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.24Z"}}
+{"_id":"45287543","staffId":"45287543","name":"TQ Tan","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.312Z"}}
+{"_id":"45278538","staffId":"45278538","name":"Zheng Liu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.374Z"}}
+{"_id":"43637706","staffId":"43637706","name":"Ricky Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.463Z"}}
+{"_id":"43391554","staffId":"43391554","name":"Emerson Chen","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.543Z"}}
+{"_id":"45181360","staffId":"45181360","name":"Super C P Liu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.626Z"}}
+{"_id":"45065077","staffId":"45065077","name":"Dannie Yao","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.722Z"}}
+{"_id":"43619214","staffId":"43619214","name":"May Long","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.811Z"}}
+{"_id":"45224121","staffId":"45224121","name":"Caiyun Feng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.887Z"}}
+{"_id":"45245884","staffId":"45245884","name":"Elon Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:38.955Z"}}
+{"_id":"45443951","staffId":"45443951","name":"Jacob Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.029Z"}}
+{"_id":"45115551","staffId":"45115551","name":"Dean L M Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.096Z"}}
+{"_id":"43310623","staffId":"43310623","name":"Ji Lin Jary Chen","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.184Z"}}
+{"_id":"45367029","staffId":"45367029","name":"Shuai Kang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.26Z"}}
+{"_id":"45249308","staffId":"45249308","name":"Jenny He","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.341Z"}}
+{"_id":"45442331","staffId":"45442331","name":"Bob Liang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.407Z"}}
+{"_id":"34051619","staffId":"34051619","name":"Rui Qi Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.478Z"}}
+{"_id":"45440405","staffId":"45440405","name":"Felix Zhou","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.553Z"}}
+{"_id":"45439285","staffId":"45439285","name":"Zhengting Han","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.644Z"}}
+{"_id":"45441761","staffId":"45441761","name":"Shaohui Yan","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.708Z"}}
+{"_id":"45440990","staffId":"45440990","name":"Boyu Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.778Z"}}
+{"_id":"45333509","staffId":"45333509","name":"Mercy J Zhou","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.858Z"}}
+{"_id":"45034626","staffId":"45034626","name":"Frank G Q Feng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:39.928Z"}}
+{"_id":"45133198","staffId":"45133198","name":"Carmen J M Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.008Z"}}
+{"_id":"45216244","staffId":"45216244","name":"Xiao Bin Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.084Z"}}
+{"_id":"45438222","staffId":"45438222","name":"Xiaolu Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.173Z"}}
+{"_id":"45438396","staffId":"45438396","name":"Bryan Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.254Z"}}
+{"_id":"45437357","staffId":"45437357","name":"Changzuo Dong","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.33Z"}}
+{"_id":"45436286","staffId":"45436286","name":"Ron X X Su","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.393Z"}}
+{"_id":"45437298","staffId":"45437298","name":"Luke Lu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.478Z"}}
+{"_id":"43408878","staffId":"43408878","name":"Joy Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.552Z"}}
+{"_id":"43981417","staffId":"43981417","name":"Joan L Q Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.618Z"}}
+{"_id":"45385481","staffId":"45385481","name":"Super Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.7Z"}}
+{"_id":"34008395","staffId":"34008395","name":"Fabio Y Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.788Z"}}
+{"_id":"45365866","staffId":"45365866","name":"Helen Cai","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.868Z"}}
+{"_id":"45430481","staffId":"45430481","name":"Darjeeling Du","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:40.957Z"}}
+{"_id":"43937032","staffId":"43937032","name":"Si Bo Keybo Guo","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.027Z"}}
+{"_id":"43356782","staffId":"43356782","name":"Hory Zhuang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.096Z"}}
+{"_id":"45027631","staffId":"45027631","name":"Coco Ke Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.175Z"}}
+{"_id":"45121875","staffId":"45121875","name":"Stella Y X Ma","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.244Z"}}
+{"_id":"45124645","staffId":"45124645","name":"Lan X B Ma","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.317Z"}}
+{"_id":"43597771","staffId":"43597771","name":"Koen Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.385Z"}}
+{"_id":"45158780","staffId":"45158780","name":"Charlin C L Pan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.456Z"}}
+{"_id":"43867766","staffId":"43867766","name":"Ling Feng Peter Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.538Z"}}
+{"_id":"45423883","staffId":"45423883","name":"Mandy X Q Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.612Z"}}
+{"_id":"45424276","staffId":"45424276","name":"Eric Fan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.682Z"}}
+{"_id":"45087115","staffId":"45087115","name":"Hover X W Qiu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.762Z"}}
+{"_id":"45422677","staffId":"45422677","name":"Nim J N Jiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.835Z"}}
+{"_id":"45140308","staffId":"45140308","name":"Vicky W J Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.912Z"}}
+{"_id":"43234154","staffId":"43234154","name":"Kevin J C Fan","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:41.98Z"}}
+{"_id":"44101726","staffId":"44101726","name":"Lincoln Y K Lin","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.074Z"}}
+{"_id":"45420730","staffId":"45420730","name":"Shibing Wu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.169Z"}}
+{"_id":"45419898","staffId":"45419898","name":"Nick G.M Zheng","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.267Z"}}
+{"_id":"43242309","staffId":"43242309","name":"Kevin W F Liao","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.341Z"}}
+{"_id":"45082196","staffId":"45082196","name":"Zhi Sheng Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.411Z"}}
+{"_id":"45058838","staffId":"45058838","name":"Derek Z Y Huo","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.493Z"}}
+{"_id":"34036008","staffId":"34036008","name":"Selina Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.566Z"}}
+{"_id":"43354703","staffId":"43354703","name":"Liz Liang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.643Z"}}
+{"_id":"45276345","staffId":"45276345","name":"Ted Yan","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.757Z"}}
+{"_id":"44010044","staffId":"44010044","name":"Crystal Ou","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.825Z"}}
+{"_id":"45417277","staffId":"45417277","name":"Chun Du","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.896Z"}}
+{"_id":"45130831","staffId":"45130831","name":"Sherry Q W Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:42.957Z"}}
+{"_id":"45417682","staffId":"45417682","name":"Yann Y K Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.031Z"}}
+{"_id":"45152202","staffId":"45152202","name":"Ives C R Li","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.097Z"}}
+{"_id":"45258554","staffId":"45258554","name":"Hobby He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.168Z"}}
+{"_id":"45417293","staffId":"45417293","name":"Zehong Lin","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.251Z"}}
+{"_id":"45418130","staffId":"45418130","name":"Max J Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.338Z"}}
+{"_id":"45416686","staffId":"45416686","name":"Jenny Zhong","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.425Z"}}
+{"_id":"45181030","staffId":"45181030","name":"Jingkang Mao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.508Z"}}
+{"_id":"45112367","staffId":"45112367","name":"Feng Y F Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.586Z"}}
+{"_id":"45112848","staffId":"45112848","name":"Abner D T Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.662Z"}}
+{"_id":"45112365","staffId":"45112365","name":"Zero Z B Lin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.745Z"}}
+{"_id":"45144221","staffId":"45144221","name":"Yolanda Y Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.814Z"}}
+{"_id":"45062275","staffId":"45062275","name":"Sia Y Y Hu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.887Z"}}
+{"_id":"43726072","staffId":"43726072","name":"Richard B Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:43.961Z"}}
+{"_id":"43790180","staffId":"43790180","name":"Henry Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.036Z"}}
+{"_id":"44138809","staffId":"44138809","name":"Arlene Lin","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.111Z"}}
+{"_id":"45224144","staffId":"45224144","name":"Cyrus Liang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.178Z"}}
+{"_id":"45042303","staffId":"45042303","name":"Betty Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.255Z"}}
+{"_id":"45412355","staffId":"45412355","name":"","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.345Z"}}
+{"_id":"45027047","staffId":"45027047","name":"Krystal Y Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.414Z"}}
+{"_id":"45248841","staffId":"45248841","name":"Wei Hao Zhang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.486Z"}}
+{"_id":"45119801","staffId":"45119801","name":"Cyrus X Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.556Z"}}
+{"_id":"45062100","staffId":"45062100","name":"Kevin Y F Xiong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.628Z"}}
+{"_id":"45133413","staffId":"45133413","name":"Winkey Y Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.701Z"}}
+{"_id":"45083567","staffId":"45083567","name":"Lily L H Sun","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.777Z"}}
+{"_id":"43640017","staffId":"43640017","name":"Jade Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.851Z"}}
+{"_id":"45062317","staffId":"45062317","name":"Jessica M X Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:44.928Z"}}
+{"_id":"45161705","staffId":"45161705","name":"Jackie X B Ma","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.005Z"}}
+{"_id":"43167055","staffId":"43167055","name":"Chris Qi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.079Z"}}
+{"_id":"43540068","staffId":"43540068","name":"Eleven Qin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.174Z"}}
+{"_id":"45125241","staffId":"45125241","name":"Allen M Y Cheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.255Z"}}
+{"_id":"45117184","staffId":"45117184","name":"Riggs Z X Lv","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.337Z"}}
+{"_id":"43963175","staffId":"43963175","name":"Jamelle Jian","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.409Z"}}
+{"_id":"45144471","staffId":"45144471","name":"Hal W H Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.481Z"}}
+{"_id":"45017115","staffId":"45017115","name":"Edward X H Hong","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.56Z"}}
+{"_id":"45406624","staffId":"45406624","name":"Edward X C Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.649Z"}}
+{"_id":"43904590","staffId":"43904590","name":"Jack Wang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.728Z"}}
+{"_id":"45124317","staffId":"45124317","name":"Tevin Du","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.803Z"}}
+{"_id":"45136872","staffId":"45136872","name":"Evan Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.876Z"}}
+{"_id":"43978812","staffId":"43978812","name":"Moon Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:45.984Z"}}
+{"_id":"43352014","staffId":"43352014","name":"Annie YANG Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.059Z"}}
+{"_id":"44020911","staffId":"44020911","name":"Leo Z H Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.131Z"}}
+{"_id":"43644238","staffId":"43644238","name":"Jason Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.197Z"}}
+{"_id":"43869479","staffId":"43869479","name":"Johnny Z H He","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.28Z"}}
+{"_id":"43170421","staffId":"43170421","name":"Steven Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.374Z"}}
+{"_id":"45117011","staffId":"45117011","name":"Jackey Tian","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.438Z"}}
+{"_id":"43442701","staffId":"43442701","name":"John Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.537Z"}}
+{"_id":"45067017","staffId":"45067017","name":"Kai Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.624Z"}}
+{"_id":"45070637","staffId":"45070637","name":"Gavin Hong Yi Xiao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.689Z"}}
+{"_id":"44024598","staffId":"44024598","name":"Pierre H F Deng","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.767Z"}}
+{"_id":"45386478","staffId":"45386478","name":"Liam Wang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.841Z"}}
+{"_id":"45076152","staffId":"45076152","name":"Chen Yun Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.903Z"}}
+{"_id":"45397121","staffId":"45397121","name":"Rick He","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:46.987Z"}}
+{"_id":"45236164","staffId":"45236164","name":"JY Ke","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.07Z"}}
+{"_id":"45268039","staffId":"45268039","name":"Mian Mian Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.157Z"}}
+{"_id":"45255440","staffId":"45255440","name":"Bi Chao Chen","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.232Z"}}
+{"_id":"45250955","staffId":"45250955","name":"Yue Jiang He","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.311Z"}}
+{"_id":"43852188","staffId":"43852188","name":"Hansen Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.38Z"}}
+{"_id":"45156192","staffId":"45156192","name":"Amy YB Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.454Z"}}
+{"_id":"43384141","staffId":"43384141","name":"Lin H C Gui","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.56Z"}}
+{"_id":"44017150","staffId":"44017150","name":"Katherine Ke","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.639Z"}}
+{"_id":"43724870","staffId":"43724870","name":"Jacky Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.712Z"}}
+{"_id":"45030044","staffId":"45030044","name":"Yobi Yao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.788Z"}}
+{"_id":"45137761","staffId":"45137761","name":"Shona X Y Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.873Z"}}
+{"_id":"45377900","staffId":"45377900","name":"Zhendong Bei","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:47.947Z"}}
+{"_id":"45151555","staffId":"45151555","name":"Yolanda Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.015Z"}}
+{"_id":"43170393","staffId":"43170393","name":"Gary Lu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.107Z"}}
+{"_id":"45163398","staffId":"45163398","name":"Hong Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.179Z"}}
+{"_id":"45181720","staffId":"45181720","name":"Wayman Lee","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.259Z"}}
+{"_id":"43188179","staffId":"43188179","name":"Ray Luo","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.335Z"}}
+{"_id":"43858616","staffId":"43858616","name":"Xin Yue Crescent Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.405Z"}}
+{"_id":"43361890","staffId":"43361890","name":"Mark Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.47Z"}}
+{"_id":"43466767","staffId":"43466767","name":"Sisi Y S Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.541Z"}}
+{"_id":"43569132","staffId":"43569132","name":"Jasmine Huang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.636Z"}}
+{"_id":"43573183","staffId":"43573183","name":"Carson Wu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.72Z"}}
+{"_id":"43897123","staffId":"43897123","name":"Joshua G Li","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.817Z"}}
+{"_id":"43381355","staffId":"43381355","name":"Adrian HAO CHUAN Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:48.887Z"}}
+{"_id":"45051609","staffId":"45051609","name":"Paul J P Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.041Z"}}
+{"_id":"34014674","staffId":"34014674","name":"Min Xiao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.119Z"}}
+{"_id":"43567499","staffId":"43567499","name":"Susi Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.189Z"}}
+{"_id":"45345169","staffId":"45345169","name":"Nan Ke Yin","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.268Z"}}
+{"_id":"43909091","staffId":"43909091","name":"Cecilia Qin","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.36Z"}}
+{"_id":"45351150","staffId":"45351150","name":"Owen Y X Lu","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.44Z"}}
+{"_id":"43167049","staffId":"43167049","name":"Lancer C Zhang","dept":"SPS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.517Z"}}
+{"_id":"45139896","staffId":"45139896","name":"Bosco Z J Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.594Z"}}
+{"_id":"45137652","staffId":"45137652","name":"Greg L Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.67Z"}}
+{"_id":"45087459","staffId":"45087459","name":"Kevin Q W Hu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.744Z"}}
+{"_id":"43612214","staffId":"43612214","name":"Larsson Qi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.818Z"}}
+{"_id":"45275037","staffId":"45275037","name":"Sam Tan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.887Z"}}
+{"_id":"43614030","staffId":"43614030","name":"Eliz Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:49.964Z"}}
+{"_id":"45368651","staffId":"45368651","name":"Abel He","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.045Z"}}
+{"_id":"43409113","staffId":"43409113","name":"Yao Zhang Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.124Z"}}
+{"_id":"43903044","staffId":"43903044","name":"Xin Tong Nicole Zhao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.2Z"}}
+{"_id":"43335663","staffId":"43335663","name":"Cindy H Y Shen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.285Z"}}
+{"_id":"43457407","staffId":"43457407","name":"Yuanqin Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.36Z"}}
+{"_id":"45094739","staffId":"45094739","name":"Richard Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.443Z"}}
+{"_id":"45162111","staffId":"45162111","name":"BeeMan Feng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.512Z"}}
+{"_id":"45244710","staffId":"45244710","name":"Kalman Su","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.585Z"}}
+{"_id":"43800323","staffId":"43800323","name":"Ning Lei","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.652Z"}}
+{"_id":"45130143","staffId":"45130143","name":"Robin J Y Zhong","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.721Z"}}
+{"_id":"45126424","staffId":"45126424","name":"Joshua Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.785Z"}}
+{"_id":"43689511","staffId":"43689511","name":"Leo X J Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.863Z"}}
+{"_id":"43335810","staffId":"43335810","name":"Edgar Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:50.93Z"}}
+{"_id":"34040265","staffId":"34040265","name":"Alvin Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.011Z"}}
+{"_id":"45166528","staffId":"45166528","name":"Garry He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.088Z"}}
+{"_id":"45028798","staffId":"45028798","name":"Kenny Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.16Z"}}
+{"_id":"44081633","staffId":"44081633","name":"Joe Mai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.24Z"}}
+{"_id":"45186232","staffId":"45186232","name":"Cassiel Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.316Z"}}
+{"_id":"43897130","staffId":"43897130","name":"Heather Qiu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.384Z"}}
+{"_id":"43703563","staffId":"43703563","name":"Tony G T Guan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.457Z"}}
+{"_id":"43536973","staffId":"43536973","name":"John Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.527Z"}}
+{"_id":"45159862","staffId":"45159862","name":"Eno Z Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.597Z"}}
+{"_id":"45041540","staffId":"45041540","name":"Jun Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.674Z"}}
+{"_id":"45027127","staffId":"45027127","name":"Cheng Zhou Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.739Z"}}
+{"_id":"44023032","staffId":"44023032","name":"De Yu Beiai Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.83Z"}}
+{"_id":"44090125","staffId":"44090125","name":"Gene Jiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.901Z"}}
+{"_id":"45184658","staffId":"45184658","name":"Lyla Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:51.971Z"}}
+{"_id":"45048938","staffId":"45048938","name":"Bo Wen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.058Z"}}
+{"_id":"43853307","staffId":"43853307","name":"Paul Xian","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.147Z"}}
+{"_id":"43682932","staffId":"43682932","name":"Crystal Wei Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.234Z"}}
+{"_id":"45043670","staffId":"45043670","name":"Taylor Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.307Z"}}
+{"_id":"34066328","staffId":"34066328","name":"Steven Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.385Z"}}
+{"_id":"45050002","staffId":"45050002","name":"Andy S Q Fan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.456Z"}}
+{"_id":"45171014","staffId":"45171014","name":"Gift Zhang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.529Z"}}
+{"_id":"45299420","staffId":"45299420","name":"Mingcong Chen","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.599Z"}}
+{"_id":"45205742","staffId":"45205742","name":"Ruby H Gu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.666Z"}}
+{"_id":"45066761","staffId":"45066761","name":"Tim xiaoqi Tan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.748Z"}}
+{"_id":"45086654","staffId":"45086654","name":"Fan Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.841Z"}}
+{"_id":"45071564","staffId":"45071564","name":"Lewis Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:52.921Z"}}
+{"_id":"45134383","staffId":"45134383","name":"Ken K Sun","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.004Z"}}
+{"_id":"45130187","staffId":"45130187","name":"Cyan Y Xu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.07Z"}}
+{"_id":"45128595","staffId":"45128595","name":"Wisdom X Z Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.15Z"}}
+{"_id":"45113917","staffId":"45113917","name":"Hakim H J Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.219Z"}}
+{"_id":"45212927","staffId":"45212927","name":"Wenrui Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.295Z"}}
+{"_id":"45133079","staffId":"45133079","name":"Kinson J Q Xu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.373Z"}}
+{"_id":"45152156","staffId":"45152156","name":"Kenton L L Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.437Z"}}
+{"_id":"34055081","staffId":"34055081","name":"Joe He","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.52Z"}}
+{"_id":"45111585","staffId":"45111585","name":"Ashton Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.596Z"}}
+{"_id":"45139320","staffId":"45139320","name":"Mercury Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.669Z"}}
+{"_id":"45124744","staffId":"45124744","name":"Ethan Lin","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.748Z"}}
+{"_id":"43749825","staffId":"43749825","name":"Shallen Huang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.828Z"}}
+{"_id":"44129428","staffId":"44129428","name":"Orange Wen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.913Z"}}
+{"_id":"45073879","staffId":"45073879","name":"Lin Long Zhao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:53.995Z"}}
+{"_id":"45225011","staffId":"45225011","name":"Jerry Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.068Z"}}
+{"_id":"43878351","staffId":"43878351","name":"Kelvin JJ Wang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.149Z"}}
+{"_id":"45082747","staffId":"45082747","name":"Enid X Y Shu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.218Z"}}
+{"_id":"45247009","staffId":"45247009","name":"Vicky Yan Liang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.283Z"}}
+{"_id":"45126474","staffId":"45126474","name":"Lucas J J Lai","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.351Z"}}
+{"_id":"45143286","staffId":"45143286","name":"Sam Q B Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.425Z"}}
+{"_id":"45211802","staffId":"45211802","name":"Griffin Mai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.492Z"}}
+{"_id":"45352834","staffId":"45352834","name":"Ross Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.566Z"}}
+{"_id":"45232620","staffId":"45232620","name":"Jason C J Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.644Z"}}
+{"_id":"45126246","staffId":"45126246","name":"Eric Q H Xu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.728Z"}}
+{"_id":"45209738","staffId":"45209738","name":"Gali Jiuhai Gao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.825Z"}}
+{"_id":"45073646","staffId":"45073646","name":"Alex Liu","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.906Z"}}
+{"_id":"43549423","staffId":"43549423","name":"Li Zhang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:54.982Z"}}
+{"_id":"45054856","staffId":"45054856","name":"Beth X F Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.066Z"}}
+{"_id":"43561660","staffId":"43561660","name":"Wei Cong Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.148Z"}}
+{"_id":"45166459","staffId":"45166459","name":"Randy Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.225Z"}}
+{"_id":"43870797","staffId":"43870797","name":"Jason Li","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.297Z"}}
+{"_id":"43572495","staffId":"43572495","name":"Kemy Tan","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.38Z"}}
+{"_id":"45087840","staffId":"45087840","name":"Guo Liang Su","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.449Z"}}
+{"_id":"44077277","staffId":"44077277","name":"Er Yong Duke Li","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.524Z"}}
+{"_id":"45056828","staffId":"45056828","name":"Travis Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.59Z"}}
+{"_id":"43972641","staffId":"43972641","name":"Vincent W X Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.671Z"}}
+{"_id":"43961138","staffId":"43961138","name":"Iris Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.754Z"}}
+{"_id":"45167079","staffId":"45167079","name":"Jia Yu Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.819Z"}}
+{"_id":"43975551","staffId":"43975551","name":"Bi Yan Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.902Z"}}
+{"_id":"43817100","staffId":"43817100","name":"Brian Y S Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:55.969Z"}}
+{"_id":"44125624","staffId":"44125624","name":"Hai Peng Zhang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.043Z"}}
+{"_id":"43605841","staffId":"43605841","name":"Jasmine Luo","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.118Z"}}
+{"_id":"45265232","staffId":"45265232","name":"Muke Mi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.188Z"}}
+{"_id":"45138146","staffId":"45138146","name":"Henry Z B Zhang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.251Z"}}
+{"_id":"45080405","staffId":"45080405","name":"Jaden J X Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.329Z"}}
+{"_id":"45335059","staffId":"45335059","name":"Felix L F Qi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.411Z"}}
+{"_id":"43602235","staffId":"43602235","name":"Tifa He","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.486Z"}}
+{"_id":"43905800","staffId":"43905800","name":"Levisy Liu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.556Z"}}
+{"_id":"43334616","staffId":"43334616","name":"Tony Cheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.63Z"}}
+{"_id":"43593022","staffId":"43593022","name":"Sandy Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.699Z"}}
+{"_id":"45189675","staffId":"45189675","name":"Hong Le Wei","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.786Z"}}
+{"_id":"43732211","staffId":"43732211","name":"Jackman Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.875Z"}}
+{"_id":"43637088","staffId":"43637088","name":"Qing Sheng Savin Yu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:56.951Z"}}
+{"_id":"43605837","staffId":"43605837","name":"Ken He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.022Z"}}
+{"_id":"43965972","staffId":"43965972","name":"Mandy L M Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.095Z"}}
+{"_id":"43431841","staffId":"43431841","name":"Vincent S B Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.165Z"}}
+{"_id":"43733299","staffId":"43733299","name":"Don Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.234Z"}}
+{"_id":"43361891","staffId":"43361891","name":"Dephne Gui Ying Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.305Z"}}
+{"_id":"43805864","staffId":"43805864","name":"Hedia Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.383Z"}}
+{"_id":"44121656","staffId":"44121656","name":"Wave Q L Yan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.466Z"}}
+{"_id":"44125556","staffId":"44125556","name":"Knox Cao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.537Z"}}
+{"_id":"45077859","staffId":"45077859","name":"Arthur H K XU","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.611Z"}}
+{"_id":"45156914","staffId":"45156914","name":"Ryan X He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.68Z"}}
+{"_id":"45157663","staffId":"45157663","name":"Ethan Z Y Yao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.746Z"}}
+{"_id":"45158064","staffId":"45158064","name":"Wade W D Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.817Z"}}
+{"_id":"45160887","staffId":"45160887","name":"Young Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.891Z"}}
+{"_id":"45161877","staffId":"45161877","name":"Desmond XM Dai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:57.961Z"}}
+{"_id":"45081832","staffId":"45081832","name":"Audrey K H Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.036Z"}}
+{"_id":"43167017","staffId":"43167017","name":"Crystal Hu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.121Z"}}
+{"_id":"45294879","staffId":"45294879","name":"Anni Zhu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.21Z"}}
+{"_id":"45270641","staffId":"45270641","name":"Yansen Z Q Yang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.288Z"}}
+{"_id":"43886457","staffId":"43886457","name":"Chun Ting Tina Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.363Z"}}
+{"_id":"43358029","staffId":"43358029","name":"Paul X Y Lin","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.438Z"}}
+{"_id":"43334326","staffId":"43334326","name":"Anson R J Han","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.513Z"}}
+{"_id":"45157651","staffId":"45157651","name":"Rex W C Xin","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.598Z"}}
+{"_id":"45185947","staffId":"45185947","name":"Jacob Zh H Yu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.668Z"}}
+{"_id":"43590531","staffId":"43590531","name":"Leo Zhang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.744Z"}}
+{"_id":"44113112","staffId":"44113112","name":"Hang Liu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.808Z"}}
+{"_id":"44015696","staffId":"44015696","name":"Lance Lin","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.888Z"}}
+{"_id":"45085210","staffId":"45085210","name":"Kent H J Liu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:58.95Z"}}
+{"_id":"43637700","staffId":"43637700","name":"Nicolas Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.026Z"}}
+{"_id":"43972631","staffId":"43972631","name":"Sandy T T Jiang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.096Z"}}
+{"_id":"44138827","staffId":"44138827","name":"Ben Xinbin Hu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.17Z"}}
+{"_id":"44137240","staffId":"44137240","name":"Zhiping Yang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.243Z"}}
+{"_id":"43334363","staffId":"43334363","name":"Michelle X X Zhang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.326Z"}}
+{"_id":"43466761","staffId":"43466761","name":"Tim Chen","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.395Z"}}
+{"_id":"43960368","staffId":"43960368","name":"Will H C Guo","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.463Z"}}
+{"_id":"45158213","staffId":"45158213","name":"Nathan Yang","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.531Z"}}
+{"_id":"45092791","staffId":"45092791","name":"Sunny x z Luo","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.605Z"}}
+{"_id":"43602231","staffId":"43602231","name":"Barry Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.676Z"}}
+{"_id":"43358943","staffId":"43358943","name":"Jian Min Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.752Z"}}
+{"_id":"44006451","staffId":"44006451","name":"Fu Ming Frank Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.821Z"}}
+{"_id":"43950166","staffId":"43950166","name":"Jason Peng","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.893Z"}}
+{"_id":"43859164","staffId":"43859164","name":"Min Yi Milly Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:26:59.979Z"}}
+{"_id":"43859232","staffId":"43859232","name":"Jessie Z Q Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.053Z"}}
+{"_id":"43353600","staffId":"43353600","name":"Tom Huang","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.261Z"}}
+{"_id":"45043037","staffId":"45043037","name":"Tony W P Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.368Z"}}
+{"_id":"43183415","staffId":"43183415","name":"Jack G J Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.436Z"}}
+{"_id":"43297444","staffId":"43297444","name":"Hong Zhao Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.51Z"}}
+{"_id":"45031104","staffId":"45031104","name":"Mika W Y Wu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.582Z"}}
+{"_id":"45189778","staffId":"45189778","name":"Gavin Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.649Z"}}
+{"_id":"45033035","staffId":"45033035","name":"Ezreal Z X Jiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.719Z"}}
+{"_id":"43693626","staffId":"43693626","name":"Alisa Ma","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.805Z"}}
+{"_id":"45149579","staffId":"45149579","name":"John X Q Guo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.875Z"}}
+{"_id":"43413338","staffId":"43413338","name":"Kelly G L Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:00.944Z"}}
+{"_id":"34014732","staffId":"34014732","name":"Cong Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.018Z"}}
+{"_id":"43167413","staffId":"43167413","name":"Niki Pan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.091Z"}}
+{"_id":"43553805","staffId":"43553805","name":"Cheng Da Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.171Z"}}
+{"_id":"43638799","staffId":"43638799","name":"Rachel Gong","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.24Z"}}
+{"_id":"43860640","staffId":"43860640","name":"Ken M J Feng","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.311Z"}}
+{"_id":"43599011","staffId":"43599011","name":"Argite Deng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.385Z"}}
+{"_id":"43168515","staffId":"43168515","name":"Edgar Weng","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.471Z"}}
+{"_id":"34028229","staffId":"34028229","name":"Jin Tao Wu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.601Z"}}
+{"_id":"43682407","staffId":"43682407","name":"Selina Shi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.67Z"}}
+{"_id":"43970296","staffId":"43970296","name":"Tao H T Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.745Z"}}
+{"_id":"45041022","staffId":"45041022","name":"Kevin L Zhong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.83Z"}}
+{"_id":"45013341","staffId":"45013341","name":"Yanyan Zeng","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.898Z"}}
+{"_id":"43683330","staffId":"43683330","name":"Nancy J H Liu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:01.973Z"}}
+{"_id":"45179220","staffId":"45179220","name":"Albert S B Pan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.062Z"}}
+{"_id":"45124816","staffId":"45124816","name":"Herry Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.135Z"}}
+{"_id":"45284705","staffId":"45284705","name":"Lucy X T Ma","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.215Z"}}
+{"_id":"45286847","staffId":"45286847","name":"Pretzel S J Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.298Z"}}
+{"_id":"45282113","staffId":"45282113","name":"Xiao Hui Hou","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.37Z"}}
+{"_id":"43473408","staffId":"43473408","name":"Kit Zhao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.448Z"}}
+{"_id":"45044413","staffId":"45044413","name":"Xiao Jia Li","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.53Z"}}
+{"_id":"45043669","staffId":"45043669","name":"Herman Zhou","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.6Z"}}
+{"_id":"45064457","staffId":"45064457","name":"Feynman C Liu","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.665Z"}}
+{"_id":"43680346","staffId":"43680346","name":"Wyman Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.744Z"}}
+{"_id":"45270691","staffId":"45270691","name":"Heng Ye","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.89Z"}}
+{"_id":"45051406","staffId":"45051406","name":"Martin Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:02.962Z"}}
+{"_id":"34069066","staffId":"34069066","name":"Sunny You","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.031Z"}}
+{"_id":"45260093","staffId":"45260093","name":"Steven CY Guan","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.115Z"}}
+{"_id":"44022997","staffId":"44022997","name":"Ling Y L Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.189Z"}}
+{"_id":"45258848","staffId":"45258848","name":"James T Zhang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.268Z"}}
+{"_id":"45047361","staffId":"45047361","name":"Ivy W Xiao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.362Z"}}
+{"_id":"45125925","staffId":"45125925","name":"Elinor Cai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.443Z"}}
+{"_id":"34037410","staffId":"34037410","name":"Alex X Gong","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.519Z"}}
+{"_id":"44005270","staffId":"44005270","name":"Rita Zhang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.579Z"}}
+{"_id":"45234912","staffId":"45234912","name":"Monica Mao","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.654Z"}}
+{"_id":"45229017","staffId":"45229017","name":"Edwin R P Ho","dept":"Accounts","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.727Z"}}
+{"_id":"45181665","staffId":"45181665","name":"Billy Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.815Z"}}
+{"_id":"43167488","staffId":"43167488","name":"Leon Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.885Z"}}
+{"_id":"43690203","staffId":"43690203","name":"Moss Ao","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:03.958Z"}}
+{"_id":"34054878","staffId":"34054878","name":"Living Li","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.037Z"}}
+{"_id":"45024790","staffId":"45024790","name":"Xanda D J Zhan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.1Z"}}
+{"_id":"44010043","staffId":"44010043","name":"Alson Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.19Z"}}
+{"_id":"45073087","staffId":"45073087","name":"Jia Yi Yuan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.264Z"}}
+{"_id":"45201098","staffId":"45201098","name":"Ayton He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.34Z"}}
+{"_id":"43174543","staffId":"43174543","name":"Daniel D Jin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.424Z"}}
+{"_id":"20553036","staffId":"20553036","name":"Ray WY Wu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.51Z"}}
+{"_id":"45043055","staffId":"45043055","name":"Jingang Chen","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.593Z"}}
+{"_id":"45191166","staffId":"45191166","name":"Wendy Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.674Z"}}
+{"_id":"45197088","staffId":"45197088","name":"Eugene Y J Law","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.747Z"}}
+{"_id":"45200316","staffId":"45200316","name":"John Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.82Z"}}
+{"_id":"45190082","staffId":"45190082","name":"Joako Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.9Z"}}
+{"_id":"45187498","staffId":"45187498","name":"Zander Deng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:04.977Z"}}
+{"_id":"45046827","staffId":"45046827","name":"James DT Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.063Z"}}
+{"_id":"43986753","staffId":"43986753","name":"Benji Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.15Z"}}
+{"_id":"34065643","staffId":"34065643","name":"Eugenia Qi Hong Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.232Z"}}
+{"_id":"43228393","staffId":"43228393","name":"Michael Z Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.307Z"}}
+{"_id":"45185262","staffId":"45185262","name":"Ding Cheng Dong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.398Z"}}
+{"_id":"45182902","staffId":"45182902","name":"Fanklin Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.479Z"}}
+{"_id":"45181664","staffId":"45181664","name":"Vincent Mai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.552Z"}}
+{"_id":"45184599","staffId":"45184599","name":"Lucien L Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.635Z"}}
+{"_id":"45180715","staffId":"45180715","name":"Lawson Lai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.704Z"}}
+{"_id":"45181108","staffId":"45181108","name":"William W D Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.786Z"}}
+{"_id":"43795379","staffId":"43795379","name":"Wei Hua Peng","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.867Z"}}
+{"_id":"43233047","staffId":"43233047","name":"Saga J J Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:05.949Z"}}
+{"_id":"43408867","staffId":"43408867","name":"Samson Su","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.047Z"}}
+{"_id":"43557208","staffId":"43557208","name":"Henven Lu","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.121Z"}}
+{"_id":"43978831","staffId":"43978831","name":"Felix Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.203Z"}}
+{"_id":"43731933","staffId":"43731933","name":"Sky Zeng","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.292Z"}}
+{"_id":"45184601","staffId":"45184601","name":"Jamie Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.371Z"}}
+{"_id":"43843009","staffId":"43843009","name":"Vincent X Guo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.443Z"}}
+{"_id":"45048889","staffId":"45048889","name":"Evan Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.515Z"}}
+{"_id":"43709353","staffId":"43709353","name":"Ivy Wu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.579Z"}}
+{"_id":"44006531","staffId":"44006531","name":"Yi Tao Rodney Huang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.655Z"}}
+{"_id":"43414494","staffId":"43414494","name":"Mag Zhang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.728Z"}}
+{"_id":"45178359","staffId":"45178359","name":"Sally Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.807Z"}}
+{"_id":"43215506","staffId":"43215506","name":"Winnie Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.877Z"}}
+{"_id":"43415527","staffId":"43415527","name":"Joey Xian","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:06.954Z"}}
+{"_id":"43937037","staffId":"43937037","name":"Nick X Z Lai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.03Z"}}
+{"_id":"44002808","staffId":"44002808","name":"Yan Fen Helen Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.11Z"}}
+{"_id":"43580167","staffId":"43580167","name":"Kevin Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.183Z"}}
+{"_id":"45176546","staffId":"45176546","name":"Dong Li","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.252Z"}}
+{"_id":"45153423","staffId":"45153423","name":"Chloe S T Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.34Z"}}
+{"_id":"45173739","staffId":"45173739","name":"Ryan Zhong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.41Z"}}
+{"_id":"45082037","staffId":"45082037","name":"Lebin Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.477Z"}}
+{"_id":"45181718","staffId":"45181718","name":"Max C Z Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.547Z"}}
+{"_id":"45181416","staffId":"45181416","name":"Gabby H Y He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.616Z"}}
+{"_id":"44077897","staffId":"44077897","name":"Michelle Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.7Z"}}
+{"_id":"45110273","staffId":"45110273","name":"Sara X R Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.774Z"}}
+{"_id":"45176239","staffId":"45176239","name":"Jia Biao Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.84Z"}}
+{"_id":"43334336","staffId":"43334336","name":"Park Feng","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:07.925Z"}}
+{"_id":"45173313","staffId":"45173313","name":"Jie Feng Zhou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:33.671Z"}}
+{"_id":"45179673","staffId":"45179673","name":"Tim Pang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:33.744Z"}}
+{"_id":"45172116","staffId":"45172116","name":"Jackie G J Chen","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:33.824Z"}}
+{"_id":"45173330","staffId":"45173330","name":"Ivan Z G Xue","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:33.893Z"}}
+{"_id":"43556022","staffId":"43556022","name":"Sheng Sheng Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:33.98Z"}}
+{"_id":"43696821","staffId":"43696821","name":"Jessonly J C Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.052Z"}}
+{"_id":"43566870","staffId":"43566870","name":"Luby Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.135Z"}}
+{"_id":"45168099","staffId":"45168099","name":"Tracy J Huang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.208Z"}}
+{"_id":"45171507","staffId":"45171507","name":"Rury Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.297Z"}}
+{"_id":"45170088","staffId":"45170088","name":"Sean S X Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.39Z"}}
+{"_id":"45170379","staffId":"45170379","name":"Cai Xia Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.466Z"}}
+{"_id":"43216569","staffId":"43216569","name":"Wei Shan Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.552Z"}}
+{"_id":"45169514","staffId":"45169514","name":"Mark Su","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.633Z"}}
+{"_id":"43607118","staffId":"43607118","name":"Grace X Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.705Z"}}
+{"_id":"43975552","staffId":"43975552","name":"Jaben Xia","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.782Z"}}
+{"_id":"43677057","staffId":"43677057","name":"Ross Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.858Z"}}
+{"_id":"34014302","staffId":"34014302","name":"Vivid Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:34.944Z"}}
+{"_id":"43612918","staffId":"43612918","name":"Jack J W Zhao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.043Z"}}
+{"_id":"43741040","staffId":"43741040","name":"Sarah X Y Gao","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.125Z"}}
+{"_id":"43866655","staffId":"43866655","name":"Caiying CY Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.198Z"}}
+{"_id":"43728092","staffId":"43728092","name":"Sullan Fang","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.275Z"}}
+{"_id":"45015791","staffId":"45015791","name":"Bergkamp Zhen Yu Liang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.351Z"}}
+{"_id":"43640273","staffId":"43640273","name":"Davis X Y Tang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.434Z"}}
+{"_id":"45168097","staffId":"45168097","name":"Devon D W Liao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.516Z"}}
+{"_id":"45168140","staffId":"45168140","name":"David Y W Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.588Z"}}
+{"_id":"43979782","staffId":"43979782","name":"Leon Li","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.68Z"}}
+{"_id":"34055099","staffId":"34055099","name":"Ruo Li Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:35.755Z"}}
+{"_id":"45162511","staffId":"45162511","name":"Qiao Gao Xiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.353Z"}}
+{"_id":"43428627","staffId":"43428627","name":"Torres Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.434Z"}}
+{"_id":"45164161","staffId":"45164161","name":"Jim J Q Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.513Z"}}
+{"_id":"45164095","staffId":"45164095","name":"Dylan Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.587Z"}}
+{"_id":"45164900","staffId":"45164900","name":"Davis J R Qiu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.668Z"}}
+{"_id":"45164126","staffId":"45164126","name":"Stephen Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.739Z"}}
+{"_id":"43611032","staffId":"43611032","name":"Joy Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.833Z"}}
+{"_id":"43374452","staffId":"43374452","name":"Wei Feng Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:36.934Z"}}
+{"_id":"45160319","staffId":"45160319","name":"Felix Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.012Z"}}
+{"_id":"45162477","staffId":"45162477","name":"Luo Wei Lu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.082Z"}}
+{"_id":"43580821","staffId":"43580821","name":"Bruce X J Ou","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.162Z"}}
+{"_id":"43858614","staffId":"43858614","name":"Qing Yu Ryan Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.244Z"}}
+{"_id":"43988390","staffId":"43988390","name":"Jenny D Z Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.313Z"}}
+{"_id":"43977067","staffId":"43977067","name":"Green Q W Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.395Z"}}
+{"_id":"43984721","staffId":"43984721","name":"Fredid He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.474Z"}}
+{"_id":"43334371","staffId":"43334371","name":"Lindsay Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.561Z"}}
+{"_id":"45162494","staffId":"45162494","name":"Tommy H Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.643Z"}}
+{"_id":"45163643","staffId":"45163643","name":"Jia Liang Mai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.718Z"}}
+{"_id":"43285663","staffId":"43285663","name":"John J C He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.796Z"}}
+{"_id":"43910388","staffId":"43910388","name":"Rui Jun Rynee Han","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.875Z"}}
+{"_id":"45156143","staffId":"45156143","name":"Sunny S Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:37.956Z"}}
+{"_id":"45163453","staffId":"45163453","name":"Tom G Y Zung","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.036Z"}}
+{"_id":"45156889","staffId":"45156889","name":"George J J Zhu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.114Z"}}
+{"_id":"45162541","staffId":"45162541","name":"Jerry J R Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.187Z"}}
+{"_id":"43334290","staffId":"43334290","name":"Roy Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.271Z"}}
+{"_id":"45156912","staffId":"45156912","name":"Jin Bo Liao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.353Z"}}
+{"_id":"45157600","staffId":"45157600","name":"Bob P Q Du","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.431Z"}}
+{"_id":"43228412","staffId":"43228412","name":"Allen G N Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.519Z"}}
+{"_id":"34802151","staffId":"34802151","name":"Mandy Wu","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.595Z"}}
+{"_id":"43991882","staffId":"43991882","name":"Brandon J P Xie","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.678Z"}}
+{"_id":"43445199","staffId":"43445199","name":"Novo Q Y Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.752Z"}}
+{"_id":"43174528","staffId":"43174528","name":"Paul Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.841Z"}}
+{"_id":"43697506","staffId":"43697506","name":"Carolyn Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.912Z"}}
+{"_id":"43573422","staffId":"43573422","name":"Ronald Kang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:38.993Z"}}
+{"_id":"34014245","staffId":"34014245","name":"Livi L Y Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.073Z"}}
+{"_id":"43573185","staffId":"43573185","name":"Lishou Guan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.141Z"}}
+{"_id":"43398277","staffId":"43398277","name":"Eason Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.215Z"}}
+{"_id":"43381246","staffId":"43381246","name":"Leon Long","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.295Z"}}
+{"_id":"43728629","staffId":"43728629","name":"Tim Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.384Z"}}
+{"_id":"43183518","staffId":"43183518","name":"Bob Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.473Z"}}
+{"_id":"43561658","staffId":"43561658","name":"Wier Yang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.554Z"}}
+{"_id":"34068241","staffId":"34068241","name":"Susan S X Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.638Z"}}
+{"_id":"45072374","staffId":"45072374","name":"Jenny R L Chen","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.708Z"}}
+{"_id":"43687304","staffId":"43687304","name":"Ivy He","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.783Z"}}
+{"_id":"45155758","staffId":"45155758","name":"Jeremy Luo","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.872Z"}}
+{"_id":"45156159","staffId":"45156159","name":"Daniel Xin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:39.956Z"}}
+{"_id":"45154456","staffId":"45154456","name":"Lam Z L Gao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.049Z"}}
+{"_id":"43612919","staffId":"43612919","name":"Jacky X W Jiang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.126Z"}}
+{"_id":"45153950","staffId":"45153950","name":"Benson B S Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.21Z"}}
+{"_id":"45151263","staffId":"45151263","name":"Song Jie Cai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.288Z"}}
+{"_id":"45094417","staffId":"45094417","name":"Tao Ke","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.362Z"}}
+{"_id":"43888418","staffId":"43888418","name":"Jie Rainly Yan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.449Z"}}
+{"_id":"43877117","staffId":"43877117","name":"Jessie Chen","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.532Z"}}
+{"_id":"34065601","staffId":"34065601","name":"Xin Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.618Z"}}
+{"_id":"45149553","staffId":"45149553","name":"Cooper X L Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.71Z"}}
+{"_id":"45149316","staffId":"45149316","name":"Ben H B LV","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.797Z"}}
+{"_id":"43632528","staffId":"43632528","name":"Jason J L He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.887Z"}}
+{"_id":"43714657","staffId":"43714657","name":"Suya Wang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:40.967Z"}}
+{"_id":"43685020","staffId":"43685020","name":"Coco Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.056Z"}}
+{"_id":"44130305","staffId":"44130305","name":"Gavin Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.14Z"}}
+{"_id":"44137725","staffId":"44137725","name":"Fred F D Xiao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.217Z"}}
+{"_id":"45022024","staffId":"45022024","name":"Alex Y M Wang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.304Z"}}
+{"_id":"43646119","staffId":"43646119","name":"Ray Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.383Z"}}
+{"_id":"43720655","staffId":"43720655","name":"Zhi Cong Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.452Z"}}
+{"_id":"43784656","staffId":"43784656","name":"Zhi Heng Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.525Z"}}
+{"_id":"43249948","staffId":"43249948","name":"Joe Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.609Z"}}
+{"_id":"43356772","staffId":"43356772","name":"Ze Xian Qiu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.684Z"}}
+{"_id":"43959541","staffId":"43959541","name":"Carlos Yong Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.762Z"}}
+{"_id":"45059282","staffId":"45059282","name":"Amy Yan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.854Z"}}
+{"_id":"45044858","staffId":"45044858","name":"Kelly K L Zhao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.926Z"}}
+{"_id":"43384167","staffId":"43384167","name":"Sofi S F Wei","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:41.999Z"}}
+{"_id":"34051445","staffId":"34051445","name":"Bonson B S Zheng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.075Z"}}
+{"_id":"43650571","staffId":"43650571","name":"Zhi Ming Z M Yang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.153Z"}}
+{"_id":"43165054","staffId":"43165054","name":"Koda JIAN YU Huang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.243Z"}}
+{"_id":"43578618","staffId":"43578618","name":"Jennifer Cai","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.343Z"}}
+{"_id":"43905769","staffId":"43905769","name":"Duck Y H Pan","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.427Z"}}
+{"_id":"43974010","staffId":"43974010","name":"Jamie Li","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.502Z"}}
+{"_id":"44131574","staffId":"44131574","name":"Kevan Huang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.578Z"}}
+{"_id":"44128445","staffId":"44128445","name":"Hong Jun Lu","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.657Z"}}
+{"_id":"44006513","staffId":"44006513","name":"Jian Hui Liu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.751Z"}}
+{"_id":"43913279","staffId":"43913279","name":"Zu Long Xiao","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.819Z"}}
+{"_id":"44132034","staffId":"44132034","name":"Sonic Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.918Z"}}
+{"_id":"43605839","staffId":"43605839","name":"Ken Ou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:42.991Z"}}
+{"_id":"43382921","staffId":"43382921","name":"Martin C X Guo","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.072Z"}}
+{"_id":"34051742","staffId":"34051742","name":"Vivi Liang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.151Z"}}
+{"_id":"43664572","staffId":"43664572","name":"Kay Xie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.232Z"}}
+{"_id":"43687301","staffId":"43687301","name":"Lasia Y Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.316Z"}}
+{"_id":"45025774","staffId":"45025774","name":"Jump Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.391Z"}}
+{"_id":"43976502","staffId":"43976502","name":"Toby Wen Tao Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.462Z"}}
+{"_id":"45056113","staffId":"45056113","name":"Carlson Y Q Lee","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.564Z"}}
+{"_id":"43796765","staffId":"43796765","name":"Flora He","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.642Z"}}
+{"_id":"45051415","staffId":"45051415","name":"Vincent z c Gao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.723Z"}}
+{"_id":"45054154","staffId":"45054154","name":"Jacky L J Chen","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.792Z"}}
+{"_id":"43649175","staffId":"43649175","name":"Andrew Ding","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.875Z"}}
+{"_id":"45044142","staffId":"45044142","name":"Winna Wen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:43.951Z"}}
+{"_id":"45042694","staffId":"45042694","name":"Michael Shen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.032Z"}}
+{"_id":"45038130","staffId":"45038130","name":"Iverson Chan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.113Z"}}
+{"_id":"43430505","staffId":"43430505","name":"Jenny X W He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.203Z"}}
+{"_id":"43249961","staffId":"43249961","name":"Lance Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.286Z"}}
+{"_id":"43334777","staffId":"43334777","name":"Res Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.376Z"}}
+{"_id":"44112314","staffId":"44112314","name":"Mark Zhang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.446Z"}}
+{"_id":"43715958","staffId":"43715958","name":"Elin Deng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.531Z"}}
+{"_id":"43425307","staffId":"43425307","name":"Jim J N Yi","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.602Z"}}
+{"_id":"34065825","staffId":"34065825","name":"Jacky Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.687Z"}}
+{"_id":"45022288","staffId":"45022288","name":"Mars J C Su","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:44.776Z"}}
+{"_id":"43584967","staffId":"43584967","name":"Alan P F Nie","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.345Z"}}
+{"_id":"45015794","staffId":"45015794","name":"Yusuf Hong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.423Z"}}
+{"_id":"45020695","staffId":"45020695","name":"Roy J P Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.502Z"}}
+{"_id":"43315484","staffId":"43315484","name":"Zi Qian Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.591Z"}}
+{"_id":"43252973","staffId":"43252973","name":"","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.68Z"}}
+{"_id":"43427655","staffId":"43427655","name":"Yippee Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.763Z"}}
+{"_id":"43543745","staffId":"43543745","name":"Hao Long","dept":"International & Premier","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.864Z"}}
+{"_id":"43952990","staffId":"43952990","name":"Robin H Lei","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:45.952Z"}}
+{"_id":"43549418","staffId":"43549418","name":"Simon Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.037Z"}}
+{"_id":"43601907","staffId":"43601907","name":"Jason Chen","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.109Z"}}
+{"_id":"43167414","staffId":"43167414","name":"Maxi Lin","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.185Z"}}
+{"_id":"43289967","staffId":"43289967","name":"Simon He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.27Z"}}
+{"_id":"43339625","staffId":"43339625","name":"Johnson Z S Wei","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.352Z"}}
+{"_id":"43380359","staffId":"43380359","name":"Horsy Ma","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.429Z"}}
+{"_id":"44120637","staffId":"44120637","name":"Katrina Huang","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.504Z"}}
+{"_id":"34051874","staffId":"34051874","name":"Jack Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.576Z"}}
+{"_id":"43165046","staffId":"43165046","name":"Taily Y B Guan","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.659Z"}}
+{"_id":"43430055","staffId":"43430055","name":"Ze Xin Xu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.735Z"}}
+{"_id":"43467384","staffId":"43467384","name":"Yoland Liang","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.809Z"}}
+{"_id":"43545517","staffId":"43545517","name":"Kinson Deng","dept":"FCS","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.89Z"}}
+{"_id":"43546677","staffId":"43546677","name":"Anway Y Cai","dept":"Lending","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:46.967Z"}}
+{"_id":"43573418","staffId":"43573418","name":"Peter Xi Peng Lin","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.049Z"}}
+{"_id":"43576260","staffId":"43576260","name":"Ben Feng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.131Z"}}
+{"_id":"43599013","staffId":"43599013","name":"Ben Yan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.214Z"}}
+{"_id":"43601075","staffId":"43601075","name":"April Ye","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.31Z"}}
+{"_id":"43608221","staffId":"43608221","name":"Alex Huang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.392Z"}}
+{"_id":"43635946","staffId":"43635946","name":"Tait Tan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.469Z"}}
+{"_id":"43667060","staffId":"43667060","name":"Tinh Luo","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.552Z"}}
+{"_id":"43702880","staffId":"43702880","name":"Lina Zou","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.626Z"}}
+{"_id":"43868587","staffId":"43868587","name":"William Xiao","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.713Z"}}
+{"_id":"43889580","staffId":"43889580","name":"Johnny C K He","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.799Z"}}
+{"_id":"43929293","staffId":"43929293","name":"Bosto Li","dept":"Transaction Banking","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.883Z"}}
+{"_id":"43986781","staffId":"43986781","name":"Jeffrey Pan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:47.952Z"}}
+{"_id":"44006460","staffId":"44006460","name":"Li Liang Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.029Z"}}
+{"_id":"34029375","staffId":"34029375","name":"Andy Yuan","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.1Z"}}
+{"_id":"43334382","staffId":"43334382","name":"Diamond Xue","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.173Z"}}
+{"_id":"43357141","staffId":"43357141","name":"Alon Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.25Z"}}
+{"_id":"43368228","staffId":"43368228","name":"Matoku Zeng","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.334Z"}}
+{"_id":"34065817","staffId":"34065817","name":"Benson J B Liang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.415Z"}}
+{"_id":"43170460","staffId":"43170460","name":"Winland W L Mai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.49Z"}}
+{"_id":"43310534","staffId":"43310534","name":"Human X M Wang","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.571Z"}}
+{"_id":"43991875","staffId":"43991875","name":"Nadia X C Hu","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.65Z"}}
+{"_id":"44000064","staffId":"44000064","name":"Qi Ye Christy Cao","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.721Z"}}
+{"_id":"44002812","staffId":"44002812","name":"Zhen Fei Jafree Li","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.798Z"}}
+{"_id":"43165061","staffId":"43165061","name":"Macro YP Hong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.879Z"}}
+{"_id":"43214008","staffId":"43214008","name":"Kevin Hong","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:48.973Z"}}
+{"_id":"43409564","staffId":"43409564","name":"Sandy Lai","dept":"Wealth Management","group":null,"roles":["user"],"createdAt":{"$date":"2026-06-24T00:27:49.046Z"}}
