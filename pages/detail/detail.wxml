@@ -204,14 +204,14 @@
         </view>
         <view class="checkin-btn-wrap">
           <button
-            wx:if="{{activity.enableScanConfirm !== false && item._confirmDisplay && item._confirmDisplay.length > 0}}"
+            wx:if="{{canDelete && activity.enableScanConfirm !== false && item._confirmDisplay && item._confirmDisplay.length > 0}}"
             class="confirm-direct-btn"
             bindtap="gotoConfirm"
             data-staff-id="{{item.staffId}}"
             data-name="{{item.name}}"
           >核销</button>
           <button
-            wx:if="{{!item.checked && activity.status !== 'ended'}}"
+            wx:if="{{canDelete && !item.checked && activity.status !== 'ended'}}"
             class="checkin-btn"
             bindtap="doCheckin"
             data-id="{{item._id}}"
@@ -220,7 +220,7 @@
             <text>✓</text>
           </view>
           <button
-            wx:if="{{item.checked && activity.status !== 'ended'}}"
+            wx:if="{{canDelete && item.checked && activity.status !== 'ended'}}"
             class="undo-btn"
             bindtap="undoCheckin"
             data-id="{{item._id}}"
