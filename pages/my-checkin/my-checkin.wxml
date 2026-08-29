@@ -98,4 +98,16 @@
   </block>
 
   <view class="bottom-space"></view>
+
+  <!-- 电子签名弹窗 -->
+  <view class="signature-mask" wx:if="{{showSignature}}">
+    <view class="signature-modal">
+      <signature id="signatureComp"></signature>
+      <view class="signature-actions">
+        <button class="signature-btn-cancel" bindtap="onSignatureCancel">取消</button>
+        <button class="signature-btn-clear" bindtap="onSignatureClear">清除</button>
+        <button class="signature-btn-confirm" bindtap="onSignatureConfirm">确认签到</button>
+      </view>
+    </view>
+  </view>
 </view>

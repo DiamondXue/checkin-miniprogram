@@ -190,6 +190,9 @@
           </view>
           <text class="person-phone">工号：{{item.staffId}}</text>
           <text wx:if="{{item.checked}}" class="checked-time">✓ 已签到 {{item.checkedAt}}</text>
+          <view wx:if="{{item.checked && item.signatureFileId}}" class="signature-link" bindtap="previewSignature" data-file-id="{{item.signatureFileId}}">
+            <text>查看签名</text>
+          </view>
           <!-- 确认领取状态 -->
           <view class="confirm-icons" wx:if="{{item._confirmDisplay && item._confirmDisplay.length > 0}}">
             <text wx:for="{{item._confirmDisplay}}" wx:for-item="ci" wx:key="key"

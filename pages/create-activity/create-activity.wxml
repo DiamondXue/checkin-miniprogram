@@ -87,6 +87,17 @@
         </view>
       </view>
 
+      <!-- 电子签名开关 -->
+      <view class="form-item">
+        <view class="toggle-row">
+          <view class="toggle-info">
+            <text class="form-label">电子签名</text>
+            <text class="form-hint">开启后用户签到时需手写签名确认</text>
+          </view>
+          <switch checked="{{requireSignature}}" bindchange="onSignatureToggle" color="#4F46E5" />
+        </view>
+      </view>
+
       <!-- 确认项目列表（开启扫码确认时显示） -->
       <view class="form-item" wx:if="{{enableScanConfirm}}">
         <text class="form-label">领取确认项目</text>

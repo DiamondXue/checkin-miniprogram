@@ -1,0 +1,22 @@
+<view class="signature-wrap">
+  <view class="signature-header">
+    <text class="signature-title">请在下方签名</text>
+    <view class="signature-clear" bindtap="clear">
+      <text>清除</text>
+    </view>
+  </view>
+  <view class="signature-canvas-area">
+    <canvas
+      type="2d"
+      id="signatureCanvas"
+      class="signature-canvas"
+      disable-scroll="true"
+      bindtouchstart="onTouchStart"
+      bindtouchmove="onTouchMove"
+      bindtouchend="onTouchEnd"
+    ></canvas>
+    <view class="signature-placeholder" wx:if="{{!hasStrokes}}">
+      <text>在此处手写签名</text>
+    </view>
+  </view>
+</view>

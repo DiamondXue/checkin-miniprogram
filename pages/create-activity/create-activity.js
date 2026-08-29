@@ -14,6 +14,8 @@ Page({
     checkinRadius: 500,
     // 扫码确认
     enableScanConfirm: true,
+    // 电子签名
+    requireSignature: false,
     confirmItems: [
       { key: 'tea', label: '下午茶点', total: 50 },
       { key: 'gift', label: '活动礼品', total: 30 },
@@ -62,6 +64,7 @@ Page({
         locationAddress: act.latitude ? '已设置' : '',
         participantInput: (act.participantStaffIds || []).join(', '),
         enableScanConfirm: act.enableScanConfirm !== false,
+        requireSignature: !!act.requireSignature,
         confirmItems: (act.confirmItems && act.confirmItems.length > 0)
           ? act.confirmItems.map(item => ({ ...item, total: item.total }))  // 兼容旧数据
           : [{ key: 'tea', label: '下午茶点', total: 50 }, { key: 'gift', label: '活动礼品', total: 30 }],
@@ -134,6 +137,11 @@ Page({
   // 切换扫码确认开关
   onScanConfirmToggle() {
     this.setData({ enableScanConfirm: !this.data.enableScanConfirm });
+  },
+
+  // 切换电子签名开关
+  onSignatureToggle() {
+    this.setData({ requireSignature: !this.data.requireSignature });
   },
 
   // 修改确认项目标签
@@ -216,7 +224,7 @@ Page({
 
     const user = app.globalData.currentUser;
     const db = wx.cloud.database();
-    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude, enableScanConfirm, confirmItems } = this.data;
+    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude, enableScanConfirm, requireSignature, confirmItems } = this.data;
 
     // 过滤掉空标签的确认项目，并计算余量初始值
     const validConfirmItems = (confirmItems || []).filter(item => item.label.trim());
@@ -242,6 +250,7 @@ Page({
           longitude: longitude || null,
           participantStaffIds: participantStaffIds,
           enableScanConfirm: !!enableScanConfirm,
+          requireSignature: !!requireSignature,
           confirmItems: validConfirmItems,
           remainingCounts,
         };
@@ -281,6 +290,7 @@ Page({
             creatorName: user.name || user.staffId,
             participantStaffIds: participantStaffIds,
             enableScanConfirm: !!enableScanConfirm,
+            requireSignature: !!requireSignature,
             confirmItems: validConfirmItems,
             remainingCounts,
             createdAt: db.serverDate(),

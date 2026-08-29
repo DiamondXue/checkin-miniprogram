@@ -477,6 +477,16 @@ Page({
     });
   },
 
+  // 预览签名图片
+  previewSignature(e) {
+    const { fileId } = e.currentTarget.dataset;
+    if (!fileId) return;
+    wx.previewImage({
+      urls: [fileId],
+      current: fileId,
+    });
+  },
+
   onShareAppMessage() {
     const { activity } = this.data;
     return {

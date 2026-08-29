@@ -242,3 +242,65 @@
 .bottom-space {
   height: 60rpx;
 }
+
+/* 电子签名弹窗 */
+.signature-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 32rpx;
+}
+
+.signature-modal {
+  width: 100%;
+  max-width: 640rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.2);
+}
+
+.signature-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
+.signature-btn-cancel,
+.signature-btn-clear,
+.signature-btn-confirm {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 80rpx;
+}
+
+.signature-btn-cancel {
+  background: #F3F4F6;
+  color: #6B7280;
+}
+
+.signature-btn-clear {
+  background: #FEF2F2;
+  color: #EF4444;
+}
+
+.signature-btn-confirm {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  color: #FFFFFF;
+}

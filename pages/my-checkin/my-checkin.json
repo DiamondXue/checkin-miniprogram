@@ -1,4 +1,5 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "活动签到"
+  "usingComponents": {
+    "signature": "/components/signature/signature"
+  }
 }

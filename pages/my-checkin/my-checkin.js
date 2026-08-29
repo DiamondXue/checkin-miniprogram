@@ -14,6 +14,8 @@ Page({
     locationInfo: '',
     locationValid: null,
     checkingLocation: false,
+    // 签名相关
+    showSignature: false,
   },
 
   onLoad(options) {
@@ -156,13 +158,66 @@ Page({
       }
     }
 
+    // 如果活动需要电子签名，弹出签名板
+    if (activity.requireSignature) {
+      this.setData({ showSignature: true });
+      return;
+    }
+
+    // 不需要签名，直接签到
+    this._performCheckin();
+  },
+
+  // 签名完成后确认提交
+  async onSignatureConfirm() {
+    const sigComp = this.selectComponent('#signatureComp');
+    if (!sigComp) return;
+
+    try {
+      const tempPath = await sigComp.exportImage();
+      this.setData({ showSignature: false });
+      this._performCheckin(tempPath);
+    } catch (err) {
+      if (err.message && err.message.includes('请先签名')) {
+        wx.showToast({ title: '请先签名', icon: 'none' });
+      } else {
+        wx.showToast({ title: '签名导出失败', icon: 'none' });
+      }
+    }
+  },
+
+  // 取消签名
+  onSignatureCancel() {
+    this.setData({ showSignature: false });
+  },
+
+  // 清除签名
+  onSignatureClear() {
+    const sigComp = this.selectComponent('#signatureComp');
+    if (sigComp) sigComp.clear();
+  },
+
+  // 实际执行签到（带可选签名图片）
+  async _performCheckin(signatureTempPath) {
     this.setData({ checkinLoading: true });
 
     try {
       const user = app.globalData.currentUser;
       const { myRecord } = this.data;
 
-      // 通过云函数签到，前端显式传入 UTC+8 时间，避免云函数环境时区不确定
+      // 如果有签名图片，先上传到云存储
+      let signatureFileId = '';
+      if (signatureTempPath) {
+        wx.showLoading({ title: '上传签名中…', mask: true });
+        const uploadRes = await wx.cloud.uploadFile({
+          cloudPath: `signatures/${this.activityId}/${user.staffId}_${Date.now()}.png`,
+          filePath: signatureTempPath,
+        });
+        signatureFileId = uploadRes.fileID;
+        wx.hideLoading();
+      }
+
+      // 通过云函数签到
       const checkinResult = await wx.cloud.callFunction({
         name: 'createActivity',
         data: {
@@ -174,6 +229,7 @@ Page({
           dept: user.dept || '',
           checked: true,
           checkedAt: cstTimeStr(),
+          signatureFileId,
         },
       });
 

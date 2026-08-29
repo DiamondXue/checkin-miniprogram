@@ -9,7 +9,7 @@ const db = cloud.database();
 const _ = db.command;
 
 exports.main = async (event) => {
-  const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt } = event;
+  const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt, signatureFileId } = event;
 
   // 获取活动的 confirmItems 配置，用于初始化 confirmations
   async function getActivityConfirmItems() {
@@ -313,10 +313,16 @@ exports.main = async (event) => {
         finalCheckedAt = `${hh}:${mm}`;
       }
 
+      // 构建 update/add 数据，签到时保存签名图片
+      const updateData = { checked, checkedAt: finalCheckedAt };
+      if (checked && signatureFileId) {
+        updateData.signatureFileId = signatureFileId;
+      }
+
       // 优先用 participantId；若无则按 activityId + staffId 查找已有记录
       if (participantId) {
         await db.collection('participants').doc(participantId).update({
-          data: { checked, checkedAt: finalCheckedAt },
+          data: updateData,
         });
       } else if (staffId) {
         const existing = await db.collection('participants')
@@ -326,7 +332,7 @@ exports.main = async (event) => {
         if (existing.data.length > 0) {
           // 更新已有记录（杜绝重复创建）
           await db.collection('participants').doc(existing.data[0]._id).update({
-            data: { checked, checkedAt: finalCheckedAt },
+            data: updateData,
           });
         } else {
           // 确实没有记录，才新建
@@ -338,8 +344,7 @@ exports.main = async (event) => {
               staffId,
               name: name || staffId,
               dept: dept || '',
-              checked: !!checked,
-              checkedAt: finalCheckedAt,
+              ...updateData,
               ...confirmFields,
               createdAt: db.serverDate(),
             },

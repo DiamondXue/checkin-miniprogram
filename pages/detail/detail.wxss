@@ -481,6 +481,16 @@
   font-weight: 600;
 }
 
+.signature-link {
+  margin-top: 8rpx;
+}
+
+.signature-link text {
+  font-size: 22rpx;
+  color: #4F46E5;
+  text-decoration: underline;
+}
+
 /* 签到按钮 */
 .checkin-btn-wrap {
   display: flex;
