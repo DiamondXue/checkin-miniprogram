@@ -34,8 +34,7 @@
       </view>
     </view>
     <view class="user-info">
-      <text class="user-name">{{userInfo.name}}</text>
-      <text class="user-staffid">{{userInfo.staffId}}</text>
+      <text class="user-staffid">工号：{{secureMode ? maskedStaffId : userInfo.staffId}}</text>
     </view>
 
     <!-- 我的领取情况 -->

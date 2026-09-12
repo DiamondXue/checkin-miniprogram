@@ -6,7 +6,7 @@
     <!-- 用户信息 -->
     <view class="user-bar">
       <view class="user-info-left">
-        <text class="user-greeting">{{currentUser.name || currentUser.staffId}}</text>
+        <text class="user-greeting">工号：{{currentUser.staffId}}</text>
         <text class="user-role" wx:if="{{isAdmin}}">🔧 管理员</text>
         <text class="user-role" wx:elif="{{isOrganizer}}">📋 活动创建人</text>
         <text class="user-role" wx:else>👤 参与者</text>

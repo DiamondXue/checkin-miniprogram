@@ -54,6 +54,44 @@ exports.main = async (event) => {
     return fields;
   }
 
+  // ===== 信息安全模式：服务端出口统一脱敏 =====
+  // 工号仅保留后6位
+  function maskStaffId(id) {
+    return String(id || '').slice(-6);
+  }
+
+  // 读取活动是否开启信息安全模式
+  async function isSecureActivity(aid) {
+    try {
+      const act = await db.collection('activities').doc(aid).get();
+      return !!(act.data && act.data.secureMode);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 参与者记录白名单输出：彻底不带 name/dept，工号截断为后6位
+  function maskParticipant(p) {
+    if (!p) return p;
+    const confirmations = {};
+    if (p.confirmations) {
+      Object.keys(p.confirmations).forEach(k => {
+        const c = p.confirmations[k] || {};
+        confirmations[k] = { confirmed: !!c.confirmed, at: c.at || '', by: maskStaffId(c.by) };
+      });
+    }
+    const out = {
+      _id: p._id,
+      activityId: p.activityId,
+      staffId: maskStaffId(p.staffId),
+      checked: !!p.checked,
+      checkedAt: p.checkedAt || '',
+      confirmations,
+    };
+    if (p.signatureFileId) out.signatureFileId = p.signatureFileId;
+    return out;
+  }
+
   if (action === 'createParticipants') {
     // 支持两种模式：
     //   1. 传 staffIds（工号数组）→ 云端自动查 users 获取姓名部门（推荐，支持大量用户）
@@ -293,7 +331,13 @@ exports.main = async (event) => {
   if (action === 'getParticipants') {
     try {
       const list = await fetchUniqueParticipants(activityId);
-      return { success: true, participants: list };
+      // 信息安全模式：服务端直接剥离 name/dept，工号仅返回后6位（对所有角色生效）
+      const secure = await isSecureActivity(activityId);
+      return {
+        success: true,
+        participants: secure ? list.map(maskParticipant) : list,
+        secureMode: secure,
+      };
     } catch (err) {
       return { success: false, error: err.message };
     }
@@ -391,16 +435,25 @@ exports.main = async (event) => {
   }
 
   if (action === 'getParticipant') {
-    // 管理员扫码后查询参与者的签到状态和领取状态
-    // 参数：activityId, staffId
+    // 查询参与者的签到状态和领取状态（管理员扫码/本人/名单核销共用）
+    // 参数：activityId + staffId，或 activityId + participantId
     try {
-      // 查多条后选已签到的那条（避免重复记录时取到未签到的旧记录）
-      const { data } = await db.collection('participants')
-        .where({ activityId, staffId })
-        .limit(20)
-        .get();
-      let record = data.find(p => !!p.checked);
-      if (!record) record = data[0] || null;
+      let record = null;
+      if (participantId) {
+        // 信息安全模式下前端只有脱敏工号，可凭参与者记录 _id 直达
+        try {
+          const r = await db.collection('participants').doc(participantId).get();
+          // 防止跨活动猜测记录ID
+          record = (!activityId || r.data.activityId === activityId) ? r.data : null;
+        } catch (e) { record = null; }
+      } else {
+        // 查多条后选已签到的那条（避免重复记录时取到未签到的旧记录）
+        const { data } = await db.collection('participants')
+          .where({ activityId, staffId })
+          .limit(20)
+          .get();
+        record = data.find(p => !!p.checked) || data[0] || null;
+      }
       if (!record) {
         return { success: true, record: null, confirmItems: [], enableScanConfirm: false };
       }
@@ -408,17 +461,19 @@ exports.main = async (event) => {
       let confirmItems = [];
       let enableScanConfirm = false;
       let remainingCounts = {};
+      let secureMode = false;
       try {
         const act = await db.collection('activities').doc(activityId).get();
         if (act.data) {
           confirmItems = act.data.confirmItems || [];
           enableScanConfirm = act.data.enableScanConfirm !== false;
           remainingCounts = act.data.remainingCounts || {};
+          secureMode = !!act.data.secureMode;
         }
       } catch (e) {}
 
       // 兼容新旧数据格式
-      const confirmations = record.confirmations || {};
+      let confirmations = record.confirmations || {};
       if (!record.confirmations) {
         // 旧格式 → 转换为新格式
         if (record.teaConfirmed !== undefined) {
@@ -428,21 +483,35 @@ exports.main = async (event) => {
           confirmations.gift = { confirmed: !!record.giftConfirmed, at: record.giftConfirmedAt || '', by: record.giftConfirmedBy || '' };
         }
       }
+      if (secureMode) {
+        // 安全模式：confirmations 中的操作人工号一并脱敏
+        const maskedConfs = {};
+        Object.keys(confirmations).forEach(k => {
+          const c = confirmations[k] || {};
+          maskedConfs[k] = { confirmed: !!c.confirmed, at: c.at || '', by: maskStaffId(c.by) };
+        });
+        record = { ...record, confirmations: maskedConfs };
+      }
+
+      const outRecord = secureMode
+        ? maskParticipant(record)
+        : {
+            _id: record._id,
+            staffId: record.staffId,
+            name: record.name || '',
+            dept: record.dept || '',
+            checked: !!record.checked,
+            checkedAt: record.checkedAt || '',
+            confirmations,
+          };
 
       return {
         success: true,
-        record: {
-          _id: record._id,
-          staffId: record.staffId,
-          name: record.name || '',
-          dept: record.dept || '',
-          checked: !!record.checked,
-          checkedAt: record.checkedAt || '',
-          confirmations,
-        },
+        record: outRecord,
         confirmItems,
         remainingCounts,
         enableScanConfirm,
+        secureMode,
       };
     } catch (err) {
       return { success: false, error: err.message };
@@ -596,9 +665,15 @@ exports.main = async (event) => {
         .limit(1)
         .get();
 
+      let user = data.length > 0 ? data[0] : null;
+      // 信息安全活动：出口白名单，只回脱敏工号
+      if (user && event.activityId && await isSecureActivity(event.activityId)) {
+        user = { staffId: maskStaffId(user.staffId) };
+      }
+
       return {
         success: true,
-        user: data.length > 0 ? data[0] : null,
+        user,
       };
     } catch (err) {
       return { success: false, error: err.message };

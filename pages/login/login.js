@@ -69,7 +69,8 @@ Page({
         const roleLabels = { admin: '管理员', organizer: '活动创建人', user: '成员' };
         const roleText = userInfo.roles.map(r => roleLabels[r] || r).join(' / ');
         console.log(`用户角色：${roleText}`);
-        wx.showToast({ title: `欢迎，${userInfo.name || staffId}`, icon: 'success' });
+        // 不显示登录者姓名，仅用工号欢迎
+        wx.showToast({ title: `欢迎，${userInfo.staffId}`, icon: 'success' });
 
         setTimeout(() => {
           // 检是否有待跳转的签到活动

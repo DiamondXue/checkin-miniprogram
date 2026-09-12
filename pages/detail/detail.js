@@ -29,6 +29,8 @@ Page({
     locationInfo: '',
     locationValid: null,
     checkingLocation: false,
+    // 信息安全模式（服务端返回的数据本身已脱敏）
+    secureMode: false,
   },
 
   onLoad(options) {
@@ -89,6 +91,9 @@ Page({
       });
       const uniqueParticipants = Object.values(byStaffId);
 
+      // 信息安全模式下，云函数已剥离 name/dept 并将 staffId 截断为后6位，前端直接使用
+      const secureMode = !!activity.secureMode;
+
       const checkedCount = uniqueParticipants.filter(p => !!p.checked).length;
       const totalCount = uniqueParticipants.length;
       const progressPct = totalCount > 0 ? Math.round(checkedCount / totalCount * 100) : 0;
@@ -120,6 +125,7 @@ Page({
       this.setData({
         activity,
         participants: uniqueParticipants,
+        secureMode,
         totalCount,
         checkedCount,
         uncheckedCount: totalCount - checkedCount,
@@ -472,13 +478,12 @@ Page({
     });
   },
 
-  // 跳转到该参与者的领取项目核销页
+  // 跳转到该参与者的领取项目核销页（安全模式下只有参与者记录 _id，凭此直达）
   gotoConfirm(e) {
-    const { staffId, name } = e.currentTarget.dataset;
-    if (!staffId) return;
-    const safeName = encodeURIComponent(name || '');
+    const { id } = e.currentTarget.dataset;
+    if (!id) return;
     wx.navigateTo({
-      url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}&staffId=${staffId}&name=${safeName}`,
+      url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}&participantId=${id}`,
     });
   },
 

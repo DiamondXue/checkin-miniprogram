@@ -18,6 +18,8 @@ Page({
     enableScanConfirm: true,
     // 电子签名
     requireSignature: false,
+    // 信息安全模式：名单不显示姓名/部门，工号仅显示后6位
+    secureMode: false,
     confirmItems: [
       { key: 'tea', label: '下午茶点', total: 50 },
       { key: 'gift', label: '活动礼品', total: 30 },
@@ -71,6 +73,7 @@ Page({
         participantInput: (act.participantStaffIds || []).join(', '),
         enableScanConfirm: act.enableScanConfirm !== false,
         requireSignature: !!act.requireSignature,
+        secureMode: !!act.secureMode,
         confirmItems: (act.confirmItems && act.confirmItems.length > 0)
           ? act.confirmItems.map(item => ({ ...item, total: item.total }))  // 兼容旧数据
           : [{ key: 'tea', label: '下午茶点', total: 50 }, { key: 'gift', label: '活动礼品', total: 30 }],
@@ -148,6 +151,11 @@ Page({
   // 切换电子签名开关
   onSignatureToggle() {
     this.setData({ requireSignature: !this.data.requireSignature });
+  },
+
+  // 切换信息安全模式开关
+  onSecureModeToggle() {
+    this.setData({ secureMode: !this.data.secureMode });
   },
 
   // 切换位置签到开关
@@ -246,7 +254,7 @@ Page({
 
     const user = app.globalData.currentUser;
     const db = wx.cloud.database();
-    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, enableLocationCheck, enableScanConfirm, requireSignature, confirmItems } = this.data;
+    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, enableLocationCheck, enableScanConfirm, requireSignature, secureMode, confirmItems } = this.data;
     // 关闭位置签到时不保存经纬度
     const latitude = enableLocationCheck ? this.data.latitude : null;
     const longitude = enableLocationCheck ? this.data.longitude : null;
@@ -276,6 +284,7 @@ Page({
           participantStaffIds: participantStaffIds,
           enableScanConfirm: !!enableScanConfirm,
           requireSignature: !!requireSignature,
+          secureMode: !!secureMode,
           confirmItems: validConfirmItems,
           remainingCounts,
         };
@@ -316,6 +325,7 @@ Page({
             participantStaffIds: participantStaffIds,
             enableScanConfirm: !!enableScanConfirm,
             requireSignature: !!requireSignature,
+            secureMode: !!secureMode,
             confirmItems: validConfirmItems,
             remainingCounts,
             createdAt: db.serverDate(),

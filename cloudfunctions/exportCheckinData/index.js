@@ -20,6 +20,8 @@ exports.main = async (event) => {
     const activity = actRes.data;
     const confirmItems = activity.confirmItems || [];
     const requireSignature = !!activity.requireSignature;
+    // 信息安全模式：姓名/部门不导出，工号仅保留后6位
+    const secureMode = !!activity.secureMode;
 
     // 2. 分页获取所有参与者记录
     const MAX = 100;
@@ -96,9 +98,9 @@ exports.main = async (event) => {
       const excelRow = rowIdx + 2; // Excel 行号（1-based，表头占第1行）
       const colIdx = 0;
 
-      ws.getCell(`A${excelRow}`).value = r.name || '';
-      ws.getCell(`B${excelRow}`).value = r.staffId || '';
-      ws.getCell(`C${excelRow}`).value = r.dept || '';
+      ws.getCell(`A${excelRow}`).value = secureMode ? '保密' : (r.name || '');
+      ws.getCell(`B${excelRow}`).value = secureMode ? String(r.staffId || '').slice(-6) : (r.staffId || '');
+      ws.getCell(`C${excelRow}`).value = secureMode ? '' : (r.dept || '');
       ws.getCell(`D${excelRow}`).value = r.checked ? '已签到' : '未签到';
       ws.getCell(`E${excelRow}`).value = r.checkedAt || '';
 

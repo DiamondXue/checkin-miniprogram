@@ -11,6 +11,10 @@ Page({
     loading: true,
     qrcodeImagePath: '',
     myConfirmList: [],
+    // 信息安全模式
+    secureMode: false,
+    maskedStaffId: '',
+    myParticipantId: '',
   },
 
   onLoad(options) {
@@ -48,6 +52,10 @@ Page({
         });
         const myRecord = pResult.result.success ? pResult.result.record : null;
         const myChecked = !!myRecord && !!myRecord.checked;
+        // 信息安全模式：本人也只看到工号后6位；签到码载荷不含 name/完整工号
+        const secureMode = !!(activity && activity.secureMode) || !!(pResult.result && pResult.result.secureMode);
+        const maskedStaffId = String(user.staffId || '').slice(-6);
+        const myParticipantId = myRecord ? myRecord._id : '';
 
         // 仅在活动开启扫码确认时组装"我的领取情况"
         let myConfirmList = [];
@@ -79,6 +87,9 @@ Page({
           myChecked,
           myCheckedAt: myRecord ? (myRecord.checkedAt || '') : '',
           myConfirmList,
+          secureMode,
+          maskedStaffId,
+          myParticipantId,
         });
       }
 
@@ -109,10 +120,14 @@ Page({
   },
 
   generateQRCode(user) {
-    const qrText = JSON.stringify({
-      staffId: user.staffId,
-      name: user.name || ''
-    });
+    // 安全活动：二维码仅携带本活动参与者记录ID（无 name/完整工号）
+    // 普通活动：携带 staffId + name，管理员扫码后可直接展示
+    const qrText = this.data.secureMode
+      ? JSON.stringify({ participantId: this.data.myParticipantId })
+      : JSON.stringify({
+          staffId: user.staffId,
+          name: user.name || ''
+        });
     console.log('[QR] 开始生成, qrText:', qrText);
 
     const size = 200; // 与 WXSS 中的尺寸一致（逻辑像素）

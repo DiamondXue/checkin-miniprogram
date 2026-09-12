@@ -130,12 +130,12 @@
         <view wx:if="{{participants.length === 0}}" class="panel-empty">暂无参与人</view>
         <view class="panel-item" wx:for="{{participants}}" wx:key="_id">
           <view class="panel-item-info">
-            <text class="panel-item-name">{{item.name}}</text>
-            <text class="panel-item-dept">{{item.dept}}</text>
-            <text class="panel-item-id">{{item.staffId}}</text>
+            <text class="panel-item-name">{{item.name || '保密人员'}}</text>
+            <text wx:if="{{item.dept}}" class="panel-item-dept">{{item.dept}}</text>
+            <text class="panel-item-id">工号：{{item.staffId}}</text>
             <text wx:if="{{item.checked}}" class="panel-item-checked">✓已签到</text>
           </view>
-          <view class="panel-item-del" bindtap="doRemoveParticipant" data-id="{{item._id}}" data-name="{{item.name}}">
+          <view class="panel-item-del" bindtap="doRemoveParticipant" data-id="{{item._id}}" data-name="{{item.name || '保密人员'}}">
             <text>删除</text>
           </view>
         </view>
@@ -148,7 +148,7 @@
         <text class="search-icon">🔍</text>
         <input
           class="search-input"
-          placeholder="搜索姓名、部门或工号"
+          placeholder="{{secureMode ? '搜索工号后6位' : '搜索姓名、部门或工号'}}"
           value="{{keyword}}"
           bindinput="onSearch"
           confirm-type="search"
@@ -187,12 +187,12 @@
         wx:key="_id"
       >
         <view class="person-avatar {{item.checked ? 'avatar-checked' : 'avatar-default'}}">
-          <text class="avatar-text">{{item.name[0]}}</text>
+          <text class="avatar-text">{{item.name ? item.name[0] : '?'}}</text>
         </view>
         <view class="person-info">
           <view class="person-name-row">
-            <text class="person-name">{{item.name}}</text>
-            <text class="person-dept">{{item.dept}}</text>
+            <text class="person-name">{{item.name || '保密人员'}}</text>
+            <text wx:if="{{item.dept}}" class="person-dept">{{item.dept}}</text>
           </view>
           <text class="person-phone">工号：{{item.staffId}}</text>
           <text wx:if="{{item.checked}}" class="checked-time">✓ 已签到 {{item.checkedAt}}</text>
@@ -210,8 +210,7 @@
             wx:if="{{canDelete && activity.enableScanConfirm !== false && item._confirmDisplay && item._confirmDisplay.length > 0}}"
             class="confirm-direct-btn"
             bindtap="gotoConfirm"
-            data-staff-id="{{item.staffId}}"
-            data-name="{{item.name}}"
+            data-id="{{item._id}}"
           >核销</button>
           <button
             wx:if="{{canDelete && !item.checked && activity.status !== 'ended'}}"

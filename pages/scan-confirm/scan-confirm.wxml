@@ -10,12 +10,12 @@
 
   <!-- 扫描结果 -->
   <view class="result-section" wx:if="{{scanned}}">
-    <!-- 用户信息卡 -->
+    <!-- 用户信息卡（安全模式下无姓名/部门，仅显示工号后6位） -->
     <view class="user-card">
-      <view class="user-avatar">{{scannedUser.name ? scannedUser.name[0] : '?'}}</view>
+      <view class="user-avatar">{{scannedUser.avatar || '?'}}</view>
       <view class="user-detail">
-        <view class="user-name">{{scannedUser.name}}</view>
-        <view class="user-staffid">工号：{{scannedUser.staffId}}</view>
+        <view class="user-name">{{scannedUser.name || '保密人员'}}</view>
+        <view class="user-staffid">工号：{{scannedUser.staffIdDisplay}}</view>
         <view class="user-dept" wx:if="{{scannedUser.dept}}">{{scannedUser.dept}}</view>
       </view>
     </view>

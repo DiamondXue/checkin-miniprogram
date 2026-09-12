@@ -16,6 +16,9 @@ Page({
     checkingLocation: false,
     // 签名相关
     showSignature: false,
+    // 信息安全模式：本人也不显示姓名/部门，仅显示工号后6位
+    secureMode: false,
+    maskedStaffId: '',
   },
 
   onLoad(options) {
@@ -70,6 +73,9 @@ Page({
       });
       const myRecord = pResult.result.success ? pResult.result.record : null;
       const myChecked = !!myRecord && !!myRecord.checked;
+      // 信息安全模式对所有角色生效，包括本人
+      const secureMode = !!(pResult.result && pResult.result.secureMode) || !!activity.secureMode;
+      const maskedStaffId = String(user.staffId || '').slice(-6);
 
       // 格式化签到时间，如果没有则显示当前时间（兜底，使用中国标准时间）
       let myCheckedAt = myRecord ? (myRecord.checkedAt || '') : '';
@@ -83,6 +89,8 @@ Page({
         myChecked,
         myCheckedAt,
         currentUser: user,
+        secureMode,
+        maskedStaffId,
         loading: false,
       });
 

@@ -50,8 +50,8 @@
           <text class="checked-icon">✓</text>
         </view>
         <text class="checked-title">签到成功</text>
-        <text class="checked-name">{{myRecord.name || currentUser.name}}</text>
-        <text class="checked-dept">{{myRecord.dept || currentUser.dept}}</text>
+        <!-- 不显示登录者姓名：非安全活动显示完整工号，安全活动仅显示后6位 -->
+        <text class="checked-name">工号：{{secureMode ? maskedStaffId : currentUser.staffId}}</text>
         <text class="checked-time">签到时间：{{myCheckedAt}}</text>
         <navigator wx:if="{{activity.enableScanConfirm !== false}}" url="/pages/my-qrcode/my-qrcode?id={{activity._id}}" class="qrcode-btn">
           出示签到码
