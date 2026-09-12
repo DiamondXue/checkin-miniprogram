@@ -45,18 +45,22 @@ exports.main = async (event) => {
     });
     const records = Object.values(byStaffId);
 
-    // 4. 下载签名图片
+    // 4. 并行下载签名图片（串行下载多个图片会超时）
     const signatureBuffers = {}; // { fileID: Buffer }
     const sigFileIds = records.filter(r => r.signatureFileId).map(r => r.signatureFileId);
     if (sigFileIds.length > 0) {
-      for (const fileID of sigFileIds) {
+      const results = await Promise.all(sigFileIds.map(async (fileID) => {
         try {
           const dlRes = await cloud.downloadFile({ fileID });
-          signatureBuffers[fileID] = dlRes.fileContent;
+          return { fileID, buffer: dlRes.fileContent };
         } catch (e) {
           console.error('下载签名失败', fileID, e.message);
+          return { fileID, buffer: null };
         }
-      }
+      }));
+      results.forEach(({ fileID, buffer }) => {
+        if (buffer) signatureBuffers[fileID] = buffer;
+      });
     }
 
     // 5. 创建 Excel

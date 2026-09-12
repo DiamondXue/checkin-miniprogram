@@ -12,6 +12,8 @@ Page({
     endTime: '18:00',
     organizer: '',
     checkinRadius: 500,
+    // 位置签到
+    enableLocationCheck: false,
     // 扫码确认
     enableScanConfirm: true,
     // 电子签名
@@ -36,6 +38,9 @@ Page({
       // 编辑模式
       this.setData({ isEdit: true, activityId: options.id });
       this.loadActivity(options.id);
+    } else if (options.copyFrom) {
+      // 复制模式：预填源活动配置，但作为新建活动保存
+      this.loadActivity(options.copyFrom, true);
     } else {
       this.setData({ loading: false });
       // 默认主办方为当前用户名
@@ -46,19 +51,20 @@ Page({
     }
   },
 
-  async loadActivity(id) {
+  async loadActivity(id, isCopy = false) {
     try {
       const db = wx.cloud.database();
       const res = await db.collection('activities').doc(id).get();
       const act = res.data;
       this.setData({
-        name: act.name || '',
+        name: isCopy ? `${act.name || ''}（副本）` : (act.name || ''),
         location: act.location || '',
         date: act.date || '',
         startTime: act.startTime || '09:00',
         endTime: act.endTime || '18:00',
         organizer: act.organizer || '',
         checkinRadius: act.checkinRadius || 500,
+        enableLocationCheck: !!act.latitude,
         latitude: act.latitude || null,
         longitude: act.longitude || null,
         locationAddress: act.latitude ? '已设置' : '',
@@ -70,7 +76,7 @@ Page({
           : [{ key: 'tea', label: '下午茶点', total: 50 }, { key: 'gift', label: '活动礼品', total: 30 }],
         loading: false,
       });
-      wx.setNavigationBarTitle({ title: '编辑活动' });
+      wx.setNavigationBarTitle({ title: isCopy ? '复制活动' : '编辑活动' });
     } catch (err) {
       console.error('加载活动失败', err);
       this.setData({ loading: false });
@@ -144,6 +150,18 @@ Page({
     this.setData({ requireSignature: !this.data.requireSignature });
   },
 
+  // 切换位置签到开关
+  onLocationCheckToggle() {
+    const enable = !this.data.enableLocationCheck;
+    const update = { enableLocationCheck: enable };
+    if (!enable) {
+      update.latitude = null;
+      update.longitude = null;
+      update.locationAddress = '';
+    }
+    this.setData(update);
+  },
+
   // 修改确认项目标签
   onConfirmLabelInput(e) {
     const index = parseInt(e.currentTarget.dataset.index);
@@ -188,6 +206,10 @@ Page({
       wx.showToast({ title: '请输入活动地点', icon: 'none' });
       return;
     }
+    if (this.data.enableLocationCheck && !this.data.latitude) {
+      wx.showToast({ title: '请选择签到地点', icon: 'none' });
+      return;
+    }
     if (!date) {
       wx.showToast({ title: '请选择活动日期', icon: 'none' });
       return;
@@ -224,7 +246,10 @@ Page({
 
     const user = app.globalData.currentUser;
     const db = wx.cloud.database();
-    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, latitude, longitude, enableScanConfirm, requireSignature, confirmItems } = this.data;
+    const { isEdit, activityId, name, location, date, startTime, endTime, organizer, checkinRadius, enableLocationCheck, enableScanConfirm, requireSignature, confirmItems } = this.data;
+    // 关闭位置签到时不保存经纬度
+    const latitude = enableLocationCheck ? this.data.latitude : null;
+    const longitude = enableLocationCheck ? this.data.longitude : null;
 
     // 过滤掉空标签的确认项目，并计算余量初始值
     const validConfirmItems = (confirmItems || []).filter(item => item.label.trim());

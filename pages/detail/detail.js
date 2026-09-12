@@ -52,7 +52,7 @@ Page({
       wx.setNavigationBarTitle({ title: activity.name });
 
       const canEdit = app.canManageActivity(activity);
-      const canDelete = app.canDeleteActivity();
+      const canDelete = app.canDeleteActivity(activity);
 
       const todayStr = cstDateStr();
       const currentMinutes = cstTotalMinutes();
@@ -335,6 +335,10 @@ Page({
     wx.navigateTo({ url: `/pages/create-activity/create-activity?id=${this.activityId}` });
   },
 
+  goToCopy() {
+    wx.navigateTo({ url: `/pages/create-activity/create-activity?copyFrom=${this.activityId}` });
+  },
+
   goToScanConfirm() {
     wx.navigateTo({ url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}` });
   },
@@ -478,14 +482,30 @@ Page({
     });
   },
 
-  // 预览签名图片
-  previewSignature(e) {
+  // 预览签名图片（云文件ID需先转临时链接）
+  async previewSignature(e) {
     const { fileId } = e.currentTarget.dataset;
+    console.log('[签名预览] fileId =', fileId);
     if (!fileId) return;
-    wx.previewImage({
-      urls: [fileId],
-      current: fileId,
-    });
+    wx.showLoading({ title: '加载中…', mask: true });
+    try {
+      const res = await wx.cloud.getTempFileURL({ fileList: [fileId] });
+      const item = res.fileList && res.fileList[0];
+      console.log('[签名预览] getTempFileURL 返回 =', JSON.stringify(item));
+      const tempUrl = item && item.tempFileURL;
+      if (!tempUrl) {
+        throw new Error(item ? `status:${item.status} ${item.errMsg || ''}` : '无返回');
+      }
+      wx.previewImage({
+        urls: [tempUrl],
+        current: tempUrl,
+      });
+    } catch (err) {
+      console.error('预览签名失败', err);
+      wx.showToast({ title: '查看签名失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+    }
   },
 
   // 导出签到数据 Excel

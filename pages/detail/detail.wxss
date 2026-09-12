@@ -315,6 +315,11 @@
   color: #4F46E5;
 }
 
+.copy-btn {
+  background: #ECFDF5;
+  color: #059669;
+}
+
 .delete-btn {
   background: #FEF2F2;
   color: #EF4444;

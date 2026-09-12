@@ -65,8 +65,8 @@ App({
   },
 
   // 判断当前用户是否可以管理某个活动
-  // admin      → 管理所有活动（含删除）
-  // operator   → 管理所有活动（不含删除）
+  // admin      → 管理所有活动
+  // operator   → 管理所有活动（仅扫码确认/参与人，不可编辑/导出/删除）
   // organizer   → 仅管理自己创建的活动
   canManageActivity(activity) {
     if (this.isAdmin() || this.isOperator()) return true;
@@ -76,9 +76,16 @@ App({
     return false;
   },
 
-  // 判断当前用户是否可以删除活动（仅 admin）
-  canDeleteActivity() {
-    return this.isAdmin();
+  // 判断当前用户是否可以编辑/导出/删除活动及名单内签到核销
+  // admin      → 所有活动
+  // organizer  → 仅自己创建的活动
+  // operator   → 不可
+  canDeleteActivity(activity) {
+    if (this.isAdmin()) return true;
+    if (this.isOrganizer() && activity && activity.creatorStaffId === this.globalData.currentUser.staffId) {
+      return true;
+    }
+    return false;
   },
 
   // 退出登录

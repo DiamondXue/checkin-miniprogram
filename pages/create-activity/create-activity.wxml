@@ -18,24 +18,50 @@
       <!-- 活动地点 -->
       <view class="form-item">
         <text class="form-label">活动地点 <text class="required">*</text></text>
-        <view class="location-row">
-          <input class="form-input location-input" placeholder="手动输入或点击右侧选点" value="{{location}}" bindinput="onInput" data-field="location" />
-          <view class="location-btn" bindtap="chooseLocation">
-            <text>📍</text>
+        <input class="form-input" placeholder="手动输入活动地点" value="{{location}}" bindinput="onInput" data-field="location" />
+        <text class="form-hint">活动地点为文字描述，开启下方位置签到后可选择地图坐标</text>
+      </view>
+
+      <!-- 位置签到开关 -->
+      <view class="form-item">
+        <view class="toggle-row">
+          <view class="toggle-info">
+            <text class="form-label">位置签到</text>
+            <text class="form-hint">开启后需选择签到地点，用户须在范围内才能签到</text>
           </view>
-          <view class="location-btn" wx:if="{{latitude}}" bindtap="clearLocation">
+          <switch checked="{{enableLocationCheck}}" bindchange="onLocationCheckToggle" color="#4F46E5" />
+        </view>
+      </view>
+
+      <!-- 签到地点和范围（开启位置签到时显示） -->
+      <view class="form-item" wx:if="{{enableLocationCheck}}">
+        <text class="form-label">签到地点</text>
+        <view class="location-row" wx:if="{{!latitude}}">
+          <view class="choose-location-btn" bindtap="chooseLocation">
+            <text>📍 点击选择签到地点</text>
+          </view>
+        </view>
+        <view class="location-row" wx:if="{{latitude}}">
+          <text class="location-address-text">{{locationAddress}}</text>
+          <view class="location-btn" bindtap="clearLocation">
             <text>✕</text>
           </view>
         </view>
-        <text class="form-hint" wx:if="{{latitude}}">📍 已选择：{{locationAddress}}</text>
+      </view>
+
+      <view class="form-item" wx:if="{{enableLocationCheck}}">
+        <text class="form-label">签到范围（米）</text>
+        <input class="form-input" type="number" placeholder="默认500米" value="{{checkinRadius}}" bindinput="onRadiusInput" />
+        <text class="form-hint">设置签到有效范围，用户需在此范围内才能签到</text>
       </view>
 
       <!-- 活动日期 -->
       <view class="form-item">
         <text class="form-label">活动日期 <text class="required">*</text></text>
         <picker mode="date" value="{{date}}" bindchange="onDateChange">
-          <view class="form-picker {{date ? '' : 'picker-placeholder'}}">
-            <text>{{date || '请选择日期'}}</text>
+          <view class="form-picker">
+            <text wx:if="{{date}}">{{date}}</text>
+            <text wx:else class="picker-placeholder">请选择日期</text>
             <text class="picker-arrow">›</text>
           </view>
         </picker>
@@ -67,13 +93,6 @@
       <view class="form-item">
         <text class="form-label">主办方 <text class="required">*</text></text>
         <input class="form-input" placeholder="如：行政部、HR" value="{{organizer}}" bindinput="onInput" data-field="organizer" />
-      </view>
-
-      <!-- 签到半径 -->
-      <view class="form-item">
-        <text class="form-label">签到范围（米）</text>
-        <input class="form-input" type="number" placeholder="0 = 不限制位置，默认500" value="{{checkinRadius}}" bindinput="onRadiusInput" />
-        <text class="form-hint">设置签到有效范围，用户需在此范围内才能签到</text>
       </view>
 
       <!-- 扫码确认开关 -->

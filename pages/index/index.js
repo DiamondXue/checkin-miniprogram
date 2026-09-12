@@ -55,6 +55,10 @@ Page({
     const user = app.globalData.currentUser;
     let activities = [];
 
+    // 提前计算当前中国标准时间，用于状态判断与过滤
+    const todayStr = cstDateStr();
+    const currentMinutes = cstTotalMinutes();
+
     try {
       if (this.data.isAdmin || this.data.isOperator) {
         // 管理员/操作员：加载所有活动
@@ -114,6 +118,9 @@ Page({
           .get();
         activities = res.data;
 
+        // 普通用户不显示已结束的活动（过滤后再查询签到状态，避免无谓的云函数调用）
+        activities = activities.filter(act => this._getActivityStatus(act, todayStr, currentMinutes) !== 'ended');
+
         const activityStats = await Promise.all(
           activities.map(async (act) => {
             try {
@@ -137,10 +144,7 @@ Page({
         activities = activityStats;
       }
 
-      // 计算状态分区（使用中国标准时间）
-      const todayStr = cstDateStr();
-      const currentMinutes = cstTotalMinutes();
-
+      // 计算状态分区
       const ongoing = [];
       const upcoming = [];
       const ended = [];
