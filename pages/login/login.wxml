@@ -10,10 +10,17 @@
 
   <!-- 登录卡片 -->
   <view class="login-card">
-    <text class="card-title">员工登录</text>
-    <text class="card-subtitle">请输入您的员工工号</text>
+    <!-- 登录方式切换 -->
+    <view class="mode-tabs">
+      <view class="mode-tab {{loginMode === 'ticket' ? 'mode-tab-active' : ''}}" bindtap="switchMode" data-mode="ticket">入场券登录</view>
+      <view class="mode-tab {{loginMode === 'staff' ? 'mode-tab-active' : ''}}" bindtap="switchMode" data-mode="staff">员工登录</view>
+    </view>
 
-    <view class="input-wrap {{inputFocus ? 'input-focus' : ''}} {{inputError ? 'input-error' : ''}}">
+    <text class="card-subtitle" wx:if="{{loginMode === 'staff'}}">请输入您的员工工号</text>
+    <text class="card-subtitle" wx:else>请输入入场券号码</text>
+
+    <!-- 员工工号 -->
+    <view class="input-wrap {{inputFocus ? 'input-focus' : ''}} {{inputError ? 'input-error' : ''}}" wx:if="{{loginMode === 'staff'}}">
       <text class="input-icon">👤</text>
       <input
         class="staff-input"
@@ -22,7 +29,7 @@
         placeholder="请输入 8 位员工工号"
         placeholder-class="input-placeholder"
         value="{{staffId}}"
-        bindinput="onInput"
+        bindinput="onStaffInput"
         bindfocus="onFocus"
         bindblur="onBlur"
         adjust-position="{{true}}"
@@ -30,13 +37,32 @@
       <text class="input-clear" wx:if="{{staffId}}" bindtap="clearInput">✕</text>
     </view>
 
+    <!-- 入场券 -->
+    <view class="input-wrap {{inputFocus ? 'input-focus' : ''}} {{inputError ? 'input-error' : ''}}" wx:else>
+      <text class="input-icon">🎟️</text>
+      <input
+        class="staff-input"
+        type="text"
+        maxlength="8"
+        placeholder="如：A1234567"
+        placeholder-class="input-placeholder"
+        value="{{ticketNo}}"
+        bindinput="onTicketInput"
+        bindfocus="onFocus"
+        bindblur="onBlur"
+        adjust-position="{{true}}"
+      />
+      <text class="input-clear" wx:if="{{ticketNo}}" bindtap="clearInput">✕</text>
+    </view>
+
     <!-- 错误提示 -->
     <view class="error-tip" wx:if="{{errorMsg}}">
       <text>⚠️ {{errorMsg}}</text>
     </view>
 
-    <!-- 工号格式提示 -->
-    <text class="format-tip" wx:if="{{!errorMsg}}">工号为 8 位数字</text>
+    <!-- 格式提示 -->
+    <text class="format-tip" wx:if="{{!errorMsg && loginMode === 'staff'}}">工号为 8 位数字</text>
+    <text class="format-tip" wx:if="{{!errorMsg && loginMode === 'ticket'}}">入场券为 1 位大写字母 + 7 位数字</text>
 
     <!-- 登录按钮 -->
     <button
@@ -50,6 +76,6 @@
   </view>
 
   <!-- 底部说明 -->
-  <text class="footer-tip">首次使用请联系管理员录入工号</text>
+  <text class="footer-tip">首次使用请联系管理员录入工号 / 发放入场券</text>
 
 </view>

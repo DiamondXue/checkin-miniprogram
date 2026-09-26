@@ -330,6 +330,11 @@
   color: #D97706;
 }
 
+.ticket-manage-btn {
+  background: #FDF2F8;
+  color: #DB2777;
+}
+
 .scan-btn {
   background: #ECFDF5;
   color: #059669;
@@ -671,4 +676,149 @@
   padding: 8rpx 20rpx;
   border-radius: 8rpx;
   flex-shrink: 0;
+}
+
+/* ===== 入场券面板 ===== */
+.ticket-count-input {
+  flex: 1;
+  min-width: 0;
+  background: #F3F4F6;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+}
+
+.ticket-list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4rpx 16rpx;
+}
+
+.ticket-list-summary {
+  font-size: 24rpx;
+  color: #6B7280;
+}
+
+.ticket-copy-all {
+  font-size: 24rpx;
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+.ticket-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 16rpx;
+  border-bottom: 2rpx solid #F3F4F6;
+}
+
+.ticket-no {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 2rpx;
+  width: 180rpx;
+  flex-shrink: 0;
+}
+
+.ticket-revoked {
+  color: #9CA3AF;
+  text-decoration: line-through;
+}
+
+.ticket-status {
+  flex: 1;
+  font-size: 24rpx;
+  color: #059669;
+}
+
+.ticket-status-revoked {
+  color: #9CA3AF;
+}
+
+.ticket-copy-single {
+  font-size: 24rpx;
+  color: #4F46E5;
+  padding: 8rpx 20rpx;
+  border: 2rpx solid #C7D2FE;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+.ticket-del-btn {
+  font-size: 24rpx;
+  color: #EF4444;
+  padding: 8rpx 20rpx;
+  border: 2rpx solid #FECACA;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+/* ===== 批量删除模式 ===== */
+.ticket-toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-batch-toggle {
+  font-size: 24rpx;
+  color: #6B7280;
+  font-weight: 600;
+  margin-left: 24rpx;
+}
+
+.ticket-batch-toggle-on {
+  color: #EF4444;
+}
+
+.ticket-batch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FEF2F2;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.ticket-select-all {
+  font-size: 24rpx;
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+.ticket-batch-del-btn {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  font-size: 24rpx !important;
+  border-radius: 8rpx !important;
+  padding: 8rpx 24rpx !important;
+  line-height: 1.5 !important;
+  border: none !important;
+  margin: 0 !important;
+}
+
+.ticket-item-batch {
+  padding-left: 8rpx;
+}
+
+.ticket-checkbox {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  text-align: center;
+  border: 2rpx solid #D1D5DB;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #FFFFFF;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.ticket-checkbox-on {
+  background: #EF4444;
+  border-color: #EF4444;
 }

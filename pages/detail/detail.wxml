@@ -94,6 +94,9 @@
       <view class="manage-btn staff-btn" bindtap="toggleStaffPanel">
         <text>👥 管理参与人</text>
       </view>
+      <view class="manage-btn ticket-manage-btn" wx:if="{{canDelete}}" bindtap="toggleTicketPanel">
+        <text>🎟️ 入场券</text>
+      </view>
       <view class="manage-btn scan-btn" wx:if="{{activity.enableScanConfirm !== false}}" bindtap="goToScanConfirm">
         <text>📷 扫码确认</text>
       </view>
@@ -132,12 +135,75 @@
           <view class="panel-item-info">
             <text class="panel-item-name">{{item.name || '保密人员'}}</text>
             <text wx:if="{{item.dept}}" class="panel-item-dept">{{item.dept}}</text>
-            <text class="panel-item-id">工号：{{item.staffId}}</text>
+            <text class="panel-item-id">{{item.isTicket ? '入场券号' : '工号'}}：{{item.staffId}}</text>
             <text wx:if="{{item.checked}}" class="panel-item-checked">✓已签到</text>
           </view>
           <view class="panel-item-del" bindtap="doRemoveParticipant" data-id="{{item._id}}" data-name="{{item.name || '保密人员'}}">
             <text>删除</text>
           </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 入场券管理面板 -->
+    <view class="staff-panel" wx:if="{{showTicketPanel && canDelete}}">
+      <view class="panel-header">
+        <text class="panel-title">入场券管理</text>
+        <text class="panel-close" bindtap="toggleTicketPanel">✕</text>
+      </view>
+      <!-- 生成券 -->
+      <view class="panel-add">
+        <input
+          class="form-input ticket-count-input"
+          type="number"
+          placeholder="生成数量（单次最多200）"
+          value="{{ticketCount}}"
+          bindinput="onTicketCountInput"
+        />
+        <button class="panel-add-btn" bindtap="doGenerateTickets" disabled="{{ticketGenerating}}">
+          {{ticketGenerating ? '生成中…' : '生成'}}
+        </button>
+      </view>
+      <!-- 券号列表工具栏 -->
+      <view class="ticket-list-toolbar" wx:if="{{ticketList.length > 0}}">
+        <text class="ticket-list-summary">共 {{ticketList.length}} 张{{ticketBatchMode ? '，已选 ' + selectedTicketsCount : ''}}</text>
+        <view class="ticket-toolbar-actions">
+          <text class="ticket-copy-all" bindtap="copyAllTickets" wx:if="{{!ticketBatchMode}}">复制全部</text>
+          <text class="ticket-batch-toggle {{ticketBatchMode ? 'ticket-batch-toggle-on' : ''}}" bindtap="toggleTicketBatchMode">
+            {{ticketBatchMode ? '退出批量' : '批量删除'}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 批量操作栏 -->
+      <view class="ticket-batch-bar" wx:if="{{ticketBatchMode && ticketList.length > 0}}">
+        <text class="ticket-select-all" bindtap="toggleSelectAllTickets">全选/取消全选</text>
+        <button class="ticket-batch-del-btn" bindtap="doBatchDeleteTickets">删除所选（{{selectedTicketsCount}}）</button>
+      </view>
+
+      <scroll-view class="panel-list" scroll-y style="max-height: 600rpx;">
+        <view wx:if="{{ticketList.length === 0}}" class="panel-empty">暂无入场券</view>
+        <view class="ticket-item {{ticketBatchMode ? 'ticket-item-batch' : ''}}" wx:for="{{ticketList}}" wx:key="_id">
+          <!-- 批量模式下整行可点选 -->
+          <text wx:if="{{ticketBatchMode}}" class="ticket-checkbox {{selectedTickets[item._id] ? 'ticket-checkbox-on' : ''}}"
+            bindtap="toggleTicketSelect" data-id="{{item._id}}" data-no="{{item.ticketNo}}">
+            {{selectedTickets[item._id] ? '✓' : ''}}
+          </text>
+          <text class="ticket-no {{item.revoked ? 'ticket-revoked' : ''}}"
+            bindtap="toggleTicketSelect"
+            data-id="{{item._id}}" data-no="{{item.ticketNo}}">{{item.ticketNo}}</text>
+          <text class="ticket-status" wx:if="{{item.checked}}">✓已签到 {{item.checkedAt}}</text>
+          <text class="ticket-status ticket-status-revoked" wx:elif="{{item.revoked}}">已作废</text>
+          <block wx:if="{{!ticketBatchMode}}">
+            <text class="ticket-copy-single" bindtap="copyTicket" data-no="{{item.ticketNo}}">复制</text>
+            <text
+              class="ticket-del-btn"
+              bindtap="doDeleteTicket"
+              data-id="{{item._id}}"
+              data-no="{{item.ticketNo}}"
+              data-checked="{{item.checked}}"
+            >删除</text>
+          </block>
         </view>
       </scroll-view>
     </view>
@@ -148,7 +214,7 @@
         <text class="search-icon">🔍</text>
         <input
           class="search-input"
-          placeholder="{{secureMode ? '搜索工号后6位' : '搜索姓名、部门或工号'}}"
+          placeholder="{{secureMode ? '搜索工号/入场券号后6位' : '搜索姓名、部门、工号或入场券号'}}"
           value="{{keyword}}"
           bindinput="onSearch"
           confirm-type="search"
@@ -194,7 +260,7 @@
             <text class="person-name">{{item.name || '保密人员'}}</text>
             <text wx:if="{{item.dept}}" class="person-dept">{{item.dept}}</text>
           </view>
-          <text class="person-phone">工号：{{item.staffId}}</text>
+          <text class="person-phone">{{item.isTicket ? '入场券号' : '工号'}}：{{item.staffId}}</text>
           <text wx:if="{{item.checked}}" class="checked-time">✓ 已签到 {{item.checkedAt}}</text>
           <view wx:if="{{item.checked && item.signatureFileId}}" class="signature-link" bindtap="previewSignature" data-file-id="{{item.signatureFileId}}">
             <text>查看签名</text>

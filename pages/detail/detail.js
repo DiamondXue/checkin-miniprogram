@@ -31,6 +31,15 @@ Page({
     checkingLocation: false,
     // 信息安全模式（服务端返回的数据本身已脱敏）
     secureMode: false,
+    // 入场券管理
+    showTicketPanel: false,
+    ticketCount: '10',
+    ticketList: [],
+    ticketGenerating: false,
+    // 批量删除
+    ticketBatchMode: false,
+    selectedTickets: {},   // { ticketId: ticketNo }
+    selectedTicketsCount: 0,
   },
 
   onLoad(options) {
@@ -277,7 +286,9 @@ Page({
         data: { action: 'getParticipants', activityId: this.activityId },
       });
       if (res.result.success) {
-        this.setData({ participants: res.result.participants });
+        // 管理参与人面板仅管理员工工号，入场券参与人由「入场券」面板管理
+        const isTicket = (p) => !!p.isTicket || /^[A-Z]\d{7}$/.test(p.staffId || '');
+        this.setData({ participants: (res.result.participants || []).filter(p => !isTicket(p)) });
       }
     } catch (e) {
       wx.showToast({ title: '加载失败', icon: 'none' });
@@ -347,6 +358,178 @@ Page({
 
   goToScanConfirm() {
     wx.navigateTo({ url: `/pages/scan-confirm/scan-confirm?activityId=${this.activityId}` });
+  },
+
+  // ===== 入场券管理 =====
+  toggleTicketPanel() {
+    const show = !this.data.showTicketPanel;
+    this.setData({ showTicketPanel: show });
+    if (show) this.loadTickets();
+  },
+
+  async loadTickets() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: { action: 'getTickets', activityId: this.activityId },
+      });
+      if (res.result.success) {
+        this.setData({ ticketList: res.result.tickets || [] });
+      }
+    } catch (e) {
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    }
+  },
+
+  onTicketCountInput(e) {
+    this.setData({ ticketCount: e.detail.value.replace(/\D/g, '') });
+  },
+
+  async doGenerateTickets() {
+    if (this.data.ticketGenerating) return;
+    let count = parseInt(this.data.ticketCount) || 0;
+    if (count <= 0) {
+      wx.showToast({ title: '请输入生成数量', icon: 'none' });
+      return;
+    }
+    if (count > 200) count = 200;
+
+    this.setData({ ticketGenerating: true });
+    wx.showLoading({ title: `生成 ${count} 张券…`, mask: true });
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: { action: 'generateTickets', activityId: this.activityId, count },
+      });
+      wx.hideLoading();
+      if (!res.result.success) throw new Error(res.result.error);
+
+      wx.showToast({ title: `已生成 ${res.result.total} 张`, icon: 'success' });
+      await this.loadTickets();
+      this.loadActivity();
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '生成失败', icon: 'none' });
+    }
+    this.setData({ ticketGenerating: false });
+  },
+
+  // 复制单张券号
+  copyTicket(e) {
+    const no = e.currentTarget.dataset.no;
+    wx.setClipboardData({ data: no });
+  },
+
+  // 切换批量删除模式
+  toggleTicketBatchMode() {
+    const on = !this.data.ticketBatchMode;
+    this.setData({ ticketBatchMode: on, selectedTickets: {}, selectedTicketsCount: 0 });
+  },
+
+  // 勾选/取消勾选一张券
+  toggleTicketSelect(e) {
+    if (!this.data.ticketBatchMode) return;
+    const { id, no } = e.currentTarget.dataset;
+    const selected = { ...this.data.selectedTickets };
+    if (selected[id]) delete selected[id];
+    else selected[id] = no;
+    this.setData({ selectedTickets: selected, selectedTicketsCount: Object.keys(selected).length });
+  },
+
+  // 全选/取消全选
+  toggleSelectAllTickets() {
+    const selected = { ...this.data.selectedTickets };
+    const allSelected = this.data.ticketList.length > 0 && this.data.ticketList.every(t => selected[t._id]);
+    if (allSelected) {
+      this.setData({ selectedTickets: {}, selectedTicketsCount: 0 });
+    } else {
+      const next = {};
+      this.data.ticketList.forEach(t => { next[t._id] = t.ticketNo; });
+      this.setData({ selectedTickets: next, selectedTicketsCount: Object.keys(next).length });
+    }
+  },
+
+  // 批量删除所选券
+  doBatchDeleteTickets() {
+    const selected = this.data.selectedTickets;
+    const ids = Object.keys(selected);
+    if (ids.length === 0) {
+      wx.showToast({ title: '请先选择要删除的券', icon: 'none' });
+      return;
+    }
+    wx.showModal({
+      title: '批量删除入场券',
+      content: `确认删除选中的 ${ids.length} 张入场券？对应的签到记录将一并删除。`,
+      confirmText: '删除',
+      confirmColor: '#EF4444',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '批量删除中…', mask: true });
+        try {
+          const items = ids.map(id => ({ ticketId: id, ticketNo: selected[id] }));
+          const result = await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'batchDeleteTickets', activityId: this.activityId, items },
+          });
+          wx.hideLoading();
+          if (!result.result.success) throw new Error(result.result.error);
+          wx.showToast({ title: `已删除 ${result.result.ticketDeleted} 张`, icon: 'success' });
+          this.setData({ selectedTickets: {}, selectedTicketsCount: 0 });
+          await this.loadTickets();
+          this.loadActivity();
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: err.message || '删除失败', icon: 'none' });
+        }
+      },
+    });
+  },
+
+  // 删除单张入场券
+  doDeleteTicket(e) {
+    const { id, no, checked } = e.currentTarget.dataset;
+    if (!id || !no) return;
+    wx.showModal({
+      title: '删除入场券',
+      content: checked
+        ? `券 ${no} 已签到，删除后该签到记录将一并删除，确认删除？`
+        : `确认删除入场券 ${no}？删除后该券将无法用于登录。`,
+      confirmText: '删除',
+      confirmColor: '#EF4444',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '删除中…', mask: true });
+        try {
+          const result = await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: {
+              action: 'deleteTicket',
+              activityId: this.activityId,
+              ticketId: id,
+              ticketNo: no,
+            },
+          });
+          wx.hideLoading();
+          if (!result.result.success) throw new Error(result.result.error);
+          wx.showToast({ title: '已删除', icon: 'success' });
+          await this.loadTickets();
+          this.loadActivity();
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: err.message || '删除失败', icon: 'none' });
+        }
+      },
+    });
+  },
+
+  // 复制全部券号（换行分隔，便于打印/批量发放）
+  copyAllTickets() {
+    if (this.data.ticketList.length === 0) return;
+    const text = this.data.ticketList.map(t => t.ticketNo).join('\n');
+    wx.setClipboardData({
+      data: text,
+      success: () => wx.showToast({ title: `已复制 ${this.data.ticketList.length} 个券号`, icon: 'none' }),
+    });
   },
 
   doDelete() {

@@ -71,8 +71,8 @@ exports.main = async (event) => {
       properties: { defaultRowHeight: 20 },
     });
 
-    // 构建表头
-    const headers = ['姓名', '工号', '部门', '签到状态', '签到时间'];
+    // 构建表头（新增人员类型列，区分员工工号与入场券号）
+    const headers = ['姓名', '工号/入场券号', '部门', '签到状态', '签到时间', '人员类型'];
     if (requireSignature) headers.push('签名');
     confirmItems.forEach(item => {
       headers.push(`${item.label}-状态`);
@@ -82,9 +82,10 @@ exports.main = async (event) => {
     ws.columns = headers.map((h, i) => {
       let width = 14;
       if (i === 0) width = 16;
+      if (i === 1) width = 18;
       if (i === 2) width = 22;
       if (i === 4) width = 12;
-      if (requireSignature && i === 5) width = 30;
+      if (requireSignature && i === 6) width = 30;
       return { header: h, key: `col${i}`, width };
     });
 
@@ -96,19 +97,28 @@ exports.main = async (event) => {
     for (let rowIdx = 0; rowIdx < records.length; rowIdx++) {
       const r = records[rowIdx];
       const excelRow = rowIdx + 2; // Excel 行号（1-based，表头占第1行）
-      const colIdx = 0;
 
-      ws.getCell(`A${excelRow}`).value = secureMode ? '保密' : (r.name || '');
-      ws.getCell(`B${excelRow}`).value = secureMode ? String(r.staffId || '').slice(-6) : (r.staffId || '');
-      ws.getCell(`C${excelRow}`).value = secureMode ? '' : (r.dept || '');
+      // 区分员工 / 入场券
+      const isTicket = !!r.isTicket || /^[A-Z]\d{7}$/.test(r.staffId || '');
+
+      // 姓名：入场券无姓名（记录里的 name 就是券号，留空避免与号码列重复）
+      ws.getCell(`A${excelRow}`).value = isTicket ? '' : (secureMode ? '保密' : (r.name || ''));
+      // 号码：安全模式下员工工号仅后6位，入场券号保持完整
+      ws.getCell(`B${excelRow}`).value = (!isTicket && secureMode)
+        ? String(r.staffId || '').slice(-6)
+        : (r.staffId || '');
+      // 部门：入场券无部门
+      ws.getCell(`C${excelRow}`).value = isTicket ? '' : (secureMode ? '' : (r.dept || ''));
       ws.getCell(`D${excelRow}`).value = r.checked ? '已签到' : '未签到';
       ws.getCell(`E${excelRow}`).value = r.checkedAt || '';
+      // 人员类型
+      ws.getCell(`F${excelRow}`).value = isTicket ? '入场券' : '员工';
 
-      let currentCol = 6; // F 列开始
+      let currentCol = 7; // G 列开始（F 列已用于人员类型）
 
       // 签名列：嵌入图片
       if (requireSignature) {
-        const sigCol = String.fromCharCode(64 + currentCol); // F
+        const sigCol = String.fromCharCode(64 + currentCol); // G
         if (r.signatureFileId && signatureBuffers[r.signatureFileId]) {
           const imgId = wb.addImage({
             buffer: signatureBuffers[r.signatureFileId],

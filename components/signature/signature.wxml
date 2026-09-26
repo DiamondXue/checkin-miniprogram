@@ -1,6 +1,6 @@
 <view class="signature-wrap">
   <view class="signature-header">
-    <text class="signature-title">请在下方签名</text>
+    <text class="signature-title">请在下方签中文名</text>
     <view class="signature-clear" bindtap="clear">
       <text>清除</text>
     </view>

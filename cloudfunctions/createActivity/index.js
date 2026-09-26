@@ -11,6 +11,41 @@ const _ = db.command;
 exports.main = async (event) => {
   const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt, signatureFileId } = event;
 
+  if (action === 'loginByTicket') {
+    // 入场券登录校验（云端管理员身份查询，不受 tickets 集合权限规则限制）
+    // 参数：ticketNo
+    // 返回：{ success, ticketId, activityId, activityName }
+    try {
+      const ticketNo = String(event.ticketNo || '').toUpperCase();
+      if (!/^[A-Z]\d{7}$/.test(ticketNo)) {
+        return { success: false, error: '入场券格式不正确' };
+      }
+
+      const tRes = await db.collection('tickets').where({ ticketNo }).limit(1).get();
+      const ticket = tRes.data && tRes.data[0];
+      if (!ticket) return { success: false, error: '入场券无效，请核对后重试' };
+      if (ticket.revoked) return { success: false, error: '该入场券已作废' };
+      if (!ticket.activityId) return { success: false, error: '入场券未绑定活动' };
+
+      let activityName = '';
+      try {
+        const aRes = await db.collection('activities').doc(ticket.activityId).get();
+        activityName = (aRes.data && aRes.data.name) || '';
+      } catch (e) {
+        return { success: false, error: '绑定的活动不存在或已删除' };
+      }
+
+      return {
+        success: true,
+        ticketId: ticket._id,
+        activityId: ticket.activityId,
+        activityName,
+      };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
   // 获取活动的 confirmItems 配置，用于初始化 confirmations
   async function getActivityConfirmItems() {
     try {
@@ -80,10 +115,12 @@ exports.main = async (event) => {
         confirmations[k] = { confirmed: !!c.confirmed, at: c.at || '', by: maskStaffId(c.by) };
       });
     }
+    const isTicket = !!p.isTicket || /^[A-Z]\d{7}$/.test(p.staffId || '');
     const out = {
       _id: p._id,
       activityId: p.activityId,
-      staffId: maskStaffId(p.staffId),
+      staffId: isTicket ? p.staffId : maskStaffId(p.staffId),
+      isTicket,
       checked: !!p.checked,
       checkedAt: p.checkedAt || '',
       confirmations,
@@ -343,6 +380,193 @@ exports.main = async (event) => {
     }
   }
 
+  // 生成 1 位大写字母 + 7 位数字的券号（在活动内唯一）
+  function genTicketNo(existingSet, prefix) {
+    const usePrefix = /^[A-Z]$/.test(prefix) ? prefix
+      : String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    for (let attempt = 0; attempt < 50; attempt++) {
+      let digits = '';
+      for (let i = 0; i < 7; i++) digits += Math.floor(Math.random() * 10);
+      const no = usePrefix + digits;
+      if (!existingSet.has(no)) {
+        existingSet.add(no);
+        return no;
+      }
+    }
+    return null;
+  }
+
+  if (action === 'generateTickets') {
+    // 为活动批量生成入场券，同时预建参与者记录（作为应到人员）
+    // 参数：activityId, count(默认10,上限200), prefix(可选字母)
+    try {
+      let count = parseInt(event.count);
+      if (!count || count <= 0) count = 10;
+      if (count > 200) count = 200;
+
+      // 收集活动内已有券号，避免重复
+      const existingSet = new Set();
+      let tSkip = 0;
+      while (true) {
+        const { data } = await db.collection('tickets')
+          .where({ activityId })
+          .skip(tSkip)
+          .limit(100)
+          .get();
+        data.forEach(t => existingSet.add(t.ticketNo));
+        if (data.length < 100) break;
+        tSkip += 100;
+      }
+
+      // 已有参与者工号（券号），避免重复建记录
+      const existingP = new Set();
+      const pList = await fetchUniqueParticipants(activityId);
+      pList.forEach(p => existingP.add(p.staffId));
+
+      const confirmItems = await getActivityConfirmItems();
+      const confirmFields = buildConfirmFields(confirmItems);
+
+      const created = [];
+      for (let i = 0; i < count; i++) {
+        const ticketNo = genTicketNo(existingSet, event.prefix);
+        if (!ticketNo) continue;
+        await db.collection('tickets').add({
+          data: {
+            ticketNo,
+            activityId,
+            revoked: false,
+            createdAt: db.serverDate(),
+          },
+        });
+        // 同步预建参与者记录（券号即身份标识）
+        if (!existingP.has(ticketNo)) {
+          existingP.add(ticketNo);
+          await db.collection('participants').add({
+            data: {
+              activityId,
+              staffId: ticketNo,
+              name: ticketNo,
+              dept: '',
+              isTicket: true,
+              checked: false,
+              checkedAt: '',
+              ...confirmFields,
+              createdAt: db.serverDate(),
+            },
+          });
+        }
+        created.push(ticketNo);
+      }
+
+      return { success: true, tickets: created, total: created.length };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'getTickets') {
+    // 查询活动的入场券列表（管理员发放/核销情况）
+    try {
+      let tickets = [];
+      let skip = 0;
+      while (true) {
+        const { data } = await db.collection('tickets')
+          .where({ activityId })
+          .skip(skip)
+          .limit(100)
+          .get();
+        tickets = tickets.concat(data);
+        if (data.length < 100) break;
+        skip += 100;
+      }
+      // 合并参与者签到状态
+      const pList = await fetchUniqueParticipants(activityId);
+      const pMap = {};
+      pList.forEach(p => { pMap[p.staffId] = p; });
+      const list = tickets.map(t => ({
+        _id: t._id,
+        ticketNo: t.ticketNo,
+        revoked: !!t.revoked,
+        checked: !!(pMap[t.ticketNo] && pMap[t.ticketNo].checked),
+        checkedAt: (pMap[t.ticketNo] && pMap[t.ticketNo].checkedAt) || '',
+      }));
+      return { success: true, tickets: list, total: list.length };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'deleteTicket') {
+    // 删除单张入场券：同时删除 tickets 记录和该活动下对应的参与者记录
+    // 参数：activityId, ticketId, ticketNo
+    try {
+      const ticketNo = event.ticketNo;
+      if (!event.ticketId || !ticketNo) {
+        return { success: false, error: '缺少券ID或券号' };
+      }
+
+      // 删除券记录（先校验记录归属当前活动，防止跨活动删除）
+      let belong = true;
+      try {
+        const tRes = await db.collection('tickets').doc(event.ticketId).get();
+        belong = tRes.data && tRes.data.activityId === activityId;
+      } catch (e) { belong = false; }
+      if (!belong) return { success: false, error: '券不存在或不属于该活动' };
+      await db.collection('tickets').doc(event.ticketId).remove();
+
+      // 删除该活动下所有 staffId = 券号 的参与者记录（可能有重复记录）
+      const { data: pRecords } = await db.collection('participants')
+        .where({ activityId, staffId: ticketNo })
+        .limit(100)
+        .get();
+      await Promise.all(pRecords.map(p =>
+        db.collection('participants').doc(p._id).remove()
+      ));
+
+      return { success: true, ticketNo, removedParticipants: pRecords.length };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'batchDeleteTickets') {
+    // 批量删除入场券：删除多张券及其参与者记录
+    // 参数：activityId, items: [{ ticketId, ticketNo }]
+    try {
+      const items = Array.isArray(event.items) ? event.items : [];
+      if (items.length === 0) return { success: false, error: '未选择券' };
+
+      let ticketDeleted = 0;
+      let participantDeleted = 0;
+      for (const item of items) {
+        if (!item || !item.ticketId || !item.ticketNo) continue;
+        // 校验归属当前活动
+        let belong = true;
+        try {
+          const tRes = await db.collection('tickets').doc(item.ticketId).get();
+          belong = tRes.data && tRes.data.activityId === activityId;
+        } catch (e) { belong = false; }
+        if (!belong) continue;
+
+        await db.collection('tickets').doc(item.ticketId).remove();
+        ticketDeleted++;
+
+        const { data: pRecords } = await db.collection('participants')
+          .where({ activityId, staffId: item.ticketNo })
+          .limit(100)
+          .get();
+        await Promise.all(pRecords.map(p =>
+          db.collection('participants').doc(p._id).remove()
+        ));
+        participantDeleted += pRecords.length;
+      }
+
+      return { success: true, ticketDeleted, participantDeleted };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
   if (action === 'checkin') {
     // 签到或撤销签到
     try {
@@ -409,6 +633,53 @@ exports.main = async (event) => {
       const totalCount = list.length;
       const checkedCount = list.filter(p => !!p.checked).length;
       return { success: true, totalCount, checkedCount };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'getAllActivityStats') {
+    // 批量获取多个活动的统计（首页用，避免 N 次云函数调用）
+    // 参数：activityIds: [id1, id2, ...]
+    // 返回：{ activityId: { totalCount, checkedCount } }
+    try {
+      const ids = Array.isArray(event.activityIds) ? event.activityIds.filter(Boolean) : [];
+      const stats = {};
+      ids.forEach(id => { stats[id] = { totalCount: 0, checkedCount: 0 }; });
+      if (ids.length === 0) return { success: true, stats };
+
+      const _ = db.command;
+      // 一次性查询所有指定活动的参与者，分页拉取
+      let all = [];
+      let skip = 0;
+      const PAGE = 100;
+      while (true) {
+        const { data } = await db.collection('participants')
+          .where({ activityId: _.in(ids) })
+          .skip(skip)
+          .limit(PAGE)
+          .get();
+        all = all.concat(data);
+        if (data.length < PAGE) break;
+        skip += PAGE;
+      }
+
+      // 按 activityId 分组，再按 staffId 去重（已签到优先）
+      const byAct = {};
+      all.forEach(p => {
+        if (!byAct[p.activityId]) byAct[p.activityId] = {};
+        const prev = byAct[p.activityId][p.staffId];
+        if (!prev) { byAct[p.activityId][p.staffId] = p; return; }
+        if (!!p.checked && !prev.checked) byAct[p.activityId][p.staffId] = p;
+      });
+      Object.keys(byAct).forEach(aid => {
+        const list = Object.values(byAct[aid]);
+        stats[aid] = {
+          totalCount: list.length,
+          checkedCount: list.filter(p => !!p.checked).length,
+        };
+      });
+      return { success: true, stats };
     } catch (err) {
       return { success: false, error: err.message };
     }
@@ -500,6 +771,7 @@ exports.main = async (event) => {
             staffId: record.staffId,
             name: record.name || '',
             dept: record.dept || '',
+            isTicket: !!record.isTicket || /^[A-Z]\d{7}$/.test(record.staffId || ''),
             checked: !!record.checked,
             checkedAt: record.checkedAt || '',
             confirmations,

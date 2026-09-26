@@ -48,6 +48,32 @@ page {
   box-shadow: 0 24rpx 80rpx rgba(0,0,0,0.25);
 }
 
+/* 登录方式切换 */
+.mode-tabs {
+  display: flex;
+  background: #F3F4F6;
+  border-radius: 16rpx;
+  padding: 8rpx;
+  margin-bottom: 40rpx;
+}
+
+.mode-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #6B7280;
+  padding: 20rpx 0;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+}
+
+.mode-tab-active {
+  background: #FFFFFF;
+  color: #4F46E5;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+}
+
 .card-title {
   display: block;
   font-size: 40rpx;
@@ -60,7 +86,7 @@ page {
   display: block;
   font-size: 26rpx;
   color: #6B7280;
-  margin-bottom: 48rpx;
+  margin-bottom: 40rpx;
 }
 
 /* 输入框 */

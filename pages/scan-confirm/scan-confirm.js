@@ -124,13 +124,15 @@ Page({
         }
       }
 
+      const isTicket = !!(participant && participant.isTicket) || /^[A-Z]\d{7}$/.test(payload.staffId || '');
       const displayUser = secureMode
-        ? { name: '', dept: '', avatar: '?', staffIdDisplay: String(payload.staffId || '').slice(-6) }
+        ? { name: '', dept: '', avatar: '?', staffIdDisplay: String(payload.staffId || '').slice(-6), isTicket }
         : {
             name: userInfo.name || '',
             dept: userInfo.dept || '',
             avatar: (userInfo.name || '?')[0] || '?',
             staffIdDisplay: userInfo.staffId || payload.staffId || '',
+            isTicket,
           };
 
       this.setData({
@@ -172,12 +174,13 @@ Page({
       this.fullStaffId = secureMode ? '' : (record.staffId || '');
 
       const displayUser = secureMode
-        ? { name: '', dept: '', avatar: '?', staffIdDisplay: record.staffId || '' }
+        ? { name: '', dept: '', avatar: '?', staffIdDisplay: record.staffId || '', isTicket: !!record.isTicket }
         : {
             name: record.name || '',
             dept: record.dept || '',
             avatar: (record.name || '?')[0] || '?',
             staffIdDisplay: record.staffId || '',
+            isTicket: !!record.isTicket,
           };
 
       this.setData({
