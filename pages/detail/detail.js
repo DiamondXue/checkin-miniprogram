@@ -40,6 +40,11 @@ Page({
     ticketBatchMode: false,
     selectedTickets: {},   // { ticketId: ticketNo }
     selectedTicketsCount: 0,
+    // 投票管理
+    showVotePanel: false,
+    voteData: null,        // { vote, votedCount, results }
+    voteLoading: false,
+    voteActing: false,
   },
 
   onLoad(options) {
@@ -529,6 +534,86 @@ Page({
     wx.setClipboardData({
       data: text,
       success: () => wx.showToast({ title: `已复制 ${this.data.ticketList.length} 个券号`, icon: 'none' }),
+    });
+  },
+
+  // ===== 投票管理 =====
+  toggleVotePanel() {
+    const show = !this.data.showVotePanel;
+    this.setData({ showVotePanel: show });
+    if (show) this.loadVoteData();
+  },
+
+  async loadVoteData() {
+    this.setData({ voteLoading: true });
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'createActivity',
+        data: { action: 'getVoteData', activityId: this.activityId },
+      });
+      if (res.result.success) {
+        this.setData({ voteData: { vote: res.result.vote, votedCount: res.result.votedCount, results: res.result.results } });
+      } else {
+        this.setData({ voteData: null });
+        wx.showToast({ title: res.result.error || '加载投票失败', icon: 'none' });
+      }
+    } catch (e) {
+      wx.showToast({ title: '加载投票失败', icon: 'none' });
+    }
+    this.setData({ voteLoading: false });
+  },
+
+  doSetVoteStatus(e) {
+    const status = e.currentTarget.dataset.status;
+    if (this.data.voteActing) return;
+    const tipMap = { open: '确认开始投票？开始后已签到的用户可提交投票', ended: '确认结束投票？结束后所有用户可查看投票结果' };
+    wx.showModal({
+      title: status === 'open' ? '开始投票' : '结束投票',
+      content: tipMap[status],
+      success: async (res) => {
+        if (!res.confirm) return;
+        this.setData({ voteActing: true });
+        try {
+          const result = await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'setVoteStatus', activityId: this.activityId, status },
+          });
+          if (!result.result.success) throw new Error(result.result.error);
+          wx.showToast({ title: status === 'open' ? '投票已开始' : '投票已结束', icon: 'success' });
+          await this.loadVoteData();
+          this.loadActivity();
+        } catch (err) {
+          wx.showToast({ title: err.message || '操作失败', icon: 'none' });
+        }
+        this.setData({ voteActing: false });
+      },
+    });
+  },
+
+  doResetVote() {
+    if (this.data.voteActing) return;
+    wx.showModal({
+      title: '重置投票',
+      content: '确认重置投票？所有选票将被清空，投票回到「未开始」状态，用户可重新投票。',
+      confirmText: '重置',
+      confirmColor: '#EF4444',
+      success: async (res) => {
+        if (!res.confirm) return;
+        this.setData({ voteActing: true });
+        try {
+          const result = await wx.cloud.callFunction({
+            name: 'createActivity',
+            data: { action: 'resetVote', activityId: this.activityId },
+          });
+          if (!result.result.success) throw new Error(result.result.error);
+          wx.showToast({ title: '已重置', icon: 'success' });
+          await this.loadVoteData();
+          this.loadActivity();
+        } catch (err) {
+          wx.showToast({ title: err.message || '重置失败', icon: 'none' });
+        }
+        this.setData({ voteActing: false });
+      },
     });
   },
 

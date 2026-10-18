@@ -1,0 +1,108 @@
+<!-- 活动投票页 -->
+<view class="container">
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">加载中…</text>
+  </view>
+
+  <!-- 加载失败 -->
+  <view wx:elif="{{loadError}}" class="empty-state">
+    <text class="empty-icon">🗳️</text>
+    <text class="empty-title">{{loadError}}</text>
+    <button class="retry-btn" bindtap="onRetry">重新加载</button>
+  </view>
+
+  <block wx:if="{{!loading && vote}}">
+    <!-- 投票卡片 -->
+    <view class="vote-card">
+      <view class="vote-header">
+        <text class="vote-title">{{vote.title}}</text>
+        <view class="vote-meta-row">
+          <text class="vote-meta">{{vote.type === 'multi' ? '多选' : '单选'}}</text>
+          <text wx:if="{{vote.type === 'multi'}}" class="vote-meta">限选 {{vote.minChoices}} ~ {{vote.maxChoices}} 项</text>
+          <text wx:if="{{vote.status === 'open'}}" class="vote-meta">已投 {{votedCount}} 人</text>
+        </view>
+      </view>
+
+      <!-- 状态：未开始 -->
+      <view wx:if="{{vote.status === 'pending'}}" class="state-block">
+        <text class="state-icon">⏳</text>
+        <text class="state-title">投票尚未开始</text>
+        <text class="state-desc">请等待管理员开始投票</text>
+      </view>
+
+      <!-- 状态：进行中 -->
+      <block wx:elif="{{vote.status === 'open'}}">
+        <!-- 已投票：展示自己的选择 -->
+        <view wx:if="{{myBallot}}" class="state-block">
+          <text class="state-icon state-icon-done">✓</text>
+          <text class="state-title">已投票</text>
+          <text class="state-desc">每人仅可投一次，感谢您的参与</text>
+          <view class="my-choice-list">
+            <view class="my-choice-item" wx:for="{{vote.options}}" wx:key="key">
+              <text class="my-choice-label {{myChoiceMap[item.key] ? 'chosen' : ''}}">
+                {{myChoiceMap[item.key] ? '✓ ' : ''}}{{item.label}}
+              </text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 未投票：投票表单 -->
+        <view wx:else class="option-list">
+          <view
+            wx:for="{{vote.options}}"
+            wx:key="key"
+            class="option-item {{selected[item.key] ? 'option-selected' : ''}}"
+            bindtap="onToggleOption"
+            data-key="{{item.key}}"
+          >
+            <view class="option-marker {{vote.type === 'multi' ? 'marker-check' : 'marker-radio'}} {{selected[item.key] ? 'marker-on' : ''}}">
+              <text wx:if="{{selected[item.key]}}">✓</text>
+            </view>
+            <text class="option-label">{{item.label}}</text>
+          </view>
+
+          <text wx:if="{{vote.type === 'multi'}}" class="select-count-hint {{selectedCount >= vote.minChoices && selectedCount <= vote.maxChoices ? 'hint-ok' : ''}}">
+            已选 {{selectedCount}} 项（需选 {{vote.minChoices}} ~ {{vote.maxChoices}} 项）
+          </text>
+
+          <button class="submit-btn" bindtap="doSubmit" disabled="{{submitting}}">
+            <text wx:if="{{!submitting}}">提交投票</text>
+            <text wx:if="{{submitting}}">提交中…</text>
+          </button>
+        </view>
+      </block>
+
+      <!-- 状态：已结束 → 查看结果 -->
+      <block wx:elif="{{vote.status === 'ended'}}">
+        <view wx:if="{{myBallot}}" class="my-choice-banner">
+          <text>您投给了：{{myChoiceText}}</text>
+        </view>
+        <view wx:else class="my-choice-banner my-choice-banner-gray">
+          <text>您未参与本次投票</text>
+        </view>
+
+        <view class="result-list">
+          <view class="result-item" wx:for="{{results}}" wx:key="key">
+            <view class="result-row">
+              <text class="result-label {{myChoiceMap[item.key] ? 'result-label-mine' : ''}}">
+                {{myChoiceMap[item.key] ? '✓ ' : ''}}{{item.label}}
+              </text>
+              <text class="result-nums">{{item.count}} 票 · {{item.pct}}%</text>
+            </view>
+            <view class="result-bar-bg">
+              <view class="result-bar-fill" style="width: {{item.pct}}%"></view>
+            </view>
+          </view>
+        </view>
+
+        <view class="result-total">
+          <text>共 {{votedCount}} 人参与投票 · 投票已于 {{vote.endedAt}} 结束</text>
+        </view>
+      </block>
+    </view>
+  </block>
+
+  <view class="bottom-space"></view>
+</view>

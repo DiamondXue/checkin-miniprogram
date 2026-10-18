@@ -20,6 +20,16 @@ Page({
     requireSignature: false,
     // 信息安全模式：名单不显示姓名/部门，工号仅显示后6位
     secureMode: false,
+    // 投票
+    enableVote: false,
+    voteTitle: '',
+    voteType: 'single',            // 'single' | 'multi'
+    voteOptions: [
+      { key: 'opt_1', label: '' },
+      { key: 'opt_2', label: '' },
+    ],
+    voteMinChoices: 1,
+    voteMaxChoices: 1,
     confirmItems: [
       { key: 'tea', label: '下午茶点', total: 50 },
       { key: 'gift', label: '活动礼品', total: 30 },
@@ -58,6 +68,8 @@ Page({
       const db = wx.cloud.database();
       const res = await db.collection('activities').doc(id).get();
       const act = res.data;
+      // 保留源活动的投票运行状态（复制模式除外，副本作为新活动重新开始投票）
+      this._origVote = isCopy ? null : (act.vote || null);
       this.setData({
         name: isCopy ? `${act.name || ''}（副本）` : (act.name || ''),
         location: act.location || '',
@@ -74,6 +86,14 @@ Page({
         enableScanConfirm: act.enableScanConfirm !== false,
         requireSignature: !!act.requireSignature,
         secureMode: !!act.secureMode,
+        enableVote: !!(act.vote && act.vote.enabled),
+        voteTitle: (act.vote && act.vote.title) || '',
+        voteType: (act.vote && act.vote.type) || 'single',
+        voteOptions: (act.vote && act.vote.options && act.vote.options.length > 0)
+          ? act.vote.options.map(o => ({ key: o.key, label: o.label }))
+          : [{ key: 'opt_1', label: '' }, { key: 'opt_2', label: '' }],
+        voteMinChoices: (act.vote && act.vote.minChoices) || 1,
+        voteMaxChoices: (act.vote && act.vote.maxChoices) || 1,
         confirmItems: (act.confirmItems && act.confirmItems.length > 0)
           ? act.confirmItems.map(item => ({ ...item, total: item.total }))  // 兼容旧数据
           : [{ key: 'tea', label: '下午茶点', total: 50 }, { key: 'gift', label: '活动礼品', total: 30 }],
@@ -158,6 +178,55 @@ Page({
     this.setData({ secureMode: !this.data.secureMode });
   },
 
+  // === 投票 ===
+
+  // 切换投票开关
+  onVoteToggle() {
+    this.setData({ enableVote: !this.data.enableVote });
+  },
+
+  // 切换投票类型（单选/多选）
+  onVoteTypeChange(e) {
+    this.setData({ voteType: e.currentTarget.dataset.type });
+  },
+
+  // 修改投票选项文本
+  onVoteOptionInput(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    const key = `voteOptions[${index}].label`;
+    this.setData({ [key]: e.detail.value });
+  },
+
+  // 添加投票选项
+  addVoteOption() {
+    const options = this.data.voteOptions;
+    const key = 'opt_' + Date.now();
+    this.setData({
+      voteOptions: [...options, { key, label: '' }],
+    });
+  },
+
+  // 删除投票选项
+  removeVoteOption(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    const options = this.data.voteOptions;
+    if (options.length <= 2) {
+      wx.showToast({ title: '至少保留2个选项', icon: 'none' });
+      return;
+    }
+    this.setData({ voteOptions: options.filter((_, i) => i !== index) });
+  },
+
+  onVoteMinInput(e) {
+    const val = parseInt(e.detail.value);
+    this.setData({ voteMinChoices: isNaN(val) ? 0 : val });
+  },
+
+  onVoteMaxInput(e) {
+    const val = parseInt(e.detail.value);
+    this.setData({ voteMaxChoices: isNaN(val) ? 0 : val });
+  },
+
   // 切换位置签到开关
   onLocationCheckToggle() {
     const enable = !this.data.enableLocationCheck;
@@ -231,6 +300,31 @@ Page({
       return;
     }
 
+    // 投票校验
+    if (this.data.enableVote) {
+      if (!this.data.voteTitle.trim()) {
+        wx.showToast({ title: '请输入投票标题', icon: 'none' });
+        return;
+      }
+      const validOptions = this.data.voteOptions.filter(o => o.label.trim());
+      if (validOptions.length < 2) {
+        wx.showToast({ title: '请至少填写2个投票选项', icon: 'none' });
+        return;
+      }
+      if (this.data.voteType === 'multi') {
+        const min = this.data.voteMinChoices;
+        const max = this.data.voteMaxChoices;
+        if (!(min >= 1)) {
+          wx.showToast({ title: '最少投票数需≥1', icon: 'none' });
+          return;
+        }
+        if (!(max >= min && max <= validOptions.length)) {
+          wx.showToast({ title: '最多投票数需在最少票数与选项数之间', icon: 'none' });
+          return;
+        }
+      }
+    }
+
     // 解析参与者工号
     const participantInput = this.data.participantInput.trim();
     const participantStaffIds = participantInput
@@ -268,6 +362,22 @@ Page({
       }
     });
 
+    // 构建投票配置（关闭时保留配置仅置 enabled=false，避免误关丢失配置）
+    const validVoteOptions = (this.data.voteOptions || [])
+      .filter(o => o.label.trim())
+      .map(o => ({ key: o.key, label: o.label.trim() }));
+    const voteData = {
+      enabled: !!this.data.enableVote,
+      title: this.data.voteTitle.trim(),
+      type: this.data.voteType,
+      options: validVoteOptions,
+      minChoices: this.data.voteType === 'multi' ? (parseInt(this.data.voteMinChoices) || 1) : 1,
+      maxChoices: this.data.voteType === 'multi' ? (parseInt(this.data.voteMaxChoices) || 1) : 1,
+      status: (this._origVote && this._origVote.status) || 'pending',
+      startedAt: (this._origVote && this._origVote.startedAt) || '',
+      endedAt: (this._origVote && this._origVote.endedAt) || '',
+    };
+
     try {
       if (isEdit) {
         // 编辑模式：更新活动
@@ -287,6 +397,7 @@ Page({
           secureMode: !!secureMode,
           confirmItems: validConfirmItems,
           remainingCounts,
+          vote: voteData,
         };
         await db.collection('activities').doc(activityId).update({ data: updateData });
 
@@ -328,6 +439,7 @@ Page({
             secureMode: !!secureMode,
             confirmItems: validConfirmItems,
             remainingCounts,
+            vote: voteData,
             createdAt: db.serverDate(),
           },
         });

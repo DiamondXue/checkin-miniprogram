@@ -9,7 +9,7 @@ const db = cloud.database();
 const _ = db.command;
 
 exports.main = async (event) => {
-  const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt, signatureFileId } = event;
+  const { action, activityId, participants, staffIds, staffId, name, dept, participantId, checked, checkedAt, signatureFileId, voterId } = event;
 
   if (action === 'loginByTicket') {
     // 入场券登录校验（云端管理员身份查询，不受 tickets 集合权限规则限制）
@@ -921,6 +921,231 @@ exports.main = async (event) => {
       }
 
       return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  // ===== 投票功能 =====
+
+  // UTC+8 中国标准时间字符串（HH:mm），与 checkin 的时间写法保持一致
+  function chinaTimeStr() {
+    const now = new Date();
+    const chinaHours = (now.getUTCHours() + 8) % 24;
+    const chinaMinutes = now.getUTCMinutes();
+    return `${String(chinaHours).padStart(2, '0')}:${String(chinaMinutes).padStart(2, '0')}`;
+  }
+
+  // 分页拉取活动的全部选票
+  async function fetchVotes(actId) {
+    let all = [];
+    let skip = 0;
+    while (true) {
+      const { data } = await db.collection('votes')
+        .where({ activityId: actId })
+        .skip(skip)
+        .limit(100)
+        .get();
+      all = all.concat(data);
+      if (data.length < 100) break;
+      skip += 100;
+    }
+    return all;
+  }
+
+  // 按当前选项配置计票（忽略已不存在于选项中的旧票选项）
+  function tallyVotes(voteConfig, allVotes) {
+    const options = (voteConfig && voteConfig.options) || [];
+    const counts = {};
+    options.forEach(o => { counts[o.key] = 0; });
+    let validBallots = 0;
+    allVotes.forEach(b => {
+      const choices = (b.choices || []).filter(c => counts[c] !== undefined);
+      if (choices.length === 0) return;
+      validBallots++;
+      choices.forEach(c => { counts[c]++; });
+    });
+    const total = validBallots || 0;
+    return {
+      results: options.map(o => ({
+        key: o.key,
+        label: o.label,
+        count: counts[o.key],
+        pct: total > 0 ? Math.round(counts[o.key] / total * 100) : 0,
+      })),
+      votedCount: total,
+    };
+  }
+
+  if (action === 'getVoteData') {
+    // 获取投票配置/实时计票/本人选票
+    // 参数：activityId，voterId 可选（传了才查本人选票）
+    try {
+      const act = await db.collection('activities').doc(activityId).get();
+      const voteConfig = act.data && act.data.vote;
+      if (!voteConfig || !voteConfig.enabled) {
+        return { success: false, error: '该活动未开启投票' };
+      }
+
+      const allVotes = await fetchVotes(activityId);
+      const { results, votedCount } = tallyVotes(voteConfig, allVotes);
+
+      let myBallot = null;
+      if (voterId) {
+        const mine = allVotes.find(b => b.voterId === voterId);
+        if (mine) myBallot = { choices: mine.choices || [], createdAt: mine.createdAt || '' };
+      }
+
+      return {
+        success: true,
+        vote: {
+          title: voteConfig.title || '',
+          type: voteConfig.type || 'single',
+          options: voteConfig.options || [],
+          minChoices: voteConfig.minChoices,
+          maxChoices: voteConfig.maxChoices,
+          status: voteConfig.status || 'pending',
+          startedAt: voteConfig.startedAt || '',
+          endedAt: voteConfig.endedAt || '',
+        },
+        votedCount,
+        results,
+        myBallot,
+      };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'submitVote') {
+    // 提交选票（一人一票，不可修改）
+    // 参数：activityId, voterId, choices: [optionKey]
+    try {
+      if (!voterId) return { success: false, error: '缺少投票人身份' };
+
+      const act = await db.collection('activities').doc(activityId).get();
+      const voteConfig = act.data && act.data.vote;
+      if (!voteConfig || !voteConfig.enabled) {
+        return { success: false, error: '该活动未开启投票' };
+      }
+      if (voteConfig.status !== 'open') {
+        return { success: false, error: voteConfig.status === 'pending' ? '投票尚未开始' : '投票已结束' };
+      }
+
+      // 必须已签到
+      const pRes = await db.collection('participants')
+        .where({ activityId, staffId: voterId })
+        .limit(20)
+        .get();
+      const checkedRecord = pRes.data.find(p => !!p.checked);
+      if (!checkedRecord) {
+        return { success: false, error: '签到后才能参与投票' };
+      }
+
+      // 一人一票
+      const existRes = await db.collection('votes')
+        .where({ activityId, voterId })
+        .limit(1)
+        .get();
+      if (existRes.data.length > 0) {
+        return { success: false, error: '您已投过票，不可重复投票' };
+      }
+
+      // 校验选项合法性
+      const optionKeys = new Set((voteConfig.options || []).map(o => o.key));
+      const choices = Array.from(new Set((event.choices || []).filter(c => optionKeys.has(c))));
+      if (voteConfig.type === 'multi') {
+        const min = voteConfig.minChoices !== undefined ? voteConfig.minChoices : 1;
+        const max = voteConfig.maxChoices !== undefined ? voteConfig.maxChoices : (voteConfig.options || []).length;
+        if (choices.length < min || choices.length > max) {
+          return { success: false, error: `请选择 ${min} ~ ${max} 个选项` };
+        }
+      } else {
+        if (choices.length !== 1) {
+          return { success: false, error: '单选投票只能选择一个选项' };
+        }
+      }
+
+      await db.collection('votes').add({
+        data: {
+          activityId,
+          voterId,
+          choices,
+          createdAt: db.serverDate(),
+        },
+      });
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'setVoteStatus') {
+    // 管理员开始/结束投票，仅允许正向流转 pending→open→ended
+    // 参数：activityId, status: 'open' | 'ended'
+    try {
+      const nextStatus = event.status;
+      if (nextStatus !== 'open' && nextStatus !== 'ended') {
+        return { success: false, error: '无效的投票状态' };
+      }
+
+      const act = await db.collection('activities').doc(activityId).get();
+      const voteConfig = act.data && act.data.vote;
+      if (!voteConfig || !voteConfig.enabled) {
+        return { success: false, error: '该活动未开启投票' };
+      }
+      const cur = voteConfig.status || 'pending';
+      const allowed = (cur === 'pending' && nextStatus === 'open') || (cur === 'open' && nextStatus === 'ended');
+      if (!allowed) {
+        return { success: false, error: cur === 'ended' ? '投票已结束' : '投票已开始' };
+      }
+
+      const updateData = { 'vote.status': nextStatus };
+      if (nextStatus === 'open') updateData['vote.startedAt'] = chinaTimeStr();
+      if (nextStatus === 'ended') updateData['vote.endedAt'] = chinaTimeStr();
+      await db.collection('activities').doc(activityId).update({ data: updateData });
+
+      return { success: true, status: nextStatus };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  if (action === 'resetVote') {
+    // 管理员重置已结束的投票：清空该活动全部选票，状态回到未开始
+    // 参数：activityId
+    try {
+      const act = await db.collection('activities').doc(activityId).get();
+      const voteConfig = act.data && act.data.vote;
+      if (!voteConfig || !voteConfig.enabled) {
+        return { success: false, error: '该活动未开启投票' };
+      }
+      if ((voteConfig.status || 'pending') !== 'ended') {
+        return { success: false, error: '仅已结束的投票可以重置' };
+      }
+
+      // 分页删除该活动的全部选票（参照 deleteParticipants 的循环删除写法）
+      let votesDeleted = 0;
+      while (true) {
+        const { data } = await db.collection('votes')
+          .where({ activityId })
+          .limit(100)
+          .get();
+        if (data.length === 0) break;
+        await Promise.all(data.map(doc => db.collection('votes').doc(doc._id).remove()));
+        votesDeleted += data.length;
+      }
+
+      // 重置投票运行状态（保留标题/选项等配置）
+      await db.collection('activities').doc(activityId).update({
+        data: {
+          'vote.status': 'pending',
+          'vote.startedAt': '',
+          'vote.endedAt': '',
+        },
+      });
+
+      return { success: true, votesDeleted };
     } catch (err) {
       return { success: false, error: err.message };
     }

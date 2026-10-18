@@ -127,6 +127,35 @@
 
 ---
 
+## 投票功能
+
+### activities 集合新增 `vote` 字段（对象，开启投票时写入）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `enabled` | Boolean | 是否开启投票 |
+| `title` | String | 投票标题 |
+| `type` | String | `single` 单选 / `multi` 多选 |
+| `options` | Array | 选项列表 `[{ key, label }]` |
+| `minChoices` | Number | 多选最少投票数（仅 multi 有效） |
+| `maxChoices` | Number | 多选最多投票数（仅 multi 有效） |
+| `status` | String | `pending` 未开始 / `open` 投票中 / `ended` 已结束（管理员手动控制） |
+| `startedAt` | String | 开始投票时间（HH:mm） |
+| `endedAt` | String | 结束投票时间（HH:mm） |
+
+### 集合：`votes`（选票，需手动创建，权限「仅创建者可读写」）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `activityId` | String | 所属活动 |
+| `voterId` | String | 投票人（工号或券号），一人一票 |
+| `choices` | Array | 选中的选项 key 列表 |
+| `createdAt` | Date | 投票时间 |
+
+相关云函数动作（均在 `createActivity` 云函数中）：`getVoteData`（配置/计票/本人选票）、`submitVote`（提交选票，服务端校验签到状态、一人一票、单多选及票数限制）、`setVoteStatus`（管理员开始/结束投票）、`resetVote`（管理员重置已结束的投票：清空全部选票，状态回到未开始）。
+
+---
+
 ## 权限设置
 
 在微信云开发控制台，建议将以下集合设置为**自定义安全规则**：
@@ -201,4 +230,5 @@ cloudEnvId: 'cloud1-d9gq1b47d1a6184ac'
 | 首页 | `/pages/index/index` | 登录用户 |
 | 活动详情（管理） | `/pages/detail/detail` | admin / 自己创建的 organizer |
 | 活动签到（用户） | `/pages/my-checkin/my-checkin` | 普通用户 |
+| 活动投票 | `/pages/vote/vote` | 已签到的用户 / 查看结果 |
 | 创建/编辑活动 | `/pages/create-activity/create-activity` | admin / organizer |
