@@ -98,7 +98,7 @@
         <text>🎟️ 入场券</text>
       </view>
       <view class="manage-btn vote-manage-btn" wx:if="{{canDelete && activity.vote && activity.vote.enabled}}" bindtap="toggleVotePanel">
-        <text>🗳️ 投票</text>
+        <text>📝 意向收集</text>
       </view>
       <view class="manage-btn scan-btn" wx:if="{{activity.enableScanConfirm !== false}}" bindtap="goToScanConfirm">
         <text>📷 扫码确认</text>
@@ -211,10 +211,10 @@
       </scroll-view>
     </view>
 
-    <!-- 投票管理面板 -->
+    <!-- 意向收集管理面板 -->
     <view class="staff-panel" wx:if="{{showVotePanel && canDelete && activity.vote && activity.vote.enabled}}">
       <view class="panel-header">
-        <text class="panel-title">投票管理</text>
+        <text class="panel-title">意向收集管理</text>
         <text class="panel-close" bindtap="toggleVotePanel">✕</text>
       </view>
 
@@ -224,9 +224,9 @@
         <!-- 状态与操作 -->
         <view class="vote-status-row">
           <text class="vote-status-tag vote-status-{{voteData.vote.status}}">
-            {{voteData.vote.status === 'pending' ? '未开始' : voteData.vote.status === 'open' ? '投票中' : '已结束'}}
+            {{voteData.vote.status === 'pending' ? '未开始' : voteData.vote.status === 'open' ? '收集中' : '已结束'}}
           </text>
-          <text class="vote-voted-count">已投 {{voteData.votedCount}} 人</text>
+          <text class="vote-voted-count">已提交 {{voteData.votedCount}} 人</text>
         </view>
 
         <view class="vote-title-text">{{voteData.vote.title}}</view>
@@ -239,19 +239,19 @@
             bindtap="doSetVoteStatus"
             data-status="open"
             disabled="{{voteActing}}"
-          >开始投票</button>
+          >开始收集</button>
           <button
             wx:if="{{voteData.vote.status === 'open'}}"
             class="vote-end-btn"
             bindtap="doSetVoteStatus"
             data-status="ended"
             disabled="{{voteActing}}"
-          >结束投票</button>
+          >结束收集</button>
         </view>
-        <text wx:if="{{voteData.vote.status === 'ended'}}" class="vote-ended-hint">投票已结束（{{voteData.vote.endedAt}}），用户可查看结果</text>
+        <text wx:if="{{voteData.vote.status === 'ended'}}" class="vote-ended-hint">收集已结束（{{voteData.vote.endedAt}}），用户可查看结果</text>
 
         <view class="vote-action-row" wx:if="{{voteData.vote.status === 'ended'}}">
-          <button class="vote-reset-btn" bindtap="doResetVote" disabled="{{voteActing}}">重置投票</button>
+          <button class="vote-reset-btn" bindtap="doResetVote" disabled="{{voteActing}}">重置收集</button>
         </view>
 
         <!-- 实时结果 -->
@@ -259,7 +259,7 @@
           <view class="vote-result-item" wx:for="{{voteData.results}}" wx:key="key">
             <view class="vote-result-row">
               <text class="vote-result-label">{{item.label}}</text>
-              <text class="vote-result-nums">{{item.count}} 票 · {{item.pct}}%</text>
+              <text class="vote-result-nums">{{item.count}} 人 · {{item.pct}}%</text>
             </view>
             <view class="vote-result-bar-bg">
               <view class="vote-result-bar-fill" style="width: {{item.pct}}%"></view>

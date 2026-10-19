@@ -231,7 +231,7 @@
   color: #6B7280;
 }
 
-/* 投票类型切换 */
+/* 选择方式切换 */
 .vote-type-tabs {
   display: flex;
   gap: 16rpx;
@@ -257,7 +257,7 @@
   font-weight: 600;
 }
 
-/* 投票选项序号 */
+/* 选项序号 */
 .vote-option-index {
   width: 48rpx;
   height: 48rpx;

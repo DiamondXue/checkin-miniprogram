@@ -825,7 +825,7 @@
   border-color: #EF4444;
 }
 
-/* ===== 投票管理面板 ===== */
+/* ===== 意向收集管理面板 ===== */
 .vote-manage-btn {
   background: #EEF2FF;
 }

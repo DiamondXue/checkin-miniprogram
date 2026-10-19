@@ -44,7 +44,7 @@
   border: none !important;
 }
 
-/* 投票卡片 */
+/* 收集卡片 */
 .vote-card {
   background: #FFFFFF;
   margin: 24rpx;
@@ -79,7 +79,7 @@
   color: #9CA3AF;
 }
 
-/* 状态块（未开始 / 已投票） */
+/* 状态块（未开始 / 已提交） */
 .state-block {
   display: flex;
   flex-direction: column;
@@ -116,7 +116,7 @@
   color: #9CA3AF;
 }
 
-/* 已投票：自己的选择 */
+/* 已提交：自己的选择 */
 .my-choice-list {
   width: 100%;
   margin-top: 28rpx;

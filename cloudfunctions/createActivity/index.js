@@ -926,7 +926,7 @@ exports.main = async (event) => {
     }
   }
 
-  // ===== 投票功能 =====
+  // ===== 意向收集功能 =====
 
   // UTC+8 中国标准时间字符串（HH:mm），与 checkin 的时间写法保持一致
   function chinaTimeStr() {
@@ -936,7 +936,7 @@ exports.main = async (event) => {
     return `${String(chinaHours).padStart(2, '0')}:${String(chinaMinutes).padStart(2, '0')}`;
   }
 
-  // 分页拉取活动的全部选票
+  // 分页拉取活动的全部意向记录
   async function fetchVotes(actId) {
     let all = [];
     let skip = 0;
@@ -953,7 +953,7 @@ exports.main = async (event) => {
     return all;
   }
 
-  // 按当前选项配置计票（忽略已不存在于选项中的旧票选项）
+  // 按当前选项配置统计（忽略已不存在于选项中的旧选项）
   function tallyVotes(voteConfig, allVotes) {
     const options = (voteConfig && voteConfig.options) || [];
     const counts = {};
@@ -978,13 +978,13 @@ exports.main = async (event) => {
   }
 
   if (action === 'getVoteData') {
-    // 获取投票配置/实时计票/本人选票
-    // 参数：activityId，voterId 可选（传了才查本人选票）
+    // 获取收集配置/实时统计/本人选择
+    // 参数：activityId，voterId 可选（传了才查本人选择）
     try {
       const act = await db.collection('activities').doc(activityId).get();
       const voteConfig = act.data && act.data.vote;
       if (!voteConfig || !voteConfig.enabled) {
-        return { success: false, error: '该活动未开启投票' };
+        return { success: false, error: '该活动未开启意向收集' };
       }
 
       const allVotes = await fetchVotes(activityId);
@@ -1018,18 +1018,18 @@ exports.main = async (event) => {
   }
 
   if (action === 'submitVote') {
-    // 提交选票（一人一票，不可修改）
+    // 提交意向（一人一次，不可修改）
     // 参数：activityId, voterId, choices: [optionKey]
     try {
-      if (!voterId) return { success: false, error: '缺少投票人身份' };
+      if (!voterId) return { success: false, error: '缺少提交人身份' };
 
       const act = await db.collection('activities').doc(activityId).get();
       const voteConfig = act.data && act.data.vote;
       if (!voteConfig || !voteConfig.enabled) {
-        return { success: false, error: '该活动未开启投票' };
+        return { success: false, error: '该活动未开启意向收集' };
       }
       if (voteConfig.status !== 'open') {
-        return { success: false, error: voteConfig.status === 'pending' ? '投票尚未开始' : '投票已结束' };
+        return { success: false, error: voteConfig.status === 'pending' ? '收集尚未开始' : '收集已结束' };
       }
 
       // 必须已签到
@@ -1039,16 +1039,16 @@ exports.main = async (event) => {
         .get();
       const checkedRecord = pRes.data.find(p => !!p.checked);
       if (!checkedRecord) {
-        return { success: false, error: '签到后才能参与投票' };
+        return { success: false, error: '签到后才能提交意向' };
       }
 
-      // 一人一票
+      // 一人一次
       const existRes = await db.collection('votes')
         .where({ activityId, voterId })
         .limit(1)
         .get();
       if (existRes.data.length > 0) {
-        return { success: false, error: '您已投过票，不可重复投票' };
+        return { success: false, error: '您已提交过意向，不可重复提交' };
       }
 
       // 校验选项合法性
@@ -1062,7 +1062,7 @@ exports.main = async (event) => {
         }
       } else {
         if (choices.length !== 1) {
-          return { success: false, error: '单选投票只能选择一个选项' };
+          return { success: false, error: '单选只能选择一个选项' };
         }
       }
 
@@ -1081,23 +1081,23 @@ exports.main = async (event) => {
   }
 
   if (action === 'setVoteStatus') {
-    // 管理员开始/结束投票，仅允许正向流转 pending→open→ended
+    // 管理员开始/结束收集，仅允许正向流转 pending→open→ended
     // 参数：activityId, status: 'open' | 'ended'
     try {
       const nextStatus = event.status;
       if (nextStatus !== 'open' && nextStatus !== 'ended') {
-        return { success: false, error: '无效的投票状态' };
+        return { success: false, error: '无效的收集状态' };
       }
 
       const act = await db.collection('activities').doc(activityId).get();
       const voteConfig = act.data && act.data.vote;
       if (!voteConfig || !voteConfig.enabled) {
-        return { success: false, error: '该活动未开启投票' };
+        return { success: false, error: '该活动未开启意向收集' };
       }
       const cur = voteConfig.status || 'pending';
       const allowed = (cur === 'pending' && nextStatus === 'open') || (cur === 'open' && nextStatus === 'ended');
       if (!allowed) {
-        return { success: false, error: cur === 'ended' ? '投票已结束' : '投票已开始' };
+        return { success: false, error: cur === 'ended' ? '收集已结束' : '收集已开始' };
       }
 
       const updateData = { 'vote.status': nextStatus };
@@ -1112,19 +1112,19 @@ exports.main = async (event) => {
   }
 
   if (action === 'resetVote') {
-    // 管理员重置已结束的投票：清空该活动全部选票，状态回到未开始
+    // 管理员重置已结束的收集：清空该活动全部意向记录，状态回到未开始
     // 参数：activityId
     try {
       const act = await db.collection('activities').doc(activityId).get();
       const voteConfig = act.data && act.data.vote;
       if (!voteConfig || !voteConfig.enabled) {
-        return { success: false, error: '该活动未开启投票' };
+        return { success: false, error: '该活动未开启意向收集' };
       }
       if ((voteConfig.status || 'pending') !== 'ended') {
-        return { success: false, error: '仅已结束的投票可以重置' };
+        return { success: false, error: '仅已结束的收集可以重置' };
       }
 
-      // 分页删除该活动的全部选票（参照 deleteParticipants 的循环删除写法）
+      // 分页删除该活动的全部意向记录（参照 deleteParticipants 的循环删除写法）
       let votesDeleted = 0;
       while (true) {
         const { data } = await db.collection('votes')
@@ -1136,7 +1136,7 @@ exports.main = async (event) => {
         votesDeleted += data.length;
       }
 
-      // 重置投票运行状态（保留标题/选项等配置）
+      // 重置收集运行状态（保留主题/选项等配置）
       await db.collection('activities').doc(activityId).update({
         data: {
           'vote.status': 'pending',

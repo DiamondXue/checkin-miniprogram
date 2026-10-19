@@ -40,7 +40,7 @@ Page({
     ticketBatchMode: false,
     selectedTickets: {},   // { ticketId: ticketNo }
     selectedTicketsCount: 0,
-    // 投票管理
+    // 意向收集管理
     showVotePanel: false,
     voteData: null,        // { vote, votedCount, results }
     voteLoading: false,
@@ -537,7 +537,7 @@ Page({
     });
   },
 
-  // ===== 投票管理 =====
+  // ===== 意向收集管理 =====
   toggleVotePanel() {
     const show = !this.data.showVotePanel;
     this.setData({ showVotePanel: show });
@@ -555,10 +555,10 @@ Page({
         this.setData({ voteData: { vote: res.result.vote, votedCount: res.result.votedCount, results: res.result.results } });
       } else {
         this.setData({ voteData: null });
-        wx.showToast({ title: res.result.error || '加载投票失败', icon: 'none' });
+        wx.showToast({ title: res.result.error || '加载收集失败', icon: 'none' });
       }
     } catch (e) {
-      wx.showToast({ title: '加载投票失败', icon: 'none' });
+      wx.showToast({ title: '加载收集失败', icon: 'none' });
     }
     this.setData({ voteLoading: false });
   },
@@ -566,9 +566,9 @@ Page({
   doSetVoteStatus(e) {
     const status = e.currentTarget.dataset.status;
     if (this.data.voteActing) return;
-    const tipMap = { open: '确认开始投票？开始后已签到的用户可提交投票', ended: '确认结束投票？结束后所有用户可查看投票结果' };
+    const tipMap = { open: '确认开始收集？开始后已签到的用户可提交意向', ended: '确认结束收集？结束后所有用户可查看收集结果' };
     wx.showModal({
-      title: status === 'open' ? '开始投票' : '结束投票',
+      title: status === 'open' ? '开始收集' : '结束收集',
       content: tipMap[status],
       success: async (res) => {
         if (!res.confirm) return;
@@ -579,7 +579,7 @@ Page({
             data: { action: 'setVoteStatus', activityId: this.activityId, status },
           });
           if (!result.result.success) throw new Error(result.result.error);
-          wx.showToast({ title: status === 'open' ? '投票已开始' : '投票已结束', icon: 'success' });
+          wx.showToast({ title: status === 'open' ? '收集已开始' : '收集已结束', icon: 'success' });
           await this.loadVoteData();
           this.loadActivity();
         } catch (err) {
@@ -593,8 +593,8 @@ Page({
   doResetVote() {
     if (this.data.voteActing) return;
     wx.showModal({
-      title: '重置投票',
-      content: '确认重置投票？所有选票将被清空，投票回到「未开始」状态，用户可重新投票。',
+      title: '重置收集',
+      content: '确认重置收集？所有意向记录将被清空，收集回到「未开始」状态，用户可重新提交。',
       confirmText: '重置',
       confirmColor: '#EF4444',
       success: async (res) => {

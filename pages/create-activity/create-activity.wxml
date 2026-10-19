@@ -128,26 +128,26 @@
         </view>
       </view>
 
-      <!-- 投票开关 -->
+      <!-- 意向收集开关 -->
       <view class="form-item">
         <view class="toggle-row">
           <view class="toggle-info">
-            <text class="form-label">活动投票</text>
-            <text class="form-hint">开启后已签到的用户可参与投票，管理员手动开始/结束投票</text>
+            <text class="form-label">意向收集</text>
+            <text class="form-hint">开启后已签到的用户可提交意向，管理员手动开始/结束收集</text>
           </view>
           <switch checked="{{enableVote}}" bindchange="onVoteToggle" color="#4F46E5" />
         </view>
       </view>
 
-      <!-- 投票配置（开启投票时显示） -->
+      <!-- 收集配置（开启收集时显示） -->
       <block wx:if="{{enableVote}}">
         <view class="form-item">
-          <text class="form-label">投票标题 <text class="required">*</text></text>
+          <text class="form-label">收集主题 <text class="required">*</text></text>
           <input class="form-input" placeholder="如：今晚聚餐选哪里" value="{{voteTitle}}" bindinput="onInput" data-field="voteTitle" />
         </view>
 
         <view class="form-item">
-          <text class="form-label">投票类型</text>
+          <text class="form-label">选择方式</text>
           <view class="vote-type-tabs">
             <view class="vote-type-tab {{voteType === 'single' ? 'active' : ''}}" bindtap="onVoteTypeChange" data-type="single">单选</view>
             <view class="vote-type-tab {{voteType === 'multi' ? 'active' : ''}}" bindtap="onVoteTypeChange" data-type="multi">多选</view>
@@ -155,7 +155,7 @@
         </view>
 
         <view class="form-item">
-          <text class="form-label">投票选项 <text class="required">*</text></text>
+          <text class="form-label">选项 <text class="required">*</text></text>
           <text class="form-hint" style="margin-bottom: 16rpx;">至少 2 个选项</text>
 
           <view class="confirm-item-row" wx:for="{{voteOptions}}" wx:key="key">
@@ -177,11 +177,11 @@
 
         <view class="form-item form-row" wx:if="{{voteType === 'multi'}}">
           <view class="form-half">
-            <text class="form-label">最少投票数</text>
+            <text class="form-label">最少选择数</text>
             <input class="form-input" type="number" placeholder="1" value="{{voteMinChoices}}" bindinput="onVoteMinInput" />
           </view>
           <view class="form-half">
-            <text class="form-label">最多投票数</text>
+            <text class="form-label">最多选择数</text>
             <input class="form-input" type="number" placeholder="不超过选项数" value="{{voteMaxChoices}}" bindinput="onVoteMaxInput" />
           </view>
           <text class="form-hint" style="margin-top: 10rpx;">每人需选择的最少和最多选项个数</text>

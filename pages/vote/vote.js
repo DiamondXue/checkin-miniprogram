@@ -5,12 +5,12 @@ Page({
     activityId: '',
     loading: true,
     loadError: '',
-    // 投票配置（来自云函数 getVoteData）
+    // 收集配置（来自云函数 getVoteData）
     vote: null,            // { title, type, options, minChoices, maxChoices, status, startedAt, endedAt }
     votedCount: 0,
     results: [],           // [{ key, label, count, pct }]
     myBallot: null,        // { choices: [] }
-    // 投票表单状态
+    // 收集表单状态
     selected: {},          // { optionKey: true }
     selectedCount: 0,
     submitting: false,
@@ -85,9 +85,9 @@ Page({
         myChoiceMap,
         myChoiceText,
       });
-      wx.setNavigationBarTitle({ title: r.vote.title || '活动投票' });
+      wx.setNavigationBarTitle({ title: r.vote.title || '意向收集' });
     } catch (err) {
-      console.error('加载投票失败', err);
+      console.error('加载意向收集失败', err);
       this.setData({ loading: false, loadError: '加载失败，请重试' });
     }
   },
@@ -117,12 +117,12 @@ Page({
     this.setData({ selected: next, selectedCount: Object.keys(next).length });
   },
 
-  // 提交投票
+  // 提交意向
   async doSubmit() {
     const { vote, selected, submitting, myBallot } = this.data;
     if (submitting || myBallot) return;
     if (vote.status !== 'open') {
-      wx.showToast({ title: vote.status === 'pending' ? '投票尚未开始' : '投票已结束', icon: 'none' });
+      wx.showToast({ title: vote.status === 'pending' ? '收集尚未开始' : '收集已结束', icon: 'none' });
       return;
     }
 
@@ -156,11 +156,11 @@ Page({
       if (!res.result.success) {
         throw new Error(res.result.error);
       }
-      wx.showToast({ title: '投票成功', icon: 'success' });
+      wx.showToast({ title: '提交成功', icon: 'success' });
       this.loadData();
     } catch (err) {
-      console.error('投票失败', err);
-      wx.showToast({ title: err.message || '投票失败，请重试', icon: 'none' });
+      console.error('提交失败', err);
+      wx.showToast({ title: err.message || '提交失败，请重试', icon: 'none' });
     }
     this.setData({ submitting: false });
   },

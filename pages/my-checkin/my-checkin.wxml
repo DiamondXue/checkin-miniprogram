@@ -56,13 +56,13 @@
         <navigator wx:if="{{activity.enableScanConfirm !== false}}" url="/pages/my-qrcode/my-qrcode?id={{activity._id}}" class="qrcode-btn">
           出示签到码
         </navigator>
-        <!-- 投票入口：签到后可见，样式与出示签到码一致 -->
+        <!-- 意向收集入口：签到后可见，样式与出示签到码一致 -->
         <navigator
           wx:if="{{activity.vote && activity.vote.enabled}}"
           url="/pages/vote/vote?id={{activity._id}}"
           class="qrcode-btn"
         >
-          投票活动
+          意向收集
         </navigator>
       </view>
 

@@ -20,7 +20,7 @@ Page({
     requireSignature: false,
     // 信息安全模式：名单不显示姓名/部门，工号仅显示后6位
     secureMode: false,
-    // 投票
+    // 意向收集
     enableVote: false,
     voteTitle: '',
     voteType: 'single',            // 'single' | 'multi'
@@ -68,7 +68,7 @@ Page({
       const db = wx.cloud.database();
       const res = await db.collection('activities').doc(id).get();
       const act = res.data;
-      // 保留源活动的投票运行状态（复制模式除外，副本作为新活动重新开始投票）
+      // 保留源活动的收集运行状态（复制模式除外，副本作为新活动重新开始收集）
       this._origVote = isCopy ? null : (act.vote || null);
       this.setData({
         name: isCopy ? `${act.name || ''}（副本）` : (act.name || ''),
@@ -178,26 +178,26 @@ Page({
     this.setData({ secureMode: !this.data.secureMode });
   },
 
-  // === 投票 ===
+  // === 意向收集 ===
 
-  // 切换投票开关
+  // 切换收集开关
   onVoteToggle() {
     this.setData({ enableVote: !this.data.enableVote });
   },
 
-  // 切换投票类型（单选/多选）
+  // 切换选择方式（单选/多选）
   onVoteTypeChange(e) {
     this.setData({ voteType: e.currentTarget.dataset.type });
   },
 
-  // 修改投票选项文本
+  // 修改选项文本
   onVoteOptionInput(e) {
     const index = parseInt(e.currentTarget.dataset.index);
     const key = `voteOptions[${index}].label`;
     this.setData({ [key]: e.detail.value });
   },
 
-  // 添加投票选项
+  // 添加选项
   addVoteOption() {
     const options = this.data.voteOptions;
     const key = 'opt_' + Date.now();
@@ -206,7 +206,7 @@ Page({
     });
   },
 
-  // 删除投票选项
+  // 删除选项
   removeVoteOption(e) {
     const index = parseInt(e.currentTarget.dataset.index);
     const options = this.data.voteOptions;
@@ -300,26 +300,26 @@ Page({
       return;
     }
 
-    // 投票校验
+    // 意向收集校验
     if (this.data.enableVote) {
       if (!this.data.voteTitle.trim()) {
-        wx.showToast({ title: '请输入投票标题', icon: 'none' });
+        wx.showToast({ title: '请输入收集主题', icon: 'none' });
         return;
       }
       const validOptions = this.data.voteOptions.filter(o => o.label.trim());
       if (validOptions.length < 2) {
-        wx.showToast({ title: '请至少填写2个投票选项', icon: 'none' });
+        wx.showToast({ title: '请至少填写2个选项', icon: 'none' });
         return;
       }
       if (this.data.voteType === 'multi') {
         const min = this.data.voteMinChoices;
         const max = this.data.voteMaxChoices;
         if (!(min >= 1)) {
-          wx.showToast({ title: '最少投票数需≥1', icon: 'none' });
+          wx.showToast({ title: '最少选择数需≥1', icon: 'none' });
           return;
         }
         if (!(max >= min && max <= validOptions.length)) {
-          wx.showToast({ title: '最多投票数需在最少票数与选项数之间', icon: 'none' });
+          wx.showToast({ title: '最多选择数需在最少选择数与选项数之间', icon: 'none' });
           return;
         }
       }
@@ -362,7 +362,7 @@ Page({
       }
     });
 
-    // 构建投票配置（关闭时保留配置仅置 enabled=false，避免误关丢失配置）
+    // 构建收集配置（关闭时保留配置仅置 enabled=false，避免误关丢失配置）
     const validVoteOptions = (this.data.voteOptions || [])
       .filter(o => o.label.trim())
       .map(o => ({ key: o.key, label: o.label.trim() }));
