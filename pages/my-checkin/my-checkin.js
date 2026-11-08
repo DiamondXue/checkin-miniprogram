@@ -19,6 +19,7 @@ Page({
     // 信息安全模式：本人也不显示姓名/部门，仅显示工号后6位
     secureMode: false,
     maskedStaffId: '',
+    gamePassed: false,
   },
 
   onLoad(options) {
@@ -36,7 +37,21 @@ Page({
       this.activityId = app.globalData.pendingActivityId;
       delete app.globalData.pendingActivityId;
     }
-    if (this.activityId) this.loadActivity();
+
+    // 小游戏通关返回：重新加载活动后自动继续原来的签到流程
+    const resumeCheckin = !!app.globalData.gentlemenGameResume;
+    if (resumeCheckin) delete app.globalData.gentlemenGameResume;
+
+    if (this.activityId) {
+      const loading = this.loadActivity();
+      if (resumeCheckin) {
+        loading.then(() => {
+          if (this.data.activity && !this.data.myChecked && !this.data.checkinLoading) {
+            this.doCheckin();
+          }
+        });
+      }
+    }
   },
 
   // 登录检查：未登录则跳转登录页
@@ -91,6 +106,7 @@ Page({
         currentUser: user,
         secureMode,
         maskedStaffId,
+        gamePassed: this._isGamePassed(user),
         loading: false,
       });
 
@@ -125,10 +141,45 @@ Page({
     this.setData({ locationValid: result.valid, locationInfo, checkingLocation: false });
   },
 
+  // ---------- 男士节签到前置小游戏 ----------
+  // 仅券号用户触发；员工工号用户流程不变
+  _isTicketUser() {
+    const user = app.globalData.currentUser;
+    if (!user) return false;
+    return !!user.isTicket
+      || (Array.isArray(user.roles) && user.roles.includes('ticket'));
+  },
+
+  _isGamePassed(user) {
+    const passed = app.globalData.gentlemenGamePassed;
+    return !!(passed && user && passed.staffId === user.staffId);
+  },
+
+  // 同一登录会话内（globalData 标记）只拦截一次
+  _needGentlemenGame() {
+    if (!this._isTicketUser()) return false;
+    return !this._isGamePassed(app.globalData.currentUser);
+  },
+
+  _startGentlemenGame() {
+    if (this._gameNavigating) return;
+    this._gameNavigating = true;
+
+    wx.navigateTo({
+      url: `/pages/gentlemen-game/gentlemen-game?activityId=${this.activityId || ''}`,
+      complete: () => {
+        this._gameNavigating = false;
+      },
+      fail: () => {
+        wx.showToast({ title: '小游戏打开失败，请重试', icon: 'none' });
+      },
+    });
+  },
+
   // 普通用户签到
   async doCheckin() {
     const { myChecked, activity, checkinLoading } = this.data;
-    if (myChecked || checkinLoading) return;
+    if (myChecked || checkinLoading || !activity) return;
 
     // 活动未开始/已结束不允许签到
     if (activity.status === 'upcoming') {
@@ -137,6 +188,12 @@ Page({
     }
     if (activity.status === 'ended') {
       wx.showToast({ title: '活动已结束', icon: 'none' });
+      return;
+    }
+
+    // 券号用户：先完成男士节小游戏，通关后回到这里继续原有流程（位置/签名校验不跳过）
+    if (this._needGentlemenGame()) {
+      this._startGentlemenGame();
       return;
     }
 

@@ -51,7 +51,36 @@
   "srcMiniprogramRoot": "./",
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "file",
+        "value": "2026-IWPB-PB-Engagement-TeamBuilding-公众号文章.docx"
+      },
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "folder",
+        "value": "preview"
+      },
+      {
+        "type": "folder",
+        "value": "scripts"
+      },
+      {
+        "type": "folder",
+        "value": ".trae"
+      },
+      {
+        "type": "folder",
+        "value": ".git"
+      },
+      {
+        "type": "file",
+        "value": ".DS_Store"
+      }
+    ],
     "include": []
   },
   "editorSetting": {},

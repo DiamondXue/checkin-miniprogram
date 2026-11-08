@@ -1,0 +1,81 @@
+<!-- 男士节签到前置小游戏 -->
+<view class="page">
+  <!-- 标题 -->
+  <view class="header">
+    <text class="header-emoji">🎩</text>
+    <view class="header-text">
+      <text class="header-title">男士节签到挑战</text>
+      <text class="header-sub">10 秒内点中礼物，避开炸弹，即可继续签到</text>
+    </view>
+  </view>
+
+  <!-- 数据面板 -->
+  <view class="hud">
+    <view class="hud-row">
+      <view class="hud-item">
+        <text class="hud-label">剩余时间</text>
+        <text class="hud-value {{urgent ? 'hud-urgent' : ''}}">{{timeLeft}}<text class="hud-unit">s</text></text>
+      </view>
+      <view class="hud-item hud-score">
+        <text class="hud-label">当前得分</text>
+        <text class="hud-value">{{score}}</text>
+      </view>
+      <view class="hud-item">
+        <text class="hud-label">命中</text>
+        <text class="hud-value">{{hits}}</text>
+      </view>
+    </view>
+    <view class="progress">
+      <view class="progress-inner" style="width: {{progress}}%"></view>
+    </view>
+    <text class="hud-tip">礼物 +10 · 炸弹 −20 · 命中 5 件保底，8 件稳过</text>
+  </view>
+
+  <!-- 游戏区 -->
+  <view class="stage">
+    <canvas
+      type="2d"
+      id="gameCanvas"
+      class="game-canvas"
+      bindtouchstart="onTouchStart"
+    ></canvas>
+
+    <!-- 准备中 / 初始化失败 -->
+    <view wx:if="{{!ready}}" class="stage-mask">
+      <text wx:if="{{!initError}}" class="stage-mask-text">游戏准备中…</text>
+      <block wx:else>
+        <text class="stage-mask-text">游戏加载失败了</text>
+        <view class="stage-retry" bindtap="retryInit">点击重试</view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 结果 -->
+  <view wx:if="{{finished}}" class="result-mask">
+    <view class="result-card {{passed ? 'result-pass' : 'result-fail'}}">
+      <text class="result-emoji">{{passed ? '🎉' : '💪'}}</text>
+      <text class="result-title">{{passed ? '通关成功！' : '差一点点'}}</text>
+      <text class="result-desc">{{passed ? '正在继续签到…' : '没关系，再来一次就好，不扣分也不影响签到'}}</text>
+
+      <view class="result-stats">
+        <view class="result-stat">
+          <text class="result-stat-num">{{score}}</text>
+          <text class="result-stat-label">得分</text>
+        </view>
+        <view class="result-stat">
+          <text class="result-stat-num">{{hits}}</text>
+          <text class="result-stat-label">命中</text>
+        </view>
+        <view class="result-stat">
+          <text class="result-stat-num">{{elapsedUsed}}s</text>
+          <text class="result-stat-label">用时</text>
+        </view>
+      </view>
+
+      <view wx:if="{{!passed}}" class="result-actions">
+        <button class="btn-retry" bindtap="restartGame">再玩一次</button>
+        <button class="btn-back" bindtap="onGiveUp">返回签到页</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -221,6 +221,23 @@
   margin-top: 20rpx;
 }
 
+/* 券号用户的小游戏提示 */
+.game-tip {
+  font-size: 22rpx;
+  color: #92400E;
+  background: #FEF3C7;
+  border: 1rpx solid #FCD34D;
+  border-radius: 12rpx;
+  padding: 10rpx 20rpx;
+  margin-top: 20rpx;
+}
+
+.game-tip-done {
+  color: #047857;
+  background: #ECFDF5;
+  border-color: #6EE7B7;
+}
+
 /* 出示签到码按钮 */
 .qrcode-btn {
   display: flex;

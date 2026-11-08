@@ -100,6 +100,8 @@
             <text wx:if="{{checkinLoading}}">签到中…</text>
           </button>
           <text wx:if="{{locationValid === false}}" class="out-of-range-tip">⚠️ 您不在签到范围内，无法签到</text>
+          <text wx:if="{{currentUser.isTicket && !gamePassed}}" class="game-tip">🎩 签到前需完成 10 秒男士节小游戏</text>
+          <text wx:if="{{currentUser.isTicket && gamePassed}}" class="game-tip game-tip-done">🎩 小游戏已通关，可直接签到</text>
         </block>
       </view>
     </view>

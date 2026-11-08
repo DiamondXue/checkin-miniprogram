@@ -8,8 +8,13 @@
     <text class="app-desc">活动现场签到管理工具</text>
   </view>
 
+  <!-- 恢复登录态：等服务端校验通过再展示登录表单 -->
+  <view class="session-tip" wx:if="{{restoring}}">
+    <text>正在校验登录状态…</text>
+  </view>
+
   <!-- 登录卡片 -->
-  <view class="login-card">
+  <view class="login-card" wx:if="{{!restoring}}">
     <!-- 登录方式切换 -->
     <view class="mode-tabs">
       <view class="mode-tab {{loginMode === 'ticket' ? 'mode-tab-active' : ''}}" bindtap="switchMode" data-mode="ticket">入场券登录</view>

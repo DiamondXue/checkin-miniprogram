@@ -1,0 +1,295 @@
+/* 男士节签到小游戏：红金深色主题，无外部图片资源 */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 50% 0%, #7F1D1D 0%, #3B0A0A 52%, #1A0808 100%);
+  overflow: hidden;
+}
+
+/* 标题 */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 36rpx 8rpx;
+}
+
+.header-emoji {
+  font-size: 56rpx;
+  margin-right: 20rpx;
+  line-height: 1;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FBE7B2;
+  letter-spacing: 2rpx;
+}
+
+.header-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: rgba(251, 231, 178, 0.6);
+}
+
+/* 数据面板 */
+.hud {
+  padding: 16rpx 36rpx 0;
+}
+
+.hud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(251, 191, 36, 0.28);
+  border-radius: 20rpx;
+  padding: 18rpx 24rpx;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.hud-label {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 4rpx;
+}
+
+.hud-value {
+  display: inline-block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+/* 最后 3 秒倒计时变红并轻微脉冲 */
+.hud-urgent {
+  color: #F87171;
+  animation: urgentPulse 0.55s ease-in-out infinite;
+}
+
+@keyframes urgentPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.16);
+  }
+}
+
+.hud-score .hud-value {
+  color: #FBBF24;
+  font-size: 46rpx;
+}
+
+.hud-unit {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.65);
+  margin-left: 2rpx;
+}
+
+.progress {
+  margin-top: 16rpx;
+  height: 10rpx;
+  border-radius: 6rpx;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.progress-inner {
+  height: 100%;
+  border-radius: 6rpx;
+  background: linear-gradient(90deg, #F59E0B, #FBBF24, #FDE68A);
+  transition: width 0.2s linear;
+}
+
+.hud-tip {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 21rpx;
+  color: rgba(251, 231, 178, 0.72);
+  text-align: center;
+}
+
+/* 游戏区 */
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 520rpx;
+  margin: 18rpx 28rpx 28rpx;
+  border-radius: 32rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(251, 191, 36, 0.32);
+  background:
+    radial-gradient(circle at 50% 108%, rgba(251, 191, 36, 0.16) 0%, rgba(251, 191, 36, 0) 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  box-shadow: inset 0 0 60rpx rgba(0, 0, 0, 0.28);
+}
+
+.game-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stage-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 8, 8, 0.72);
+}
+
+.stage-mask-text {
+  font-size: 26rpx;
+  color: rgba(251, 231, 178, 0.8);
+}
+
+.stage-retry {
+  margin-top: 24rpx;
+  padding: 14rpx 44rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  color: #7F1D1D;
+  font-weight: 600;
+  background: linear-gradient(135deg, #FDE68A, #FBBF24);
+}
+
+/* 结果弹层 */
+.result-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48rpx;
+  background: rgba(12, 4, 4, 0.74);
+}
+
+.result-card {
+  width: 100%;
+  max-width: 620rpx;
+  box-sizing: border-box;
+  padding: 48rpx 40rpx 40rpx;
+  border-radius: 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #3B0F12 0%, #240A0A 100%);
+  border: 1rpx solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.45);
+}
+
+.result-pass {
+  border-color: rgba(251, 191, 36, 0.7);
+  box-shadow: 0 20rpx 60rpx rgba(251, 191, 36, 0.18);
+}
+
+.result-emoji {
+  font-size: 88rpx;
+  line-height: 1;
+}
+
+.result-title {
+  margin-top: 20rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #FBE7B2;
+}
+
+.result-desc {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.62);
+  text-align: center;
+}
+
+.result-stats {
+  display: flex;
+  width: 100%;
+  margin-top: 36rpx;
+  padding: 22rpx 0;
+  border-top: 1rpx solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.result-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-stat-num {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FBBF24;
+}
+
+.result-stat-label {
+  margin-top: 4rpx;
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.result-actions {
+  display: flex;
+  width: 100%;
+  margin-top: 32rpx;
+  gap: 16rpx;
+}
+
+.btn-retry,
+.btn-back {
+  flex: 1;
+  height: 84rpx;
+  line-height: 84rpx;
+  border-radius: 42rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.btn-retry {
+  color: #3B0A0A;
+  background: linear-gradient(135deg, #FDE68A, #FBBF24);
+}
+
+.btn-retry::after,
+.btn-back::after {
+  border: none;
+}
+
+.btn-back {
+  color: rgba(251, 231, 178, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+}

@@ -11,19 +11,60 @@ Page({
     errorMsg: '',
     loading: false,
     canLogin: false,
+    restoring: true,
   },
 
   onLoad() {
-    const user = app.globalData.currentUser;
-    if (user) {
-      // 入场券用户直达其绑定活动，避免落到首页
-      const roles = Array.isArray(user.roles) ? user.roles : [];
+    this.restoreSession();
+  },
+
+  // 恢复登录态：本地缓存的只是身份标识，必须等服务端校验通过后才放行
+  async restoreSession() {
+    const hadSession = !!app.globalData.session;
+
+    try {
+      const user = app.globalData.currentUser || await app.ensureSession();
+      if (user) {
+        this.enterApp(user);
+        return;
+      }
+
+      let errorMsg = '';
+      if (hadSession) {
+        // 会话已失效（工号被删除 / 入场券作废）时会清理本地；否则多为网络异常
+        errorMsg = app.globalData.session
+          ? '登录状态校验失败，请检查网络后重试'
+          : '登录状态已失效，请重新登录';
+      }
+      this.setData({ restoring: false, errorMsg });
+    } catch (err) {
+      console.error('恢复登录态失败', err);
+      this.setData({ restoring: false });
+    }
+  },
+
+  // 登录成功后进入对应页面
+  // 入场券用户直达其绑定活动；员工用户优先回到待签到的活动
+  enterApp(user, delay = 0) {
+    const roles = Array.isArray(user.roles) ? user.roles : [];
+    const go = () => {
       if (roles.includes('ticket') && user.activityId) {
         wx.reLaunch({ url: `/pages/my-checkin/my-checkin?id=${user.activityId}` });
-      } else {
-        wx.reLaunch({ url: '/pages/index/index' });
+        return;
       }
-    }
+
+      const pendingId = app.globalData.pendingActivityId;
+      if (pendingId) {
+        delete app.globalData.pendingActivityId;
+        wx.reLaunch({ url: `/pages/my-checkin/my-checkin?id=${pendingId}` });
+        return;
+      }
+
+      wx.reLaunch({ url: '/pages/index/index' });
+    };
+
+    if (delay > 0) setTimeout(go, delay);
+    else go();
   },
 
   // 切换登录方式
@@ -96,49 +137,33 @@ Page({
     this.setData({ loading: true, errorMsg: '' });
 
     try {
-      const db = wx.cloud.database();
-      const res = await db.collection('users')
-        .where({ staffId })
-        .limit(1)
-        .get();
+      // 工号校验统一走云函数，客户端不再直连 users 集合
+      const res = await wx.cloud.callFunction({
+        name: 'auth',
+        data: { action: 'loginByStaff', staffId },
+      });
+      const result = res.result || {};
 
-      if (res.data && res.data.length > 0) {
-        const user = res.data[0];
-        const userInfo = {
-          _id: user._id,
-          staffId: user.staffId,
-          name: user.name || '',
-          dept: user.dept || '',
-          roles: Array.isArray(user.roles) ? user.roles : (user.role ? [user.role] : ['user']),
-        };
-
-        app.globalData.currentUser = userInfo;
-        wx.setStorageSync('currentUser', userInfo);
-
-        // 角色提示
-        const roleLabels = { admin: '管理员', organizer: '活动创建人', user: '成员' };
-        const roleText = userInfo.roles.map(r => roleLabels[r] || r).join(' / ');
-        console.log(`用户角色：${roleText}`);
-        // 不显示登录者姓名，仅用工号欢迎
-        wx.showToast({ title: `欢迎，${userInfo.staffId}`, icon: 'success' });
-
-        setTimeout(() => {
-          // 检是否有待跳转的签到活动
-          const pendingId = app.globalData.pendingActivityId;
-          if (pendingId) {
-            delete app.globalData.pendingActivityId;
-            wx.reLaunch({ url: `/pages/my-checkin/my-checkin?id=${pendingId}` });
-          } else {
-            wx.reLaunch({ url: '/pages/index/index' });
-          }
-        }, 800);
-      } else {
+      if (!result.success || !result.user) {
         this.setData({
           inputError: true,
-          errorMsg: '工号未注册，请联系活动负责人添加',
+          errorMsg: result.error || '工号未注册，请联系活动负责人添加',
           loading: false,
         });
+        return;
       }
+
+      // 用户信息与角色以服务端返回为准，本地只缓存身份标识
+      const user = app.applyUser(result.user);
+
+      // 角色提示
+      const roleLabels = { admin: '管理员', operator: '操作员', organizer: '活动创建人', user: '成员', ticket: '入场券' };
+      const roleText = user.roles.map(r => roleLabels[r] || r).join(' / ');
+      console.log(`用户角色：${roleText}`);
+      // 不显示登录者姓名，仅用工号欢迎
+      wx.showToast({ title: `欢迎，${user.staffId}`, icon: 'success' });
+
+      this.enterApp(user, 800);
     } catch (err) {
       console.error('登录失败', err);
       this.setData({
@@ -171,25 +196,17 @@ Page({
         return;
       }
 
-      // 以券号作为身份标识（与8位数字工号天然不冲突）
-      const userInfo = {
-        _id: result.ticketId,
-        staffId: ticketNo,
-        name: ticketNo,
-        dept: '',
-        roles: ['ticket'],
-        isTicket: true,
-        activityId: result.activityId,
-      };
-      app.globalData.currentUser = userInfo;
-      wx.setStorageSync('currentUser', userInfo);
+      // 券校验通过后，再由服务端确认会话并取回可信用户信息（roles 不在本地拼装）
+      const user = await app.verifySession(ticketNo);
+      if (!user || !user.isTicket) {
+        this.setData({ inputError: true, errorMsg: '入场券无效，请核对后重试', loading: false });
+        return;
+      }
 
       wx.showToast({ title: `欢迎，${ticketNo}`, icon: 'success' });
 
       // 券号绑定指定活动，登录后直达该活动签到页
-      setTimeout(() => {
-        wx.reLaunch({ url: `/pages/my-checkin/my-checkin?id=${result.activityId}` });
-      }, 800);
+      this.enterApp(user, 800);
     } catch (err) {
       console.error('入场券登录失败', err);
       this.setData({
