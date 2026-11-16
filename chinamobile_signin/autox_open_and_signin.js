@@ -65,6 +65,19 @@ function clickNode(node) {
 }
 
 /**
+ * 比例坐标兜底点击：根据设备宽高换算，避免硬编码像素
+ * 根据截图，「签到有礼」约在屏幕 68% 宽、15% 高位置
+ */
+function fallbackClickByRatio(ratioX, ratioY) {
+    const dw = device.width;
+    const dh = device.height;
+    const fx = Math.floor(dw * ratioX);
+    const fy = Math.floor(dh * ratioY);
+    log("比例坐标兜底点击: (" + fx + ", " + fy + ")");
+    return click(fx, fy);
+}
+
+/**
  * 条件式等待：轮询直到找到指定文本节点或超时
  * 返回找到的节点，找不到返回 null
  */
@@ -138,14 +151,9 @@ function main() {
         if (clickNode(clickable)) {
             log("✅ 已点击「签到有礼」");
         } else {
-            // 节点点击失败，用设备宽高做归一化比例坐标兜底
-            // 根据截图，「签到有礼」约在屏幕 68% 宽、15% 高位置
-            const w = device.width;
-            const h = device.height;
-            const fx = Math.floor(w * 0.68);
-            const fy = Math.floor(h * 0.15);
-            log("节点点击失败，使用比例坐标兜底: (" + fx + ", " + fy + ")");
-            if (click(fx, fy)) {
+            // 节点点击失败，用比例坐标兜底
+            log("节点点击失败，使用比例坐标兜底");
+            if (fallbackClickByRatio(0.68, 0.15)) {
                 log("✅ 坐标兜底点击成功");
             } else {
                 log("❌ 兜底点击也失败");
@@ -153,12 +161,7 @@ function main() {
         }
     } else {
         log("❌ 未找到「" + TARGET_TEXT + "」，使用比例坐标兜底");
-        const w = device.width;
-        const h = device.height;
-        const fx = Math.floor(w * 0.68);
-        const fy = Math.floor(h * 0.15);
-        log("兜底坐标: (" + fx + ", " + fy + ")");
-        if (click(fx, fy)) {
+        if (fallbackClickByRatio(0.68, 0.15)) {
             log("✅ 兜底坐标点击成功");
         } else {
             log("❌ 点击失败，请检查页面是否正常");
