@@ -152,60 +152,96 @@ function dismissPopups() {
 /**
  * 进入签到页后，查找并点击签到按钮
  * 返回 true 表示点击成功，false 表示未找到按钮
+ *
+ * 注意：中国移动签到页通常是 H5 网页（webview），
+ * 无障碍服务可能无法识别 webview 内的文本控件。
+ * 因此采用「文本识别 + 坐标兜底」双策略。
  */
 function clickSignInButton() {
     log("进入签到页，查找签到按钮...");
 
-    // 先等一下页面渲染
-    sleep(1000);
+    // 1. 等待页面渲染（H5 页面加载较慢，多等一会）
+    sleep(2500);
     // 关闭可能的广告弹窗
     dismissPopups();
+    sleep(500);
 
-    // 轮询查找签到按钮
-    const deadline = Date.now() + WAIT_TIMEOUT;
-    while (Date.now() < deadline) {
-        // 先检查是否已经签到过了
-        if (isSignedIn()) {
-            log("✅ 今日已签到");
-            return true;
-        }
-        // 尝试各种签到按钮文案
-        for (let i = 0; i < SIGNIN_BTN_TEXTS.length; i++) {
-            const node = waitForText(SIGNIN_BTN_TEXTS[i], 800);
-            if (node) {
-                log("找到签到按钮: " + SIGNIN_BTN_TEXTS[i]);
-                const clickable = findClickableAncestor(node, 5) || node;
-                if (clickNode(clickable)) {
-                    log("已点击签到按钮，等待结果...");
-                    sleep(1500);
-                    // 签到后处理弹窗
-                    dismissPopups();
-                    // 检查是否成功
-                    if (isSignedIn()) {
-                        log("✅ 签到成功");
-                        return true;
-                    }
-                    // 可能弹窗需要再关一次
-                    dismissPopups();
-                    if (isSignedIn()) {
-                        log("✅ 签到成功");
-                        return true;
-                    }
-                    log("⚠️ 已点击但未检测到成功提示，可能需要人工确认");
-                    return true;
-                }
-            }
-        }
-        sleep(POLL_INTERVAL);
-    }
-
-    // 没找到签到按钮，可能已签到或按钮文案不同
+    // 2. 先检查是否已经签到过了
     if (isSignedIn()) {
         log("✅ 今日已签到");
         return true;
     }
-    log("❌ 未找到签到按钮，也未检测到已签到状态");
-    return false;
+
+    // 3. 策略一：尝试通过文本识别签到按钮
+    let clickedByText = false;
+    for (let i = 0; i < SIGNIN_BTN_TEXTS.length; i++) {
+        const node = waitForText(SIGNIN_BTN_TEXTS[i], 1500);
+        if (node) {
+            log("找到签到按钮（文本）: " + SIGNIN_BTN_TEXTS[i]);
+            const clickable = findClickableAncestor(node, 5) || node;
+            if (clickNode(clickable)) {
+                clickedByText = true;
+                break;
+            }
+        }
+    }
+
+    // 4. 策略二：文本识别失败，用坐标兜底点击
+    //    中国移动签到页的「立即签到」按钮通常在屏幕中下部
+    //    以屏幕宽高比例定位，适配不同分辨率
+    if (!clickedByText) {
+        log("文本未识别到签到按钮，使用坐标兜底点击");
+        dismissPopups();
+        // 尝试几个可能的位置（中下部区域）
+        const candidates = [
+            { x: 0.50, y: 0.55 },  // 屏幕正中偏下
+            { x: 0.50, y: 0.60 },  // 稍下
+            { x: 0.50, y: 0.65 },  // 再下
+            { x: 0.50, y: 0.50 },  // 正中
+        ];
+        for (let c = 0; c < candidates.length; c++) {
+            // 每点一次前先检查是否已签到
+            if (isSignedIn()) {
+                log("✅ 今日已签到");
+                return true;
+            }
+            log("坐标兜底尝试 " + (c + 1) + "/" + candidates.length);
+            if (fallbackClickByRatio(candidates[c].x, candidates[c].y)) {
+                sleep(1500);
+                dismissPopups();
+                if (isSignedIn()) {
+                    log("✅ 签到成功");
+                    return true;
+                }
+            }
+        }
+    }
+
+    // 5. 点击后统一检查结果
+    if (clickedByText) {
+        log("已点击签到按钮，等待结果...");
+        sleep(2000);
+        dismissPopups();
+    }
+
+    // 多次检查是否成功（弹窗可能延迟出现）
+    for (let check = 0; check < 3; check++) {
+        if (isSignedIn()) {
+            log("✅ 签到成功");
+            return true;
+        }
+        dismissPopups();
+        sleep(1000);
+    }
+
+    // 最终判定
+    if (isSignedIn()) {
+        log("✅ 签到成功");
+        return true;
+    }
+    log("⚠️ 已执行签到操作，但未检测到明确的成功提示");
+    log("请手动确认签到是否完成，若按钮文案或位置不同请反馈");
+    return true;
 }
 
 // ============ 主流程 ============
