@@ -222,10 +222,18 @@ function clickSignInButton() {
 function main() {
     log("========== 开始执行签到 ==========");
 
-    // 检查无障碍服务
-    if (!auto.service) {
-        log("请先开启无障碍服务！");
-        return;
+    // 等待无障碍服务连接就绪（推荐用 auto.waitFor() 而非手动判断 auto.service）
+    // auto.service 在服务连接过程中可能短暂为 false，直接判断会误报未开启
+    try {
+        auto.waitFor();
+        log("无障碍服务已就绪");
+    } catch (e) {
+        log("等待无障碍服务失败: " + e);
+        // 兜底：再检查一次
+        if (!auto.service) {
+            log("无障碍服务未开启，请在系统设置中开启 Hamibot 的无障碍权限");
+            return;
+        }
     }
 
     // 1. 启动中国移动 App
