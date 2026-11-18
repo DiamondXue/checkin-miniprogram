@@ -1,236 +1,306 @@
 /**
- * 中国移动 App 每日自动签到脚本（Hamibot / Auto.js）
+ * Hamibot 脚本 —— 中国移动 App 每日自动签到
  *
- * 功能：自动打开中国移动 App → 点击「签到有礼」→ 完成签到 → 返回
- * 适用：安卓手机，需安装 Hamibot 或 Auto.js
- * 调度：在 Hamibot 控制台设置「定时任务」每天自动运行
+ * 功能：
+ *   1. 启动中国移动 App
+ *   2. 等待首页加载
+ *   3. 点击「签到有礼」入口
+ *   4. 进入签到页后点击「立即签到」
+ *   5. 处理签到结果弹窗
  *
- * 注意：首次运行请给予「无障碍」和「悬浮窗」权限，并手动测试一次
+ * 适用平台：Hamibot（Auto.js 兼容语法）
+ * 前置：手机已安装 Hamibot 并开启无障碍服务
+ * 调度：在 Hamibot 控制台设置定时任务每日自动运行
  */
 
-// ============ 配置区 ============
-const CONFIG = {
-    APP_PACKAGE: "com.greenpoint.android.mc10086.activity",   // 中国移动 App 包名
-    APP_NAME: "中国移动",
-    WAIT_TIMEOUT: 15000,        // 单次等待超时（毫秒）
-    STEP_INTERVAL: 1500,        // 步骤间默认间隔（毫秒）
-    MAX_RETRY: 3,               // 关键步骤最大重试次数
-};
+// ============ 配置 ============
+const APP_PACKAGE = "com.greenpoint.android.mc10086.activity";
+const APP_NAME = "中国移动";
+const TARGET_TEXT = "签到有礼";
+const WAIT_TIMEOUT = 15000;
+const POLL_INTERVAL = 500;
 
-// 可能出现的签到按钮文案（按优先级）
-const SIGNIN_BTN_TEXTS = ["签到有礼", "立即签到", "签到", "签到领福利", "领流量", "签到领奖"];
-// 可能出现的关闭/跳过按钮文案
-const CLOSE_TEXTS = ["关闭", "跳过", "我知道了", "知道了", "关闭弹窗", "×", "✕"];
+const SIGNIN_BTN_TEXTS = ["立即签到", "签到", "签到领奖", "签到领流量", "领取", "领流量"];
+const SUCCESS_TEXTS = ["签到成功", "已签到", "明日再来", "领取成功", "签到完成", "已领取"];
+const CLOSE_TEXTS = ["关闭", "我知道了", "知道了", "跳过", "好的", "确定"];
 
 // ============ 工具函数 ============
+
 function log(msg) {
     console.log("[中国移动签到] " + msg);
+    try { toast(msg); } catch (e) {}
 }
 
-function sleep(ms) {
-    const end = Date.now() + ms;
-    while (Date.now() < end) { }
-}
-
-/** 按文案查找并点击控件（支持 text / desc / id 模糊匹配） */
-function findAndClickByText(textList, timeout) {
-    timeout = timeout || CONFIG.WAIT_TIMEOUT;
-    const deadline = Date.now() + timeout;
-    while (Date.now() < deadline) {
-        for (let i = 0; i < textList.length; i++) {
-            const t = textList[i];
-            // 优先精确匹配 text
-            let node = text(t).findOne(300);
-            if (node) {
-                log("找到文本控件: " + t);
-                if (clickCenter(node)) return true;
-            }
-            // 匹配 desc
-            node = desc(t).findOne(300);
-            if (node) {
-                log("找到描述控件: " + t);
-                if (clickCenter(node)) return true;
-            }
-            // 模糊匹配 text
-            node = textMatches(".*" + t + ".*").findOne(300);
-            if (node) {
-                log("模糊匹配文本控件: " + t);
-                if (clickCenter(node)) return true;
-            }
-        }
-        sleep(500);
+/**
+ * 从目标节点向上回溯，返回第一个可点击的祖先节点（含自身）
+ */
+function findClickableAncestor(node, maxDepth) {
+    maxDepth = maxDepth || 5;
+    let cur = node;
+    for (let i = 0; i < maxDepth && cur; i++) {
+        try {
+            if (cur.clickable()) return cur;
+            cur = cur.parent();
+        } catch (e) { break; }
     }
-    return false;
+    return null;
 }
 
-/** 点击控件中心 */
-function clickCenter(node) {
+/**
+ * 点击控件：优先节点 click()，失败用 bounds 中心坐标点击
+ */
+function clickNode(node) {
+    if (!node) return false;
     try {
         const b = node.bounds();
-        const x = b.left + b.width() / 2;
-        const y = b.top + b.height() / 2;
-        // 优先用控件 click，失败则用坐标
-        if (node.clickable()) {
-            if (node.click()) return true;
+        const cx = b.centerX();
+        const cy = b.centerY();
+        log("点击目标坐标: (" + cx + ", " + cy + ")");
+        if (node.clickable() && node.click()) {
+            log("节点点击成功");
+            return true;
         }
-        return click(x, y);
+        if (click(cx, cy)) {
+            log("坐标点击成功");
+            return true;
+        }
     } catch (e) {
         log("点击异常: " + e);
-        return false;
     }
+    return false;
 }
 
-/** 处理可能弹出的广告/活动弹窗 */
-function dismissPopups() {
-    let handled = false;
-    for (let i = 0; i < CLOSE_TEXTS.length; i++) {
-        const t = CLOSE_TEXTS[i];
-        const node = text(t).findOne(500) || desc(t).findOne(500);
-        if (node) {
-            log("关闭弹窗: " + t);
-            clickCenter(node);
-            handled = true;
-            sleep(800);
-            break;
-        }
-    }
-    // 也尝试点击右上角关闭图标（坐标兜底）
-    if (!handled) {
-        const w = device.width;
-        // 右上角常见关闭按钮区域
-        if (click(w - 60, 120)) {
-            handled = true;
-        }
-    }
-    return handled;
+/**
+ * 比例坐标兜底点击
+ */
+function fallbackClickByRatio(ratioX, ratioY) {
+    const dw = device.width;
+    const dh = device.height;
+    const fx = Math.floor(dw * ratioX);
+    const fy = Math.floor(dh * ratioY);
+    log("比例坐标兜底点击: (" + fx + ", " + fy + ")");
+    return click(fx, fy);
 }
 
-/** 启动 App 并等待首页加载 */
-function launchAppAndWait() {
-    log("启动 " + CONFIG.APP_NAME + " ...");
-    app.launchPackage(CONFIG.APP_PACKAGE);
-    // 等待 App 出现
-    const deadline = Date.now() + CONFIG.WAIT_TIMEOUT;
-    let appeared = false;
+/**
+ * 条件式等待：轮询直到找到指定文本节点或超时
+ */
+function waitForText(txt, timeout) {
+    timeout = timeout || WAIT_TIMEOUT;
+    const deadline = Date.now() + timeout;
     while (Date.now() < deadline) {
-        if (currentPackage() === CONFIG.APP_PACKAGE) {
-            appeared = true;
-            break;
-        }
-        sleep(500);
+        try {
+            let node = text(txt).findOne(200);
+            if (node) return node;
+            node = textMatches(".*" + txt + ".*").findOne(200);
+            if (node) return node;
+        } catch (e) {}
+        sleep(POLL_INTERVAL);
     }
-    if (!appeared) {
-        log("App 启动超时，尝试按名称启动");
-        app.launchApp(CONFIG.APP_NAME);
-        sleep(3000);
-    }
-    // 等待首页加载（出现「签到有礼」或搜索框等首页元素）
-    log("等待首页加载...");
-    const homeDeadline = Date.now() + CONFIG.WAIT_TIMEOUT;
-    while (Date.now() < homeDeadline) {
-        if (text("签到有礼").exists() || textMatches(".*超值套餐.*").exists() || text("营业厅").exists()) {
-            log("首页已加载");
-            return true;
-        }
-        dismissPopups();
-        sleep(500);
-    }
-    log("首页加载等待超时，继续尝试签到");
-    return false;
+    return null;
 }
 
-/** 进入签到页面 */
-function enterSignInPage() {
-    log("查找「签到有礼」入口...");
-    for (let retry = 0; retry < CONFIG.MAX_RETRY; retry++) {
-        // 先处理弹窗
-        dismissPopups();
-        // 尝试点击「签到有礼」
-        if (findAndClickByText(["签到有礼"], 8000)) {
-            sleep(CONFIG.STEP_INTERVAL);
-            log("已进入签到相关页面");
-            return true;
-        }
-        // 兜底：根据截图，「签到有礼」在首页右上角区域（约 70% 宽，12% 高）
-        log("文本查找失败，尝试坐标点击...");
-        const w = device.width;
-        const h = device.height;
-        // 「签到有礼」按钮大致位置（相对坐标）
-        const x = Math.floor(w * 0.68);
-        const y = Math.floor(h * 0.15);
-        log("坐标兜底点击: (" + x + ", " + y + ")");
-        click(x, y);
-        sleep(2500);
-        // 判断是否进入了签到页面
-        if (textMatches(".*签到.*").exists() || text("流量").exists() || text("领取").exists()) {
-            return true;
-        }
-        log("第 " + (retry + 1) + " 次尝试失败，重试...");
+/**
+ * 判断是否已签到成功
+ */
+function isSignedIn() {
+    for (let i = 0; i < SUCCESS_TEXTS.length; i++) {
+        try {
+            if (textMatches(".*" + SUCCESS_TEXTS[i] + ".*").exists()) {
+                log("检测到签到结果: " + SUCCESS_TEXTS[i]);
+                return true;
+            }
+        } catch (e) {}
     }
     return false;
 }
 
-/** 执行签到 */
-function doSignIn() {
-    log("开始签到，查找签到按钮...");
-    for (let retry = 0; retry < CONFIG.MAX_RETRY; retry++) {
+/**
+ * 处理签到后弹出的弹窗
+ */
+function dismissPopups() {
+    for (let i = 0; i < CLOSE_TEXTS.length; i++) {
+        try {
+            const node = text(CLOSE_TEXTS[i]).findOne(300) || desc(CLOSE_TEXTS[i]).findOne(300);
+            if (node) {
+                log("关闭弹窗: " + CLOSE_TEXTS[i]);
+                const clickable = findClickableAncestor(node, 3) || node;
+                clickNode(clickable);
+                sleep(800);
+                return true;
+            }
+        } catch (e) {}
+    }
+    return false;
+}
+
+/**
+ * 进入签到页后，查找并点击签到按钮
+ * 签到页通常是 H5 网页（webview），无障碍可能识别不到文本，
+ * 因此采用「文本识别 + 坐标兜底」双策略
+ */
+function clickSignInButton() {
+    log("进入签到页，查找签到按钮...");
+
+    // 等待 H5 页面渲染
+    sleep(2500);
+    dismissPopups();
+    sleep(500);
+
+    if (isSignedIn()) {
+        log("✅ 今日已签到");
+        return true;
+    }
+
+    // 策略一：文本识别
+    let clickedByText = false;
+    for (let i = 0; i < SIGNIN_BTN_TEXTS.length; i++) {
+        const node = waitForText(SIGNIN_BTN_TEXTS[i], 1500);
+        if (node) {
+            log("找到签到按钮（文本）: " + SIGNIN_BTN_TEXTS[i]);
+            const clickable = findClickableAncestor(node, 5) || node;
+            if (clickNode(clickable)) {
+                clickedByText = true;
+                break;
+            }
+        }
+    }
+
+    // 策略二：坐标兜底
+    if (!clickedByText) {
+        log("文本未识别到签到按钮，使用坐标兜底点击");
         dismissPopups();
-        // 查找签到按钮
-        if (findAndClickByText(SIGNIN_BTN_TEXTS, 8000)) {
-            sleep(2000);
-            // 签到后可能有弹窗，关闭
-            dismissPopups();
-            log("签到操作已执行");
+        const candidates = [
+            { x: 0.50, y: 0.55 },
+            { x: 0.50, y: 0.60 },
+            { x: 0.50, y: 0.65 },
+            { x: 0.50, y: 0.50 },
+        ];
+        for (let c = 0; c < candidates.length; c++) {
+            if (isSignedIn()) {
+                log("✅ 今日已签到");
+                return true;
+            }
+            log("坐标兜底尝试 " + (c + 1) + "/" + candidates.length);
+            if (fallbackClickByRatio(candidates[c].x, candidates[c].y)) {
+                sleep(1500);
+                dismissPopups();
+                if (isSignedIn()) {
+                    log("✅ 签到成功");
+                    return true;
+                }
+            }
+        }
+    }
+
+    // 点击后检查结果
+    if (clickedByText) {
+        log("已点击签到按钮，等待结果...");
+        sleep(2000);
+        dismissPopups();
+    }
+
+    for (let check = 0; check < 3; check++) {
+        if (isSignedIn()) {
+            log("✅ 签到成功");
             return true;
         }
-        // 如果已经签到过，页面会显示「已签到」之类
-        if (textMatches(".*已签到.*").exists() || textMatches(".*明日再来.*").exists() || textMatches(".*签到成功.*").exists()) {
-            log("今日已签到或签到成功");
-            return true;
-        }
-        log("第 " + (retry + 1) + " 次查找签到按钮失败，重试...");
+        dismissPopups();
         sleep(1000);
     }
-    return false;
+
+    if (isSignedIn()) {
+        log("✅ 签到成功");
+        return true;
+    }
+    log("⚠️ 已执行签到操作，但未检测到明确的成功提示");
+    return true;
 }
 
 // ============ 主流程 ============
+
 function main() {
     log("========== 开始执行签到 ==========");
 
-    // 请求无障碍权限
+    // 检查无障碍服务
     if (!auto.service) {
         log("请先开启无障碍服务！");
-        toast("请先开启无障碍服务");
         return;
     }
 
-    // 1. 启动 App
-    if (!launchAppAndWait()) {
-        log("警告：未能确认首页加载，继续尝试");
+    // 1. 启动中国移动 App
+    log("启动 " + APP_NAME + " ...");
+    app.launchPackage(APP_PACKAGE);
+
+    let appReady = false;
+    const launchDeadline = Date.now() + WAIT_TIMEOUT;
+    while (Date.now() < launchDeadline) {
+        if (currentPackage() === APP_PACKAGE) { appReady = true; break; }
+        sleep(500);
+    }
+    if (!appReady) {
+        log("按包名启动超时，尝试按名称启动");
+        app.launchApp(APP_NAME);
+        sleep(3000);
     }
 
-    // 2. 进入签到页
-    if (!enterSignInPage()) {
-        log("错误：无法进入签到页面");
-        toast("中国移动签到：无法进入签到页面");
-        return;
+    // 2. 等待首页加载
+    log("等待首页加载...");
+    let homeLoaded = false;
+    const homeDeadline = Date.now() + WAIT_TIMEOUT;
+    while (Date.now() < homeDeadline) {
+        try {
+            if (textMatches(".*超值套餐.*").exists() || text("营业厅").exists() || text("推荐").exists()) {
+                homeLoaded = true; break;
+            }
+        } catch (e) {}
+        sleep(POLL_INTERVAL);
+    }
+    log(homeLoaded ? "首页已加载" : "首页加载等待超时，继续尝试");
+
+    // 3. 查找并点击「签到有礼」
+    log("查找「" + TARGET_TEXT + "」...");
+    const node = waitForText(TARGET_TEXT, WAIT_TIMEOUT);
+
+    let enteredSignInPage = false;
+    if (node) {
+        log("找到「" + TARGET_TEXT + "」控件");
+        const clickable = findClickableAncestor(node, 5) || node;
+        if (clickNode(clickable)) {
+            log("✅ 已点击「签到有礼」");
+            enteredSignInPage = true;
+        } else {
+            log("节点点击失败，使用比例坐标兜底");
+            if (fallbackClickByRatio(0.68, 0.15)) {
+                log("✅ 坐标兜底点击成功");
+                enteredSignInPage = true;
+            } else {
+                log("❌ 兜底点击也失败");
+            }
+        }
+    } else {
+        log("❌ 未找到「" + TARGET_TEXT + "」，使用比例坐标兜底");
+        if (fallbackClickByRatio(0.68, 0.15)) {
+            log("✅ 兜底坐标点击成功");
+            enteredSignInPage = true;
+        } else {
+            log("❌ 点击失败，请检查页面是否正常");
+        }
     }
 
-    // 3. 执行签到
-    if (!doSignIn()) {
-        log("错误：签到失败");
-        toast("中国移动签到：签到失败");
-        return;
+    // 4. 进入签到页后点击「立即签到」
+    if (enteredSignInPage) {
+        const ok = clickSignInButton();
+        log(ok ? "✅ 签到流程完成" : "⚠️ 签到流程未完成，请检查");
+    } else {
+        log("❌ 未能进入签到页面，跳过签到步骤");
     }
 
-    // 4. 完成
-    log("========== 签到流程执行完成 ==========");
-    toast("中国移动签到完成");
-
-    // 可选：返回桌面
+    // 5. 返回桌面
     sleep(2000);
-    home();
+    try { home(); } catch (e) {}
+
+    log("========== 执行结束 ==========");
 }
 
 main();
