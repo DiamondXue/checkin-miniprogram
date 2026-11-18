@@ -244,22 +244,46 @@ function clickSignInButton() {
     return true;
 }
 
+// ============ 无障碍服务就绪检查 ============
+
+/**
+ * 确保无障碍服务已就绪。
+ * 先直接检查 auto.service，若已连接则无需等待（避免 auto.waitFor()
+ * 在已连接状态下抛出 ScriptInterruptedException）；
+ * 仅在未连接时才调用 auto.waitFor() 阻塞等待。
+ */
+function ensureAccessibility() {
+    try {
+        if (auto.service) {
+            log("无障碍服务已就绪");
+            return true;
+        }
+    } catch (e) {}
+    try {
+        auto.waitFor();
+        log("无障碍服务已就绪");
+        return true;
+    } catch (e) {
+        log("等待无障碍服务失败: " + e);
+    }
+    // 兜底：再次检查
+    try {
+        if (auto.service) {
+            log("无障碍服务已就绪（兜底检查）");
+            return true;
+        }
+    } catch (e) {}
+    return false;
+}
+
 // ============ 主流程 ============
 
 function main() {
     log("========== 开始执行 ==========");
 
-    // 等待无障碍服务连接就绪（用 auto.waitFor() 而非直接判断 auto.service）
-    // auto.service 在服务连接过程中可能短暂为 false，直接判断会误报未开启
-    try {
-        auto.waitFor();
-        log("无障碍服务已就绪");
-    } catch (e) {
-        log("等待无障碍服务失败: " + e);
-        if (!auto.service) {
-            log("无障碍服务未开启，请在系统设置中开启 AutoX.js 的无障碍权限");
-            return;
-        }
+    if (!ensureAccessibility()) {
+        log("无障碍服务未开启，请在系统设置中开启 AutoX.js 的无障碍权限");
+        return;
     }
 
     // 2. 启动中国移动 App
