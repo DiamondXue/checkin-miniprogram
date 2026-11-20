@@ -19,12 +19,17 @@ const TARGET_TEXT = "签到有礼";
 const WAIT_TIMEOUT = 15000; // 等待超时（毫秒）
 const POLL_INTERVAL = 500;  // 轮询间隔（毫秒）
 
-// 签到按钮可能的文案（按优先级）
-const SIGNIN_BTN_TEXTS = ["立即签到", "签到", "签到领奖", "签到领流量", "领取", "领流量"];
-// 签到成功/已签到的文案
-const SUCCESS_TEXTS = ["签到成功", "已签到", "明日再来", "领取成功", "签到完成", "已领取"];
+// 签到按钮：只用精确文案，避免"签到"一词误中标题/日历等元素
+const SIGNIN_BTN_TEXT = "立即签到";
+// 签到页加载标志：页面出现此文本说明 H5 已渲染完成
+const PAGE_READY_TEXT = "已累计签到";
+// 签到成功判定：不能用"已签到"（日历格子上本来就有），也不能用"已领取"
+const SUCCESS_TEXTS = ["签到成功", "明日再来", "领取成功", "签到完成", "今日已签到"];
 // 弹窗关闭按钮文案
 const CLOSE_TEXTS = ["关闭", "我知道了", "知道了", "跳过", "好的", "确定"];
+// 「立即签到」按钮实测位置（左下方），按屏幕宽高比例
+const BTN_X = 0.33;
+const BTN_Y = 0.86;
 
 // ============ 工具函数 ============
 
@@ -158,89 +163,74 @@ function dismissPopups() {
  * 因此采用「文本识别 + 坐标兜底」双策略。
  */
 function clickSignInButton() {
-    log("进入签到页，查找签到按钮...");
+    log("进入签到页，等待页面加载...");
 
-    // 1. 等待页面渲染（H5 页面加载较慢，多等一会）
-    sleep(2500);
-    // 关闭可能的广告弹窗
+    // 1. 条件式等待 H5 页面渲染完成（以"已累计签到"文本为标志）
+    const pageReady = waitForText(PAGE_READY_TEXT, WAIT_TIMEOUT);
+    log(pageReady ? "签到页已加载" : "签到页加载等待超时，继续尝试");
     dismissPopups();
-    sleep(500);
 
-    // 2. 先检查是否已经签到过了
-    if (isSignedIn()) {
-        log("✅ 今日已签到");
-        return true;
+    // 注意：此处不能再用 isSignedIn() 预判——日历格子上本来就有"已签到"字样，
+    // 之前的 bug 就是一进来误判"今日已签到"直接返回，从不点击按钮。
+
+    // 2. 策略一：精确文本识别「立即签到」按钮
+    let clicked = false;
+    const node = waitForText(SIGNIN_BTN_TEXT, 3000);
+    if (node) {
+        log("找到「立即签到」控件");
+        const clickable = findClickableAncestor(node, 5) || node;
+        clicked = clickNode(clickable);
     }
 
-    // 3. 策略一：尝试通过文本识别签到按钮
-    let clickedByText = false;
-    for (let i = 0; i < SIGNIN_BTN_TEXTS.length; i++) {
-        const node = waitForText(SIGNIN_BTN_TEXTS[i], 1500);
-        if (node) {
-            log("找到签到按钮（文本）: " + SIGNIN_BTN_TEXTS[i]);
-            const clickable = findClickableAncestor(node, 5) || node;
-            if (clickNode(clickable)) {
-                clickedByText = true;
-                break;
-            }
-        }
-    }
-
-    // 4. 策略二：文本识别失败，用坐标兜底点击
-    //    中国移动签到页的「立即签到」按钮通常在屏幕中下部
-    //    以屏幕宽高比例定位，适配不同分辨率
-    if (!clickedByText) {
-        log("文本未识别到签到按钮，使用坐标兜底点击");
-        dismissPopups();
-        // 尝试几个可能的位置（中下部区域）
+    // 3. 策略二：坐标兜底（实测按钮在屏幕左下方 x≈0.33, y≈0.86）
+    if (!clicked) {
+        log("文本未识别到按钮，使用实测坐标点击");
         const candidates = [
-            { x: 0.50, y: 0.55 },  // 屏幕正中偏下
-            { x: 0.50, y: 0.60 },  // 稍下
-            { x: 0.50, y: 0.65 },  // 再下
-            { x: 0.50, y: 0.50 },  // 正中
+            { x: BTN_X, y: BTN_Y },        // 实测主位置
+            { x: BTN_X, y: BTN_Y - 0.02 }, // 略上
+            { x: BTN_X, y: BTN_Y + 0.02 }, // 略下
         ];
         for (let c = 0; c < candidates.length; c++) {
-            // 每点一次前先检查是否已签到
-            if (isSignedIn()) {
-                log("✅ 今日已签到");
-                return true;
-            }
-            log("坐标兜底尝试 " + (c + 1) + "/" + candidates.length);
+            log("坐标点击尝试 " + (c + 1) + "/" + candidates.length);
             if (fallbackClickByRatio(candidates[c].x, candidates[c].y)) {
-                sleep(1500);
-                dismissPopups();
-                if (isSignedIn()) {
+                clicked = true;
+                sleep(2000);
+                // 成功判定：出现成功提示，或「立即签到」按钮消失
+                if (isSignedIn() || !text(SIGNIN_BTN_TEXT).exists()) {
                     log("✅ 签到成功");
+                    dismissPopups();
                     return true;
                 }
+                // 没反应则继续尝试下一个坐标
+                clicked = false;
             }
         }
     }
 
-    // 5. 点击后统一检查结果
-    if (clickedByText) {
-        log("已点击签到按钮，等待结果...");
-        sleep(2000);
-        dismissPopups();
+    if (!clicked) {
+        log("❌ 未能点击签到按钮");
+        return false;
     }
 
-    // 多次检查是否成功（弹窗可能延迟出现）
+    // 4. 文本点击后的结果检查
+    log("已点击签到按钮，等待结果...");
+    sleep(2000);
+    dismissPopups();
     for (let check = 0; check < 3; check++) {
         if (isSignedIn()) {
             log("✅ 签到成功");
+            return true;
+        }
+        // 按钮消失也视为成功（签到后按钮通常会变成"已签到"状态或隐藏）
+        if (!text(SIGNIN_BTN_TEXT).exists()) {
+            log("✅ 签到按钮已消失，签到成功");
             return true;
         }
         dismissPopups();
         sleep(1000);
     }
 
-    // 最终判定
-    if (isSignedIn()) {
-        log("✅ 签到成功");
-        return true;
-    }
-    log("⚠️ 已执行签到操作，但未检测到明确的成功提示");
-    log("请手动确认签到是否完成，若按钮文案或位置不同请反馈");
+    log("⚠️ 已点击按钮，但未检测到成功标志，请手动确认");
     return true;
 }
 
