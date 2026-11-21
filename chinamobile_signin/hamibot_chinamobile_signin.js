@@ -32,7 +32,7 @@ function log(msg) {
     console.log(line);
     try { toast(msg); } catch (e) {}
     try {
-        files.append("/sdcard/hamibot_signin_log.txt", line + "\n");
+        files.append("/storage/emulated/0/hamibot_signin_log.txt", line + "\n");
     } catch (e) {}
 }
 
