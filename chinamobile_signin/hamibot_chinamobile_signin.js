@@ -310,6 +310,28 @@ function main() {
     log("启动 " + APP_NAME + " ...");
     app.launchPackage(APP_PACKAGE);
 
+    // 处理系统弹窗："Hamibot"想要打开"中国移动"（先勾选始终允许，再点打开）
+    const openDlgDeadline = Date.now() + 6000;
+    while (Date.now() < openDlgDeadline) {
+        let handled = false;
+        try {
+            if (textMatches(".*想要打开.*").exists()) {
+                try {
+                    const cb = className("android.widget.CheckBox").findOne(500);
+                    if (cb) { click(cb.bounds().centerX(), cb.bounds().centerY()); }
+                } catch (e) {}
+                clickDialogButton("打开");
+                handled = true;
+            }
+        } catch (e) {}
+        if (handled) {
+            log("已处理系统打开应用确认框");
+            sleep(1000);
+            break;
+        }
+        sleep(500);
+    }
+
     let appReady = false;
     const launchDeadline = Date.now() + WAIT_TIMEOUT;
     while (Date.now() < launchDeadline) {
