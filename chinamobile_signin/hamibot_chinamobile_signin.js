@@ -1,9 +1,10 @@
 /**
  * Hamibot 脚本 —— 中国移动 App 每日自动签到
  *
- * 说明：本版本以"能正常运行的基线代码"为准，只做最小改动：
- *   1. 「立即签到」坐标按截屏实测修正为 0.39 / 0.855
- *   2. 去掉等待 H5 文本的 18 秒空等（H5 页面无障碍读不到文字）
+ * 本版修复：
+ *   1. 不再点击"关闭"，避免误触签到页左上角 ✕ 把页面关掉
+ *   2. 进入签到页后，先用顶部标题「签到有礼」校验是否真的在签到页
+ *   3. 成功判定只认明确的成功文案；H5 文字读不到时如实提示"需人工确认"
  * 不使用 console.show() / captureScreen()，避免因缺少悬浮窗、截图权限导致脚本被终止。
  */
 
@@ -13,19 +14,22 @@ const TARGET_TEXT = "签到有礼";
 const WAIT_TIMEOUT = 15000;
 const POLL_INTERVAL = 500;
 
-// 签到按钮：只用精确文案，避免"签到"一词误中标题/日历等元素
+// 签到按钮：只用精确文案
 const SIGNIN_BTN_TEXT = "立即签到";
 // 签到成功判定：不能用"已签到"（日历格子上本来就有），也不能用"已领取"
 const SUCCESS_TEXTS = ["签到成功", "明日再来", "领取成功", "签到完成", "今日已签到"];
-const CLOSE_TEXTS = ["关闭", "我知道了", "知道了", "跳过", "好的", "确定"];
+// 只保留安全弹窗文案，绝不能有"关闭"/"跳过"（会误触签到页左上角 ✕）
+const CLOSE_TEXTS = ["我知道了", "知道了", "好的", "确定"];
 // 「立即签到」按钮实测位置（按钮中心），按屏幕宽高比例
-const BTN_X = 0.39;
-const BTN_Y = 0.855;
+const BTN_X = 0.33;
+const BTN_Y = 0.825;
 // 首页「签到有礼」入口兜底坐标
 const ENTRY_X = 0.62;
 const ENTRY_Y = 0.155;
 // 等 H5 页面渲染的时间
 const H5_LOAD_WAIT = 6000;
+// 判定"在签到页"的标题栏高度上限（占屏幕高度比例）
+const TITLE_BAR_RATIO = 0.15;
 
 function log(msg) {
     const line = "[中国移动签到] " + msg;
@@ -105,6 +109,24 @@ function isSignedIn() {
     return false;
 }
 
+/**
+ * 判断当前是否在签到页：页面顶部标题栏出现「签到有礼」。
+ * 首页那个入口文字在 y≈282，标题栏在 y≈115，用高度区分。
+ */
+function isOnSignInPage() {
+    try {
+        const nodes = text(TARGET_TEXT).find();
+        if (!nodes || nodes.length === 0) return false;
+        const limit = device.height * TITLE_BAR_RATIO;
+        for (let i = 0; i < nodes.length; i++) {
+            try {
+                if (nodes[i].bounds().centerY() < limit) return true;
+            } catch (e) {}
+        }
+    } catch (e) {}
+    return false;
+}
+
 function dismissPopups() {
     for (let i = 0; i < CLOSE_TEXTS.length; i++) {
         try {
@@ -122,16 +144,27 @@ function dismissPopups() {
 }
 
 function clickSignInButton() {
-    log("进入签到页，等待 H5 加载 " + (H5_LOAD_WAIT / 1000) + " 秒...");
-    sleep(H5_LOAD_WAIT);
-    dismissPopups();
+    // 1. 先确认真的进了签到页（顶部标题「签到有礼」出现）
+    let onPage = false;
+    const pageDeadline = Date.now() + 10000;
+    while (Date.now() < pageDeadline) {
+        if (isOnSignInPage()) { onPage = true; break; }
+        sleep(500);
+    }
+    if (!onPage) {
+        log("❌ 未确认进入签到页（顶部标题未出现），中止以免误点");
+        return false;
+    }
 
-    // 1. 先快速试一次文本识别（部分机型 webview 能被读到）
+    log("已进入签到页，等待 H5 加载 " + (H5_LOAD_WAIT / 1000) + " 秒...");
+    sleep(H5_LOAD_WAIT);
+
+    // 2. 文本优先（部分机型 webview 文字可读）
     let clicked = false;
     try {
-        const node = text(SIGNIN_BTN_TEXT).findOne(1500);
+        const node = text(SIGNIN_BTN_TEXT).findOne(1200);
         if (node) {
-            log("找到「立即签到」控件");
+            log("找到「立即签到」控件（文本可读）");
             const clickable = findClickableAncestor(node, 5) || node;
             clicked = clickNode(clickable);
         } else {
@@ -141,20 +174,22 @@ function clickSignInButton() {
         log("文本探测异常: " + e);
     }
 
-    // 2. 坐标点击（实测按钮中心 0.39 / 0.855，附近小范围纵向扫描容错）
+    // 3. 坐标点击（按钮中心 0.33 / 0.825，附近小范围纵向扫描）
     if (!clicked) {
         const ys = [BTN_Y, BTN_Y - 0.02, BTN_Y + 0.02];
         for (let i = 0; i < ys.length; i++) {
             log("坐标点击尝试 " + (i + 1) + "/" + ys.length);
             if (fallbackClickByRatio(BTN_X, ys[i])) {
                 clicked = true;
-                sleep(2000);
-                if (isSignedIn() || !text(SIGNIN_BTN_TEXT).exists()) {
-                    log("✅ 签到成功");
-                    dismissPopups();
+                sleep(2500);
+                if (isSignedIn()) {
+                    log("✅ 检测到签到成功提示");
                     return true;
                 }
-                clicked = false;
+                if (!isOnSignInPage()) {
+                    log("❌ 点击后已离开签到页，停止继续尝试");
+                    return false;
+                }
             }
         }
     }
@@ -164,24 +199,13 @@ function clickSignInButton() {
         return false;
     }
 
-    // 3. 结果检查
-    log("已点击签到按钮，等待结果...");
-    sleep(2500);
-    dismissPopups();
-    for (let check = 0; check < 3; check++) {
-        if (isSignedIn()) {
-            log("✅ 签到成功");
-            return true;
-        }
-        if (!text(SIGNIN_BTN_TEXT).exists()) {
-            log("✅ 签到按钮已消失，签到成功");
-            return true;
-        }
-        dismissPopups();
-        sleep(1000);
+    // 4. 结果确认
+    sleep(1000);
+    if (isSignedIn()) {
+        log("✅ 检测到签到成功提示");
+        return true;
     }
-
-    log("⚠️ 已点击按钮，但未检测到成功标志，请手动确认");
+    log("⚠️ 已点击「立即签到」，但页面文字不可读，无法自动确认；请人工查看是否显示签到成功/按钮变为已签到");
     return true;
 }
 
@@ -277,7 +301,7 @@ function main() {
 
     if (enteredSignInPage) {
         const ok = clickSignInButton();
-        log(ok ? "✅ 签到流程完成" : "⚠️ 签到流程未完成，请检查");
+        log(ok ? "✅ 签到流程执行完毕" : "⚠️ 签到流程未完成，请检查");
     } else {
         log("❌ 未能进入签到页面，跳过签到步骤");
     }
