@@ -26,6 +26,9 @@ const BTN_Y = 0.855;
 // 签到页 H5 加载等待时间
 const H5_LOAD_WAIT = 6000;
 
+// 调试开关：true 时在屏幕上显示日志浮窗（调好后可改 false）
+const DEBUG_SHOW_CONSOLE = true;
+
 // ============ 基础工具 ============
 
 function log(msg) {
@@ -83,19 +86,40 @@ function waitForText(txt, timeout) {
 
 function ensureAccessibility() {
     try {
-        if (auto.service) { log("无障碍服务已就绪"); return true; }
-    } catch (e) {}
+        if (auto.service) {
+            log("无障碍服务：已连接");
+            return true;
+        }
+        log("无障碍服务：未连接，尝试等待...");
+    } catch (e) {
+        log("读取 auto.service 异常: " + e);
+    }
+
     try {
         auto.waitFor();
-        log("无障碍服务已就绪");
-        return true;
     } catch (e) {
-        log("等待无障碍服务失败: " + e);
+        log("auto.waitFor() 异常: " + e);
     }
+
     try {
-        if (auto.service) { log("无障碍服务已就绪（兜底）"); return true; }
+        if (auto.service) {
+            log("无障碍服务：等待后已连接");
+            return true;
+        }
     } catch (e) {}
     return false;
+}
+
+/**
+ * 无障碍不可用时，直接跳到系统无障碍设置页，方便用户开启
+ */
+function openAccessibilitySettings() {
+    try {
+        app.startActivity({ action: "android.settings.ACCESSIBILITY_SETTINGS" });
+        log("已跳转到无障碍设置，请找到 Hamibot 并开启");
+    } catch (e) {
+        log("跳转设置页失败: " + e);
+    }
 }
 
 // ============ 签到页内操作 ============
@@ -160,12 +184,22 @@ function doSignIn() {
 // ============ 主流程 ============
 
 function main() {
+    // 先给出"脚本已启动"的明确反馈，避免误以为没运行
+    try { toast("脚本已启动"); } catch (e) {}
+
+    if (DEBUG_SHOW_CONSOLE) {
+        try { console.show(); } catch (e) {}
+    }
+
     log("========== 中国移动自动签到 开始 ==========");
     log("屏幕尺寸: " + device.width + " x " + device.height);
 
     log("[1/5] 检查无障碍服务");
     if (!ensureAccessibility()) {
-        log("无障碍服务未开启，请在系统设置中开启 AutoX.js 的无障碍权限");
+        log("❌ 无障碍服务未开启");
+        log("请到 设置 → 无障碍 → 已下载的服务/已安装的服务 → 找到【AutoX.js】并开启");
+        log("注意：只开 AutoX.js 的无障碍不行，Hamibot 必须单独开启");
+        openAccessibilitySettings();
         return;
     }
 
@@ -235,4 +269,10 @@ function main() {
     log("========== 执行结束 ==========");
 }
 
-main();
+try {
+    main();
+} catch (e) {
+    log("脚本异常: " + e);
+    try { toast("脚本异常: " + e); } catch (err) {}
+}
+
