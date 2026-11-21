@@ -137,10 +137,22 @@ function clickSignInButton() {
         log("文本探测异常: " + e);
     }
 
-    // 2. 坐标点击（实测按钮中心 0.39 / 0.855）
+    // 2. 坐标点击（实测按钮中心 0.39 / 0.855，附近小范围纵向扫描容错）
     if (!clicked) {
-        log("坐标点击尝试 1/1");
-        clicked = fallbackClickByRatio(BTN_X, BTN_Y);
+        const ys = [BTN_Y, BTN_Y - 0.02, BTN_Y + 0.02];
+        for (let i = 0; i < ys.length; i++) {
+            log("坐标点击尝试 " + (i + 1) + "/" + ys.length);
+            if (fallbackClickByRatio(BTN_X, ys[i])) {
+                clicked = true;
+                sleep(2000);
+                if (isSignedIn() || !text(SIGNIN_BTN_TEXT).exists()) {
+                    log("✅ 签到成功");
+                    dismissPopups();
+                    return true;
+                }
+                clicked = false;
+            }
+        }
     }
 
     if (!clicked) {
@@ -199,6 +211,8 @@ function main() {
         log("无障碍服务未开启，请在系统设置中开启 Hamibot 的无障碍权限");
         return;
     }
+
+    log("屏幕分辨率: " + device.width + " x " + device.height);
 
     log("启动 " + APP_NAME + " ...");
     app.launchPackage(APP_PACKAGE);
