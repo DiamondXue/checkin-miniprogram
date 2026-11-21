@@ -28,8 +28,12 @@ const ENTRY_Y = 0.155;
 const H5_LOAD_WAIT = 6000;
 
 function log(msg) {
-    console.log("[中国移动签到] " + msg);
+    const line = "[中国移动签到] " + msg;
+    console.log(line);
     try { toast(msg); } catch (e) {}
+    try {
+        files.append("/sdcard/hamibot_signin_log.txt", line + "\n");
+    } catch (e) {}
 }
 
 function findClickableAncestor(node, maxDepth) {
@@ -284,4 +288,5 @@ function main() {
     log("========== 执行结束 ==========");
 }
 
+log("脚本已加载，准备执行");
 main();
