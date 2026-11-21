@@ -28,6 +28,10 @@ const ENTRY_X = 0.62;
 const ENTRY_Y = 0.155;
 // 等 H5 页面渲染的时间
 const H5_LOAD_WAIT = 6000;
+// 点「立即签到」后若弹出"即将离开中国移动，跳转微博"：true=点「是」，false=点「否」
+const JUMP_WEIBO = true;
+// 是否已跳转微博（跳转后不再按 Home 键打断）
+let JUMPED = false;
 // 判定"在签到页"的标题栏高度上限（占屏幕高度比例）
 const TITLE_BAR_RATIO = 0.15;
 
@@ -143,6 +147,62 @@ function dismissPopups() {
     return false;
 }
 
+/**
+ * 在弹窗里点击指定文字的按钮（取最靠下的那个，即对话框底部按钮）
+ */
+function clickDialogButton(txt) {
+    try {
+        const nodes = text(txt).find();
+        if (!nodes || nodes.length === 0) return false;
+        let best = null;
+        let bestY = -1;
+        for (let i = 0; i < nodes.length; i++) {
+            try {
+                const y = nodes[i].bounds().centerY();
+                if (y > bestY) { bestY = y; best = nodes[i]; }
+            } catch (e) {}
+        }
+        if (!best) return false;
+        const clickable = findClickableAncestor(best, 3) || best;
+        return clickNode(clickable);
+    } catch (e) {
+        log("点击弹窗按钮异常: " + e);
+        return false;
+    }
+}
+
+/**
+ * 处理"温馨提示：即将离开中国移动，跳转微博"确认框
+ * 返回 true 表示确实出现过该弹窗并已处理
+ */
+function handleJumpDialog() {
+    let found = false;
+    const deadline = Date.now() + 4000;
+    while (Date.now() < deadline) {
+        try {
+            if (textContains("即将离开中国移动").exists()) { found = true; break; }
+        } catch (e) {}
+        sleep(300);
+    }
+    if (!found) {
+        log("未出现跳转微博确认框");
+        return false;
+    }
+
+    const target = JUMP_WEIBO ? "是" : "否";
+    log("出现跳转微博确认框，点击「" + target + "」");
+    const ok = clickDialogButton(target);
+    if (!ok) {
+        log("❌ 点击「" + target + "」失败");
+        return true;
+    }
+    JUMPED = true;
+    sleep(3000);
+    try { log("已跳转，当前应用: " + currentPackage()); } catch (e) {}
+    log("请在微博完成签到后返回中国移动");
+    return true;
+}
+
 function clickSignInButton() {
     // 1. 先确认真的进了签到页（顶部标题「签到有礼」出现）
     let onPage = false;
@@ -179,19 +239,24 @@ function clickSignInButton() {
         const ys = [BTN_Y, BTN_Y - 0.02, BTN_Y + 0.02];
         for (let i = 0; i < ys.length; i++) {
             log("坐标点击尝试 " + (i + 1) + "/" + ys.length);
-            if (fallbackClickByRatio(BTN_X, ys[i])) {
-                clicked = true;
-                sleep(2500);
-                if (isSignedIn()) {
-                    log("✅ 检测到签到成功提示");
-                    return true;
-                }
-                if (!isOnSignInPage()) {
-                    log("❌ 点击后已离开签到页，停止继续尝试");
-                    return false;
-                }
+            if (!fallbackClickByRatio(BTN_X, ys[i])) continue;
+            clicked = true;
+            sleep(2500);
+            if (handleJumpDialog()) return true;
+            if (isSignedIn()) {
+                log("✅ 检测到签到成功提示");
+                return true;
             }
+            if (!isOnSignInPage()) {
+                log("❌ 点击后已离开签到页，停止继续尝试");
+                return false;
+            }
+            clicked = false;
         }
+    } else {
+        // 文本点击后同样检查跳转确认框
+        sleep(2000);
+        if (handleJumpDialog()) return true;
     }
 
     if (!clicked) {
@@ -307,7 +372,11 @@ function main() {
     }
 
     sleep(2000);
-    try { home(); } catch (e) {}
+    if (!JUMPED) {
+        try { home(); } catch (e) {}
+    } else {
+        log("已跳转微博，不按 Home，请手动完成微博签到后返回");
+    }
 
     log("========== 执行结束 ==========");
 }
